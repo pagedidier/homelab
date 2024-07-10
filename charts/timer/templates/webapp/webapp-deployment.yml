@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-webapp
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-webapp
+  replicas: {{ .Values.webapp.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-webapp
+    spec:
+      imagePullSecrets:
+          - name: regcred-{{ .Chart.Name }}-{{ .Values.environment }}
+      containers:
+        - name: {{ .Chart.Name }}-webapp
+          imagePullPolicy: Always
+          image: registry.gitlab.com/two-p/{{ .Chart.Name }}/webapp:{{ .Values.version }}
+          ports:
+            - name: webapp-port
+              containerPort: 80
+          resources:
+            limits:
+              memory: {{ .Values.webapp.resources.memory.limit}}
+            requests:
+              memory: {{ .Values.webapp.resources.memory.request }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: webapp-port
+            initialDelaySeconds: 5
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: webapp-port
+            initialDelaySeconds: 5
+            periodSeconds: 3

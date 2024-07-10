@@ -1,0 +1,13 @@
+environment: ""
+
+version: ""
+
+projectName: "timer"
+domain: ""
+
+webapp:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
