@@ -22,5 +22,5 @@ deploy-timer-chart:
       version: "$VERSION"
       EOF
     - yq '. *= load("cicd-values.yaml")' ./k8s/timer/timer.$ENVIRONMENT.values.yaml > values.yaml
-    - yq w -i ./charts/timer/Chart.yaml appVersion "$VERSION"
+    - yq -i ".appVersion = \"$VERSION\"" ./charts/timer/Chart.yaml
     - helm upgrade --install timer ./charts/timer/ --values=values.yaml -n timer
