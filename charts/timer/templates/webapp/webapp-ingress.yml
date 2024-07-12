@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}-webapp-ingress
+  name: {{ .Chart.Name }}-webapp-ingress-{{ .Values.environment }}
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
 spec:
@@ -13,6 +13,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Chart.Name }}-webapp-service
+                name: {{ .Chart.Name }}-webapp-service-{{ .Values.environment }}
                 port:
                   number: 80
