@@ -8,7 +8,8 @@ variables:
     description: "The docker image version"
   ENVIRONMENT:
     description: "The enviorment where to deploy (k8s namespace)"
-
+  KUBECONFIG_CONTENT:
+    description: "Kubeconfig file as base64"
 deploy-timer-chart:
   stage: deploy
   script:
