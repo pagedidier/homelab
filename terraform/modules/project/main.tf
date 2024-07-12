@@ -7,36 +7,12 @@ terraform {
   }
 }
 
-data "gitlab_project" "project" {
-  id = var.project_id
+module "k8s-project" {
+  source = "../k8s/project"
+  domain_name = var.domain_name
+  gitlab_project_id = var.project_id
+  project_name = var.project_name
+  registry_server = var.registry_server
 }
 
-resource "gitlab_deploy_token" "k3s_deploy_token" {
-  project    = data.gitlab_project.project.path_with_namespace
-  name       = "k3s ${data.gitlab_project.project.name} deploy token ${var.environment_name}"
-  username   = "k3s-${data.gitlab_project.project.name}-${var.environment_name}"
 
-  scopes = ["read_registry"]
-}
-
-resource "kubernetes_secret" "example" {
-  metadata {
-    name = "regcred-${data.gitlab_project.project.name}-${var.environment_name}"
-    namespace = var.environment_name
-  }
-
-  type = "kubernetes.io/dockerconfigjson"
-
-  data = {
-    ".dockerconfigjson" = jsonencode({
-      auths = {
-        (var.registry_server) = {
-          "username" = gitlab_deploy_token.k3s_deploy_token.username
-          "password" = gitlab_deploy_token.k3s_deploy_token.token
-          "email"    = "d+gitlab.${var.domain_name}"
-          "auth"     = base64encode("${gitlab_deploy_token.k3s_deploy_token.username}:${gitlab_deploy_token.k3s_deploy_token.token}")
-        }
-      }
-    })
-  }
-}
