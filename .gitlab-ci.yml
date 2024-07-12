@@ -13,9 +13,6 @@ deploy-timer-chart:
   stage: deploy
   script:
     - apk add --no-cache helm --repository http://dl-3.alpinelinux.org/alpine/edge/community/ yq
-    - ENV_UPPER=$(echo $ENVIRONMENT | tr '[:lower:]' '[:upper:]')
-    - VAR_NAME="KUBECONFIG_$ENV_UPPER"
-    - eval KUBECONFIG_CONTENT=\$$VAR_NAME
     - echo $KUBECONFIG_CONTENT | base64 -d > kubeconfig.yml
     - chmod 600 kubeconfig.yml
     - export KUBECONFIG=./kubeconfig.yml

@@ -102,7 +102,7 @@ resource "kubernetes_service_account" "gitlab_deployment_pipeline_service_accoun
 
 
 resource "gitlab_project_variable" "example" {
-  key               = "KUBECONFIG"
+  key               = "KUBECONFIG_CONTENT"
   value             = base64encode(templatefile("${path.module}/templates/kubeconfig.tpl", {
                       server    = "https://k3s.${var.domain_name}:6443"
                       cluster   = "default"
