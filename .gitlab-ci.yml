@@ -14,8 +14,9 @@ deploy-timer-chart:
   script:
     - apk add --no-cache helm --repository http://dl-3.alpinelinux.org/alpine/edge/community/ yq
     - echo $KUBECONFIG_CONTENT | base64 -d > kubeconfig.yml
+    - echo $KUBECONFIG_CONTENT
     - chmod 600 kubeconfig.yml
-    - cat kubeconfig.yml
+    - cat ./kubeconfig.yml
     - export KUBECONFIG=./kubeconfig.yml
     - |-
       tee cicd-values.yaml <<EOF
