@@ -7,10 +7,12 @@ variables:
   VERSION:
     description: "The docker image version"
   ENVIRONMENT:
-    description: "The enviorment where to deploy (k8s namespace)"
+    description: "The environment where to deploy (k8s namespace)"
   KUBECONFIG_CONTENT:
     description: "Kubeconfig file as base64"
-deploy-timer-chart:
+  PROJECT:
+    description: "Project name"
+deploy-chart:
   stage: deploy
   script:
     - apk add --no-cache helm --repository http://dl-3.alpinelinux.org/alpine/edge/community/ yq
@@ -21,6 +23,6 @@ deploy-timer-chart:
       tee cicd-values.yaml <<EOF
       version: "$VERSION"
       EOF
-    - yq '. *= load("cicd-values.yaml")' ./k8s/timer/timer.$ENVIRONMENT.values.yaml > values.yaml
-    - yq -i ".appVersion = \"$VERSION\"" ./charts/timer/Chart.yaml
-    - helm upgrade --install timer-$ENVIRONMENT ./charts/timer/ --values=values.yaml -n timer
+    - yq '. *= load("cicd-values.yaml")' ./k8s/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml > values.yaml
+    - yq -i ".appVersion = \"$VERSION\"" ./charts/$PROJECT/Chart.yaml
+    - helm upgrade --install $PROJECT-$ENVIRONMENT ./charts/$PROJECT/ --values=values.yaml -n $PROJECT
