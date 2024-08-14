@@ -36,21 +36,21 @@ spec:
               value: '. /vault/secrets/config'
           ports:
             - name: api-port
-              containerPort: 8081
+              containerPort: 8080
           resources:
             limits:
               memory: {{ .Values.api.resources.memory.limit}}
             requests:
               memory: {{ .Values.api.resources.memory.request }}
-          livenessProbe:
-            httpGet:
-              path: /
-              port: api-port
-            initialDelaySeconds: 5
-            periodSeconds: 3
-          readinessProbe:
-            httpGet:
-              path: /
-              port: api-port
-            initialDelaySeconds: 5
-            periodSeconds: 3
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: api-port
+#            initialDelaySeconds: 5
+#            periodSeconds: 3
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: api-port
+#            initialDelaySeconds: 5
+#            periodSeconds: 3
