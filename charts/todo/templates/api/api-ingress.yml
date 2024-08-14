@@ -4,7 +4,7 @@ metadata:
   name: {{ .Chart.Name }}-api-ingress-{{ .Values.environment }}
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
-    traefik.ingress.kubernetes.io/router.middlewares: { { .Values.environment } }-stripprefixapi@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Values.environment }}-stripprefixapi@kubernetescrd
 spec:
   rules:
     - host: "{{ .Values.domain }}"
