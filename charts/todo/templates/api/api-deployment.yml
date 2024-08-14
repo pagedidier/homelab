@@ -33,7 +33,7 @@ spec:
           image: registry.gitlab.com/two-p/{{ .Chart.Name }}/api:{{ .Values.version }}
           env:
             - name: PRE_RUN_COMMAND
-              value: 'echo "test" && cat /vault/secrets/config && . /vault/secrets/config'
+              value: 'echo "test" && cat /vault/secrets/config && . /vault/secrets/config && echo $SPRING_DATASOURCE_URL'
           ports:
             - name: api-port
               containerPort: 8080
