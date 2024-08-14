@@ -9,7 +9,7 @@ spec:
     - host: "{{ .Values.domain }}"
       http:
         paths:
-          - path: /
+          - path: /api
             pathType: Prefix
             backend:
               service:
