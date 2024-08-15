@@ -33,7 +33,7 @@ spec:
           command:
             [ 'bash', '-c' ]
           args:
-            [ '/scripts/env.sh && source /vault/secrets/config && nginx -g "daemon off;"' ]
+            [ 'source /vault/secrets/config && /scripts/env.sh && nginx -g "daemon off;"' ]
           ports:
             - name: webapp-port
               containerPort: 80
