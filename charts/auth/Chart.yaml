@@ -1,0 +1,5 @@
+apiVersion: v2
+name: auth
+description: A Helm chart for auth app
+type: application
+version: 0.0.1

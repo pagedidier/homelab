@@ -1,0 +1,11 @@
+domain: auth.dev.twop.ch
+environment: dev
+# Will be replaced in the ci
+#version: <short hash>-dev
+
+api:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G

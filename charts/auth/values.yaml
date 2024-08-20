@@ -1,0 +1,13 @@
+environment: ""
+
+version: ""
+
+projectName: "auth"
+domain: ""
+
+api:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
