@@ -30,10 +30,9 @@ spec:
         - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
           imagePullPolicy: Always
           image: registry.gitlab.com/two-p/{{ .Chart.Name }}/api:{{ .Values.version }}
-          command:
-            [ 'bash', '-c' ]
-          args:
-            [ 'source /vault/secrets/config && npm run start' ]
+          env:
+            - name: PRE_RUN_COMMAND
+              value: '. /vault/secrets/config'
           ports:
             - name: api-port
               containerPort: 3000
