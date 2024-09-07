@@ -1,0 +1,10 @@
+domain: navan.staging.twop.ch
+environment: staging
+# Will be replaced in the ci
+#version: <short hash>-staging
+webapp:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G

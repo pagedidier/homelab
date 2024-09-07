@@ -1,0 +1,11 @@
+domain: navan.dev.twop.ch
+environment: dev
+# Will be replaced in the ci
+#version: <short hash>-dev
+
+webapp:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
