@@ -8,3 +8,9 @@ webapp:
     memory:
       limit: 1G
       request: 1G
+server:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
