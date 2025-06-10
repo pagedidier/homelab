@@ -1,0 +1,5 @@
+---
+- hosts: haproxy_servers
+  become: yes
+  roles:
+    - haproxy/main

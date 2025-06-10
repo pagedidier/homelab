@@ -2,11 +2,20 @@ terraform {
   required_providers {
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.55.1"
+      version = "0.61.1"
     }
   }
 }
-resource "proxmox_virtual_environment_vm" "k3s-node-1" {
+
+locals {
+  formated_prometheus_extra_labels = join(",", [for k, v in var.formated_prometheus_extra_labels : "${k}:${v}"])
+  description = <<-EOT
+    formated_prometheus_extra_labels: ${local.formated_prometheus_extra_labels}
+  EOT
+}
+
+
+resource "proxmox_virtual_environment_vm" "vm" {
   name      = var.name
   node_name = var.node_name
 
@@ -21,18 +30,19 @@ resource "proxmox_virtual_environment_vm" "k3s-node-1" {
 
     ip_config {
       ipv4 {
-        address = "dhcp"
+        address = var.ip
+        gateway = var.gateway
       }
     }
   }
 
   cpu {
-    cores = 2
+    cores = var.nb_cpus
     type = "host"
   }
 
   memory {
-    dedicated = 4096
+    dedicated = var.ram_in_bytes
   }
 
   operating_system {
@@ -40,8 +50,8 @@ resource "proxmox_virtual_environment_vm" "k3s-node-1" {
   }
 
   disk {
-    datastore_id = "local-lvm"
-    file_id      = "local:iso/noble-server-cloudimg-amd64.img"
+    datastore_id = var.volume_name
+    file_id      = "isos-templates:iso/noble-server-cloudimg-amd64.img"
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -51,4 +61,8 @@ resource "proxmox_virtual_environment_vm" "k3s-node-1" {
   network_device {
     bridge = "vmbr0"
   }
+  agent {
+    enabled = var.agent_enable
+  }
+  description = local.description
 }

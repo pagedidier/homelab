@@ -1,0 +1,25 @@
+---
+- name: Create application directory
+  file:
+    path: "/opt/graphite_exporter"
+    state: directory
+    mode: '0755'
+
+- name: Copy Docker Compose file
+  template:
+    src: compose.yml
+    dest: "/opt/graphite_exporter/compose.yml"
+    mode: '0644'
+
+- name: Copy mapping file
+  template:
+    src: mapping.yml
+    dest: "/opt/graphite_exporter/mapping.yml"
+    mode: '0644'
+
+- name: Restart Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "/opt/graphite_exporter"
+    files:
+      - compose.yml
+    state: present

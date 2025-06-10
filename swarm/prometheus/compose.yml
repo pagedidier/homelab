@@ -1,0 +1,30 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.3.1
+    configs:
+      - source: prometheus_config
+        target: /etc/prometheus/prometheus.yml
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - monitoring
+  
+
+configs:
+  prometheus_config:
+    file: ./prometheus.yml
+volumes:
+  prometheus_data:
+
+networks:
+  monitoring:
+    driver: overlay

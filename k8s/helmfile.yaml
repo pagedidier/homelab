@@ -1,0 +1,8 @@
+repositories:
+  - name: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard/
+
+releases:
+  - name: kubernetes-dashboard
+    namespace: kubernetes-dashboard
+    chart: kubernetes-dashboard/kubernetes-dashboard

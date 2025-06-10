@@ -1,0 +1,23 @@
+[dns]
+proxy1 ansible_host=192.168.0.20 ansible_user=root
+
+[haproxy_servers]
+proxy1 ansible_host=192.168.0.20 ansible_user=root
+
+[docker]
+srv3 ansible_host=192.168.0.30 ansible_user=ubuntu
+
+[proxmox]
+proxmox01 ansible_host=192.168.0.211 ansible_user=root
+proxmox02 ansible_host=192.168.0.212 ansible_user=root
+proxmox03 ansible_host=192.168.0.213 ansible_user=root
+
+[k3s]
+k3s-01.prod ansible_host=192.168.1.51 ansible_user=ubuntu
+k3s-02.prod ansible_host=192.168.1.52 ansible_user=ubuntu
+k3s-03.prod ansible_host=192.168.1.53 ansible_user=ubuntu
+
+[swarm]
+swarm-01.prod ansible_host=192.168.0.111 ansible_user=ubuntu
+swarm-02.prod ansible_host=192.168.0.112 ansible_user=ubuntu
+swarm-03.prod ansible_host=192.168.0.113 ansible_user=ubuntu

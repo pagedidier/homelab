@@ -6,7 +6,7 @@ terraform {
     }
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.55.1"
+      version = "0.61.1"
     }
     gitlab = {
       source = "gitlabhq/gitlab"
@@ -15,6 +15,10 @@ terraform {
     kubernetes = {
       source = "hashicorp/kubernetes"
       version = "2.31.0"
+    }
+    dns = {
+      source = "hashicorp/dns"
+      version = "3.4.3"
     }
   }
 }
@@ -35,8 +39,10 @@ provider "gitlab" {
   token = var.gitlab_pat
 }
 
-provider "haproxy" {
-  url      = "http://srv1.${var.domain_name}:5555"
-  username = var.haproxy_username
-  password = var.haproxy_password
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
 }
+# provider "vault" {
+#    address = "https://vault.twop.ch"
+#   token = var.vault_token
+# }

@@ -25,5 +25,4 @@ variable "proxmox_password" {}
 variable "proxmox_ssh_key_path" {}
 variable "proxmox_ssh_user" {}
 variable "domain_name" {}
-variable "haproxy_username" {}
-variable "haproxy_password" {}
+variable "vault_token" {}

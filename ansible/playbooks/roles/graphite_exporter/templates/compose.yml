@@ -1,0 +1,32 @@
+services:
+  graphite-exporter:
+    image: prom/graphite-exporter:v0.16.0
+    restart: unless-stopped
+    ports:
+      - "9109:9109/udp"
+    volumes:
+      - "./mapping.yml:/tmp/mapping.yml"
+    command:
+      - "--graphite.mapping-config=/tmp/mapping.yml"
+  graphite-relabler:
+    image: registry.gitlab.com/two-p/graphite-proxmox-relabler:0.0.2
+    restart: unless-stopped
+    ports:
+      - "9108:9108"
+    volumes:
+      - "/etc/pve:/data:ro"
+    command:
+      - "--graphiteExporterUrl=http://graphite-exporter:9108/metrics"
+      - "--folder=/data"
+      - "--port=9108"
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.9.1
+    restart: unless-stopped
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    ports:
+      - "9100:9100"

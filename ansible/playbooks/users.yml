@@ -1,0 +1,39 @@
+---
+- name: Add multiple SSH users to a server
+  hosts: all
+  become: yes
+  vars:
+    users:
+      - name: "dpage"
+        ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL57+7cJOQBhC0enJxLrR6eWYLOwIkngvrlNmMhO/Ahn"
+
+  tasks:
+    - name: Create users
+      user:
+        name: "{{ item.name }}"
+        shell: /bin/bash
+        create_home: yes
+      loop: "{{ users }}"
+
+    - name: Create .ssh directory
+      file:
+        path: "/home/{{ item.name }}/.ssh"
+        state: directory
+        mode: "0700"
+        owner: "{{ item.name }}"
+        group: "{{ item.name }}"
+      loop: "{{ users }}"
+
+    - name: Add SSH key to authorized_keys
+      authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ item.ssh_key }}"
+        state: present
+      loop: "{{ users }}"
+
+    - name: Ensure sudo access without password (optional)
+      copy:
+        dest: "/etc/sudoers.d/{{ item.name }}"
+        content: "{{ item.name }} ALL=(ALL) NOPASSWD: ALL"
+        mode: "0440"
+      loop: "{{ users }}"
