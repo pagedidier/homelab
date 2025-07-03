@@ -2,4 +2,6 @@
 - hosts: proxmox
   become: yes
   roles:
+    - common/package
+    - users
     - graphite_exporter

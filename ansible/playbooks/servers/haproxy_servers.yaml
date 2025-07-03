@@ -2,4 +2,6 @@
 - hosts: haproxy_servers
   become: yes
   roles:
+    - common/package
+    - users
     - haproxy/main

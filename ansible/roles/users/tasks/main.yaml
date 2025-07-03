@@ -1,0 +1,58 @@
+---
+- name: Ensure zsh is installed
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Ensure stow is installed
+  ansible.builtin.package:
+    name: stow
+    state: present
+
+- name: Ensure git is installed
+  ansible.builtin.package:
+    name: git
+    state: present
+
+- name: Ensure users exist
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    state: present
+  loop: "{{ users_list }}"
+
+- name: Set authorized SSH key if defined
+  ansible.builtin.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.ssh_key }}"
+  when: item.ssh_key is defined
+  loop: "{{ users_list }}"
+
+- name: Grant sudo privileges if requested
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    content: "{{ item.name }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: '0440'
+  when: item.sudo | default(false)
+  loop: "{{ users_list }}"
+
+- name: Clone dotfiles repository for each user
+  ansible.builtin.git:
+    repo: "{{ item.dotfiles_repo }}"
+    dest: "/home/{{ item.name }}/.dotfiles"
+    version: "{{ item.dotfiles_version | default('master') }}"
+  become: true
+  become_user: "{{ item.name }}"
+  when: item.dotfiles_repo is defined
+  loop: "{{ users_list }}"
+
+- name: Run stow command for dotfiles
+  ansible.builtin.command:
+    cmd: stow .
+    chdir: "/home/{{ item.name }}/.dotfiles"
+  become: true
+  become_user: "{{ item.name }}"
+  when: item.dotfiles_repo is defined
+  loop: "{{ users_list }}"

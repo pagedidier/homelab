@@ -1,5 +1,5 @@
 ---
-- hosts: dns
+- hosts: k3s_tmp
   become: yes
   roles:
-    - bind9
+    - k3s

@@ -1,0 +1,8 @@
+- name: Install common packages
+  ansible.builtin.package:
+    name:
+      - ufw
+      - git
+      - logrotate
+      - rsyslog
+    state: present
