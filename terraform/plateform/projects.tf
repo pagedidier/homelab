@@ -5,6 +5,15 @@ module "timer" {
   domain_name      = var.domain_name
   project_name = "timer"
 }
+
+module "navan" {
+  source = "./modules/project"
+  gitlab_project_id = 61487434
+  registry_server = var.registry_server
+  domain_name      = var.domain_name
+  project_name = "navan"
+}
+
 #
 # module "todo" {
 #   source = "./modules/project"
@@ -22,12 +31,5 @@ module "timer" {
 #   project_name = "auth"
 # }
 #
-# module "navan" {
-#   source = "./modules/project"
-#   project_id = 61487434
-#   registry_server = var.registry_server
-#   domain_name      = var.domain_name
-#   project_name = "navan"
-# }
 #
 # */

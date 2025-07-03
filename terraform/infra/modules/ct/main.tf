@@ -56,6 +56,10 @@ resource "proxmox_virtual_environment_container" "ct" {
   unprivileged = true
 }
 
+# Export the container as an output to be used by the ansible inventory
+output "container" {
+  value = proxmox_virtual_environment_container.ct
+}
 
 /*resource "vault_kv_secret_v2" "ct_ansible_secrets" {
   mount                      = var.secret_mount

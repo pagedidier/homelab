@@ -66,3 +66,8 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
   description = local.description
 }
+
+# Export the VM as an output to be used by the ansible inventory
+output "vm" {
+  value = proxmox_virtual_environment_vm.vm
+}

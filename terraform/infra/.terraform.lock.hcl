@@ -87,6 +87,28 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
   ]
 }
 
+provider "registry.terraform.io/petoju/mysql" {
+  version     = "3.0.78"
+  constraints = "3.0.78"
+  hashes = [
+    "h1:Vh50WRj5R6ywpNljOwysruilQ9T1FXDS/2ysn3G7gIY=",
+    "zh:0318a71b51fe49152562149bd07ad3a26c1965a20cf07b49812fe6f28815a89a",
+    "zh:2f5020ebc77a5120139fb5cc992e75394214c952a01a0968bf4bba0f80414a35",
+    "zh:4b2392063f8ee193594d16533f20e0885da502ca723278365891fd53f09b25c7",
+    "zh:4d00406e3235e54a82c4db956d270523897d8b7ced5c9bd67bb1c23ecd7087ab",
+    "zh:56f4b3658915f8b6649a4edaaba521fed31327b11a757ea87a0a3bd48b5d60a1",
+    "zh:a106093a9a5d5aba0c2110e1d01643c98c84879233de903c794b035a9b3c6d79",
+    "zh:a9a7177ff3fdec0faa4f3fcba606909e572fbdd21fd886cbf78f50e07deccade",
+    "zh:b0b439be69fd83551d2fa56a5eafb398b38ff7fad5ef113d3591a9de93c72827",
+    "zh:d1a1f07abe6b9e02423a40247cf98c158092767e546e3de2f52c6244817f087e",
+    "zh:d1cdf3d5c6b113fc4f154dc488544900b7b493bc58dcd99d4caa7c75e28368ed",
+    "zh:db9c343ad3b00db388f0f9d36446866fe4a75f1466ee18af4d183778c1633bdd",
+    "zh:e002b531d5f47ac5f7d76cd34e8e4e3dfb15ae8ddc7a6aa89928d51c25fa5847",
+    "zh:e4843c776889d9ff8e1a1c4220b5f6eeaffebd6d53bcc48261e44d5a01244e24",
+    "zh:e8e35ebd722159d2991b4180c1a01232f895c8de492fc535c100d38524220e0b",
+  ]
+}
+
 provider "registry.terraform.io/sepehrimanian/haproxy" {
   version     = "0.0.7"
   constraints = "0.0.7"
