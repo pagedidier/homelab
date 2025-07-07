@@ -19,6 +19,7 @@ variables:
 init_infra:
   stage: init
   script:
+    - apk add --no-cache terraform
     - echo "$TF_BACKEND_HCL_INFRA" > terraform/infra/backend.hcl
     - cd terraform/infra
     - terraform init -backend-config=backend.hcl
@@ -54,6 +55,7 @@ apply_infra:
 init_plateform:
   stage: init
   script:
+    - apk add --no-cache terraform
     - echo "$TF_BACKEND_HCL_PLATEFORM" > terraform/plateform/backend.hcl
     - cd terraform/plateform
     - terraform init -backend-config=backend.hcl
