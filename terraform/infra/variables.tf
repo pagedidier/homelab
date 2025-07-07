@@ -12,17 +12,8 @@ variable "init_ssh_keys" {
   type = list(string)
 }
 
-variable "gitlab_pat" {
-  default = ""
-}
-
-variable "registry_server" {
-  default = "registry.gitlab.com"
-}
 variable "proxmox_endpoint" {}
 variable "proxmox_username" {}
 variable "proxmox_password" {}
 variable "proxmox_ssh_key_path" {}
 variable "proxmox_ssh_user" {}
-variable "domain_name" {}
-variable "vault_token" {}
