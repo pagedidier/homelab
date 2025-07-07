@@ -20,7 +20,7 @@ init_infra:
   stage: init
   script:
     - cd terraform/infra
-    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
 
 plan_infra:
@@ -28,7 +28,7 @@ plan_infra:
   needs: [init_infra]
   script:
     - cd terraform/infra
-    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - terraform plan -out=tfplan
   artifacts:
@@ -42,7 +42,7 @@ apply_infra:
   needs: [plan_infra]
   script:
     - cd terraform/infra
-    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - terraform apply -auto-approve tfplan
 
@@ -50,7 +50,7 @@ init_plateform:
   stage: init
   script:
     - cd terraform/plateform
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
+    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
   rules:
     - changes:
@@ -61,7 +61,7 @@ plan_plateform:
   needs: [init_plateform]
   script:
     - cd terraform/plateform
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
+    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - terraform plan -out=tfplan
   artifacts:
@@ -78,7 +78,7 @@ apply_plateform:
   needs: [plan_plateform]
   script:
     - cd terraform/plateform
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
+    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - terraform apply -auto-approve tfplan
   rules:
