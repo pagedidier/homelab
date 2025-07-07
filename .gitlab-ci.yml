@@ -1,6 +1,9 @@
 image: alpine:3.20.1
 
 stages:
+  - init
+  - plan
+  - apply  
   - deploy
 
 variables:
@@ -12,6 +15,80 @@ variables:
     description: "Kubeconfig file as base64"
   PROJECT:
     description: "Project name"
+
+# ---------- INFRA ----------
+
+init_infra:
+  stage: init
+  script:
+    - echo "$TF_BACKEND_HCL_INFRA" > terraform/infra/backend.hcl
+    - cd terraform/infra
+    - terraform init -backend-config=backend.hcl
+  rules:
+    - changes:
+        - terraform/infra/**
+
+plan_infra:
+  stage: plan
+  needs: [init_infra]
+  script:
+    - cd terraform/infra
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - terraform/infra/tfplan
+    expire_in: 1 hour
+  rules:
+    - changes:
+        - terraform/infra/**
+
+apply_infra:
+  stage: apply
+  when: manual
+  needs: [plan_infra]
+  script:
+    - cd terraform/infra
+    - terraform apply -auto-approve tfplan
+  rules:
+    - changes:
+        - terraform/infra/**
+
+# ---------- PLATEFORM ----------
+
+init_plateform:
+  stage: init
+  script:
+    - echo "$TF_BACKEND_HCL_PLATEFORM" > terraform/plateform/backend.hcl
+    - cd terraform/plateform
+    - terraform init -backend-config=backend.hcl
+  rules:
+    - changes:
+        - terraform/plateform/**
+
+plan_plateform:
+  stage: plan
+  needs: [init_plateform]
+  script:
+    - cd terraform/plateform
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - terraform/plateform/tfplan
+    expire_in: 1 hour
+  rules:
+    - changes:
+        - terraform/plateform/**
+
+apply_plateform:
+  stage: apply
+  when: manual
+  needs: [plan_plateform]
+  script:
+    - cd terraform/plateform
+    - terraform apply -auto-approve tfplan
+  rules:
+    - changes:
+        - terraform/plateform/**
 deploy-chart:
   stage: deploy
   script:
