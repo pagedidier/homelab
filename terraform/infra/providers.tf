@@ -40,10 +40,6 @@ provider "proxmox" {
   }
 }
 
-provider "gitlab" {
-  token = var.gitlab_pat
-}
-
 provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
@@ -51,10 +47,3 @@ provider "kubernetes" {
 #    address = "https://vault.twop.ch"
 #   token = var.vault_token
 # }
-
-provider "mysql" {
-  endpoint = "192.168.1.110:3306"
-  username = "admin"
-  password = "password"
-}
-
