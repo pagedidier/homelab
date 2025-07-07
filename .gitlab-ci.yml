@@ -20,13 +20,9 @@ init_infra:
   image: hashicorp/terraform:1.12.2
   stage: init
   script:
-    - apk add --no-cache terraform
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
     - cd terraform/infra
     - terraform init -backend-config=backend.hcl
-  rules:
-    - changes:
-        - terraform/infra/**
 
 plan_infra:
   image: hashicorp/terraform:1.12.2
@@ -39,9 +35,6 @@ plan_infra:
     paths:
       - terraform/infra/tfplan
     expire_in: 1 hour
-  rules:
-    - changes:
-        - terraform/infra/**
 
 apply_infra:
   image: hashicorp/terraform:1.12.2
@@ -51,15 +44,11 @@ apply_infra:
   script:
     - cd terraform/infra
     - terraform apply -auto-approve tfplan
-  rules:
-    - changes:
-        - terraform/infra/**
 
 init_plateform:
   image: hashicorp/terraform:1.12.2
   stage: init
   script:
-    - apk add --no-cache terraform
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
     - cd terraform/plateform
     - terraform init -backend-config=backend.hcl
