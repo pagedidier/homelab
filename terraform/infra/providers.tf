@@ -1,5 +1,10 @@
 terraform {
+  backend "http" {}
   required_providers {
+    mysql = {
+      source = "petoju/mysql"
+      version = "3.0.78"
+    }
     haproxy = {
       source = "SepehrImanian/haproxy"
       version = "0.0.7"
@@ -46,3 +51,10 @@ provider "kubernetes" {
 #    address = "https://vault.twop.ch"
 #   token = var.vault_token
 # }
+
+provider "mysql" {
+  endpoint = "192.168.1.110:3306"
+  username = "admin"
+  password = "password"
+}
+
