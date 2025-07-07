@@ -268,9 +268,6 @@ module "database-prod" {
   ip      = "192.168.1.110/16"
 }
 
-
-
-
 # module "k3s_tmp" {
 #   source = "./modules/k3s_cluster"
 #   environment = "tmp"
