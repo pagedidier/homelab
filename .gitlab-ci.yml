@@ -1,4 +1,4 @@
-image: alpine:3.20.1
+image: alpine:3.18
 
 stages:
   - init
@@ -17,19 +17,19 @@ variables:
     description: "Project name"
 
 init_infra:
-  image: hashicorp/terraform:1.12.2
   stage: init
   script:
-    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
     - cd terraform/infra
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
     - terraform init -backend-config=backend.hcl
 
 plan_infra:
-  image: hashicorp/terraform:1.12.2
   stage: plan
   needs: [init_infra]
   script:
     - cd terraform/infra
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
+    - terraform init -backend-config=backend.hcl
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -37,31 +37,32 @@ plan_infra:
     expire_in: 1 hour
 
 apply_infra:
-  image: hashicorp/terraform:1.12.2
   stage: apply
   when: manual
   needs: [plan_infra]
   script:
     - cd terraform/infra
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > terraform/infra/backend.hcl
+    - terraform init -backend-config=backend.hcl
     - terraform apply -auto-approve tfplan
 
 init_plateform:
-  image: hashicorp/terraform:1.12.2
   stage: init
   script:
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
     - cd terraform/plateform
+    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
     - terraform init -backend-config=backend.hcl
   rules:
     - changes:
         - terraform/plateform/**
 
 plan_plateform:
-  image: hashicorp/terraform:1.12.2
   stage: plan
   needs: [init_plateform]
   script:
     - cd terraform/plateform
+    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
+    - terraform init -backend-config=backend.hcl
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -72,12 +73,13 @@ plan_plateform:
         - terraform/plateform/**
 
 apply_plateform:
-  image: hashicorp/terraform:1.12.2
   stage: apply
   when: manual
   needs: [plan_plateform]
   script:
     - cd terraform/plateform
+    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > terraform/plateform/backend.hcl
+    - terraform init -backend-config=backend.hcl
     - terraform apply -auto-approve tfplan
   rules:
     - changes:
