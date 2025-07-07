@@ -1,4 +1,0 @@
-write-kubeconfig-mode: "0644"
-tls-san:
-  - "k3s.twop.ch"
-cluster-init: true
