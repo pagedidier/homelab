@@ -6,6 +6,16 @@ stages:
   - apply  
   - deploy
 
+variables:
+  VERSION:
+    description: "The docker image version"
+  ENVIRONMENT:
+    description: "The environment where to deploy (k8s namespace)"
+  KUBECONFIG_CONTENT:
+    description: "Kubeconfig file as base64"
+  PROJECT:
+    description: "Project name"
+
 init_infra:
   stage: init
   script:
@@ -77,15 +87,6 @@ apply_plateform:
         - terraform/plateform/**
 deploy-chart:
   stage: deploy
-  variables:
-    VERSION:
-      description: "The docker image version"
-    ENVIRONMENT:
-      description: "The environment where to deploy (k8s namespace)"
-    KUBECONFIG_CONTENT:
-      description: "Kubeconfig file as base64"
-    PROJECT:
-      description: "Project name"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
       when: always
