@@ -15,13 +15,13 @@ module "navan" {
 }
 
 
-module "todo" {
-  source = "./modules/project"
-  gitlab_project_id = 40519341
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "todo"
-}
+# module "todo" {
+#   source = "./modules/project"
+#   gitlab_project_id = 40519341
+#   registry_server = var.registry_server
+#   domain_name      = var.domain_name
+#   project_name = "todo"
+# }
 #
 # module "auth" {
 #   source = "./modules/project"
