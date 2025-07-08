@@ -40,6 +40,8 @@ apply_infra:
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
     - terraform apply -auto-approve tfplan
 
