@@ -68,6 +68,8 @@ plan_plateform:
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
+    - mkdir -p ~/.kube
+    - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -83,6 +85,8 @@ apply_plateform:
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
+    - mkdir -p ~/.kube
+    - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform apply -auto-approve tfplan
 deploy-chart:
   stage: deploy
