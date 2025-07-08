@@ -17,9 +17,9 @@ validate_infra:
     - terraform init -backend-config=backend.hcl
     - terraform validate
   rules:
-    - changes:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      changes:
         - terraform/infra/**
-    - when: never
 
 plan_infra:
   stage: plan
@@ -37,10 +37,9 @@ plan_infra:
       - terraform/infra/tfplan
     expire_in: 1 hour
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
     - changes:
         - terraform/infra/**
-    - when: never
-
 apply_infra:
   stage: apply
   when: manual
@@ -54,10 +53,9 @@ apply_infra:
     - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
     - terraform apply -auto-approve tfplan
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
     - changes:
         - terraform/infra/**
-    - when: never
-
 validate_plateform:
   stage: init
   script:
@@ -66,10 +64,9 @@ validate_plateform:
     - terraform init -backend-config=backend.hcl
     - terraform validate
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
     - changes:
         - terraform/plateform/**
-    - when: never
-
 plan_plateform:
   stage: plan
   needs: [validate_plateform]
@@ -86,10 +83,9 @@ plan_plateform:
       - terraform/plateform/tfplan
     expire_in: 1 hour
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
     - changes:
         - terraform/plateform/**
-    - when: never
-
 apply_plateform:
   stage: apply
   when: manual
@@ -103,14 +99,13 @@ apply_plateform:
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform apply -auto-approve tfplan
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
     - changes:
         - terraform/plateform/**
-    - when: never
-
 deploy-chart:
   stage: deploy
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+    - if: '$CI_PIPELINE_SOURCE == "pipeline"'
       when: always
     - when: never
   script:
