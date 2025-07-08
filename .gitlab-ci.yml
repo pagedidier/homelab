@@ -67,6 +67,7 @@ plan_plateform:
     - cd terraform/plateform
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -81,6 +82,7 @@ apply_plateform:
     - cd terraform/plateform
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
     - terraform apply -auto-approve tfplan
 deploy-chart:
   stage: deploy
