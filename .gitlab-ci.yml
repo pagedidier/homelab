@@ -9,19 +9,20 @@ stages:
 before_script:
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
 
-init_infra:
+validate_infra:
   stage: init
   script:
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+    - terraform validate
   rules:
     - changes:
         - terraform/infra/**
 
 plan_infra:
   stage: plan
-  needs: [init_infra]
+  needs: [validate_infra]
   script:
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
@@ -53,16 +54,17 @@ apply_infra:
     - changes:
         - terraform/infra/**
 
-init_plateform:
+validate_plateform:
   stage: init
   script:
     - cd terraform/plateform
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+    - terraform validate
 
 plan_plateform:
   stage: plan
-  needs: [init_plateform]
+  needs: [validate_plateform]
   script:
     - cd terraform/plateform
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
