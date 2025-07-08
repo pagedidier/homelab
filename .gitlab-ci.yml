@@ -15,6 +15,9 @@ init_infra:
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+  rules:
+    - changes:
+        - terraform/plateform/**
 
 plan_infra:
   stage: plan
