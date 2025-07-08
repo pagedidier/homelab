@@ -268,18 +268,18 @@ module "database-prod" {
   ip      = "192.168.1.110/16"
 }
 
-module "k3s_tmp" {
-  source = "./modules/k3s_cluster"
-  environment = "tmp"
-  gateway = "192.168.0.254"
-  init_ssh_keys = var.init_ssh_keys
-  init_user_password = var.init_user_password
-  init_user_username = var.init_user_username
-  cidr = "192.168.1.61/24"
-  nb_node = 3
-  node_array = [
-    data.proxmox_virtual_environment_node.node11.node_name,
-    data.proxmox_virtual_environment_node.node12.node_name,
-    data.proxmox_virtual_environment_node.node13.node_name
-  ]
-}
+# module "k3s_tmp" {
+#   source = "./modules/k3s_cluster"
+#   environment = "tmp"
+#   gateway = "192.168.0.254"
+#   init_ssh_keys = var.init_ssh_keys
+#   init_user_password = var.init_user_password
+#   init_user_username = var.init_user_username
+#   cidr = "192.168.1.61/24"
+#   nb_node = 3
+#   node_array = [
+#     data.proxmox_virtual_environment_node.node11.node_name,
+#     data.proxmox_virtual_environment_node.node12.node_name,
+#     data.proxmox_virtual_environment_node.node13.node_name
+#   ]
+# }
