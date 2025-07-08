@@ -19,6 +19,7 @@ validate_infra:
   rules:
     - changes:
         - terraform/infra/**
+    - when: never
 
 plan_infra:
   stage: plan
@@ -38,6 +39,8 @@ plan_infra:
   rules:
     - changes:
         - terraform/infra/**
+    - when: never
+
 apply_infra:
   stage: apply
   when: manual
@@ -53,6 +56,7 @@ apply_infra:
   rules:
     - changes:
         - terraform/infra/**
+    - when: never
 
 validate_plateform:
   stage: init
@@ -64,6 +68,7 @@ validate_plateform:
   rules:
     - changes:
         - terraform/plateform/**
+    - when: never
 
 plan_plateform:
   stage: plan
@@ -83,6 +88,7 @@ plan_plateform:
   rules:
     - changes:
         - terraform/plateform/**
+    - when: never
 
 apply_plateform:
   stage: apply
@@ -99,6 +105,8 @@ apply_plateform:
   rules:
     - changes:
         - terraform/plateform/**
+    - when: never
+
 deploy-chart:
   stage: deploy
   rules:
