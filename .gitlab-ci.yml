@@ -61,6 +61,9 @@ validate_plateform:
     - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - terraform validate
+  rules:
+    - changes:
+        - terraform/plateform/**
 
 plan_plateform:
   stage: plan
@@ -77,6 +80,9 @@ plan_plateform:
     paths:
       - terraform/plateform/tfplan
     expire_in: 1 hour
+  rules:
+    - changes:
+        - terraform/plateform/**
 
 apply_plateform:
   stage: apply
@@ -90,6 +96,9 @@ apply_plateform:
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform apply -auto-approve tfplan
+  rules:
+    - changes:
+        - terraform/plateform/**
 deploy-chart:
   stage: deploy
   rules:
