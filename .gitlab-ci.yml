@@ -38,7 +38,7 @@ plan_infra:
     expire_in: 1 hour
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
-    - changes:
+      changes:
         - terraform/infra/**
 apply_infra:
   stage: apply
@@ -54,7 +54,7 @@ apply_infra:
     - terraform apply -auto-approve tfplan
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
-    - changes:
+      changes:
         - terraform/infra/**
 validate_plateform:
   stage: init
@@ -65,7 +65,7 @@ validate_plateform:
     - terraform validate
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
-    - changes:
+      changes:
         - terraform/plateform/**
 plan_plateform:
   stage: plan
@@ -84,7 +84,7 @@ plan_plateform:
     expire_in: 1 hour
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
-    - changes:
+      changes:
         - terraform/plateform/**
 apply_plateform:
   stage: apply
@@ -100,7 +100,7 @@ apply_plateform:
     - terraform apply -auto-approve tfplan
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
-    - changes:
+      changes:
         - terraform/plateform/**
 deploy-chart:
   stage: deploy
