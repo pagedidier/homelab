@@ -22,6 +22,8 @@ plan_infra:
   script:
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - terraform init -backend-config=backend.hcl
     - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
     - terraform plan -out=tfplan
