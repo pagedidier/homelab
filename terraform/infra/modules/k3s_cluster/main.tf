@@ -2,6 +2,7 @@ locals {
   ip = split("/", var.cidr)[0]
   mask = parseint(split("/", var.cidr)[1],10)
 }
+
 module "k3s_nodes_tmp" {
   count              = var.nb_node
   source             = "../vm"
@@ -15,3 +16,12 @@ module "k3s_nodes_tmp" {
   ip = "${cidrhost(var.cidr, parseint(split(".", local.ip)[3], 10)+ count.index)}/${local.mask - 8}"
   gateway            = var.gateway
 }
+
+output "cluster" {
+  value = [for node in module.k3s_nodes_tmp : {
+    hostname = node.vm.hostname
+    ip       = node.vm.ip
+    username = node.vm.username
+  }]
+}
+

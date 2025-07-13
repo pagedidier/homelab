@@ -58,7 +58,11 @@ resource "proxmox_virtual_environment_container" "ct" {
 
 # Export the container as an output to be used by the ansible inventory
 output "container" {
-  value = proxmox_virtual_environment_container.ct
+  value = {
+    "ip": split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
+    "username": "root"
+    "hostname": proxmox_virtual_environment_container.ct.initialization[0].hostname
+  }
 }
 
 /*resource "vault_kv_secret_v2" "ct_ansible_secrets" {

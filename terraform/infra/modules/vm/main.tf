@@ -67,7 +67,11 @@ resource "proxmox_virtual_environment_vm" "vm" {
   description = local.description
 }
 
-# Export the VM as an output to be used by the ansible inventory
+
 output "vm" {
-  value = proxmox_virtual_environment_vm.vm
+  value = {
+    "ip": split("/",proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
+    "username": proxmox_virtual_environment_vm.vm.initialization[0].user_account[0].username
+    "hostname": proxmox_virtual_environment_vm.vm.name
+  }
 }
