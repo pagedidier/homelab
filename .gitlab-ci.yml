@@ -56,52 +56,52 @@ apply_infra:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
         - terraform/infra/**
-validate_plateform:
+validate_platform:
   stage: init
   script:
-    - cd terraform/plateform
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
+    - cd terraform/platform
+    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - terraform validate
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
-        - terraform/plateform/**
-plan_plateform:
+        - terraform/platform/**
+plan_platform:
   stage: plan
-  needs: [validate_plateform]
+  needs: [validate_platform]
   script:
-    - cd terraform/plateform
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
+    - cd terraform/platform
+    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
-    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
+    - echo "$TF_VARIABLES_platform" | base64 -d > variables.auto.tfvars.json
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform plan -out=tfplan
   artifacts:
     paths:
-      - terraform/plateform/tfplan
+      - terraform/platform/tfplan
     expire_in: 1 hour
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
-        - terraform/plateform/**
-apply_plateform:
+        - terraform/platform/**
+apply_platform:
   stage: apply
   when: manual
-  needs: [plan_plateform]
+  needs: [plan_platform]
   script:
-    - cd terraform/plateform
-    - echo "$TF_BACKEND_HCL_PLATEFORM" | base64 -d > backend.hcl
+    - cd terraform/platform
+    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
-    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
+    - echo "$TF_VARIABLES_platform" | base64 -d > variables.auto.tfvars.json
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform apply -auto-approve tfplan
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
-        - terraform/plateform/**
+        - terraform/platform/**
 deploy-chart:
   stage: deploy
   rules:
@@ -120,3 +120,17 @@ deploy-chart:
     - yq '. *= load("cicd-values.yaml")' ./k8s/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml > values.yaml
     - yq -i ".appVersion = \"$VERSION\"" ./charts/$PROJECT/Chart.yaml
     - helm upgrade --install $PROJECT-$ENVIRONMENT ./charts/$PROJECT/ --values=values.yaml -n $PROJECT
+deploy-ansible:
+  stage: deploy
+  image: willhallonline/ansible:latest
+  script:
+    - cd ansible
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
+    - ./generate_inventory.sh
+    - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      changes:
+        - playbooks/**
+        - inventory/**
