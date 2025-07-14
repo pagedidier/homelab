@@ -131,7 +131,7 @@ deploy-ansible:
     - pip install ansible
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
-    - cd terraform/platform
+    - cd terraform/infra
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - cd ../ansible
