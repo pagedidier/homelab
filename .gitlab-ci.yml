@@ -131,5 +131,5 @@ deploy-ansible:
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - cd ansible
-    - ./generate_inventory.sh
+    - sh generate_inventory.sh
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
