@@ -132,5 +132,4 @@ deploy-ansible:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
-        - playbooks/**
-        - inventory/**
+        - ansible/**
