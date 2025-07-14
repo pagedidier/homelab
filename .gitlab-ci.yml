@@ -130,7 +130,9 @@ deploy-ansible:
     - apk add jq yq python3 py3-pip openssh --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - pip install ansible
     - mkdir -p ~/.ssh
-    - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
+    - echo "$SSH_KEY" | base64 -d > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" > ~/.ssh/config
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
