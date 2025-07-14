@@ -7,12 +7,10 @@ stages:
   - deploy
   - ansible
 
-before_script:
-  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
-
 validate_infra:
   stage: init
   script:
+    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
@@ -26,6 +24,7 @@ plan_infra:
   stage: plan
   needs: [validate_infra]
   script:
+    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - mkdir -p ~/.ssh
@@ -46,6 +45,7 @@ apply_infra:
   when: manual
   needs: [plan_infra]
   script:
+    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
@@ -60,6 +60,7 @@ apply_infra:
 validate_platform:
   stage: init
   script:
+    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
@@ -72,6 +73,7 @@ plan_platform:
   stage: plan
   needs: [validate_platform]
   script:
+    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
@@ -92,6 +94,7 @@ apply_platform:
   when: manual
   needs: [plan_platform]
   script:
+    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
