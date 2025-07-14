@@ -126,8 +126,8 @@ deploy-chart:
     - helm upgrade --install $PROJECT-$ENVIRONMENT ./charts/$PROJECT/ --values=values.yaml -n $PROJECT
 deploy-ansible:
   stage: ansible
-  image: willhallonline/ansible:latest
   script:
+    - apk add jq yq ansible
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - cd ansible
