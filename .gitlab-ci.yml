@@ -132,7 +132,7 @@ deploy-ansible:
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - cd terraform/infra
-    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
     - cd ../ansible
     - sh generate_inventory.sh
