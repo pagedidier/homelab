@@ -22,10 +22,10 @@ output "inventory" {
       module.proxmox02.server,
       module.proxmox03.server,
     ]
-    "proxmox-backup-server": [
+    "proxmox_backup_server": [
       module.pbs01.server
     ]
-    "haproxy-servers": [
+    "haproxy_servers": [
       module.proxy01.server
     ]
   }
