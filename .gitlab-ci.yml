@@ -127,7 +127,7 @@ deploy-chart:
 deploy-ansible:
   stage: ansible
   script:
-    - apk add jq yq ansible
+    - apk add jq yq ansible --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - cd ansible
