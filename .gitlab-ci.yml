@@ -136,4 +136,5 @@ deploy-ansible:
     - terraform init -backend-config=backend.hcl
     - cd ../../ansible
     - sh generate_inventory.sh
+    - chmod o-w .
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
