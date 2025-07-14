@@ -77,7 +77,7 @@ plan_platform:
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
-    - echo "$TF_VARIABLES_platform" | base64 -d > variables.auto.tfvars.json
+    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform plan -out=tfplan
@@ -98,7 +98,7 @@ apply_platform:
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
-    - echo "$TF_VARIABLES_platform" | base64 -d > variables.auto.tfvars.json
+    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
     - terraform apply -auto-approve tfplan
@@ -134,6 +134,6 @@ deploy-ansible:
     - cd terraform/infra
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
-    - cd ../ansible
+    - cd ../../ansible
     - sh generate_inventory.sh
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
