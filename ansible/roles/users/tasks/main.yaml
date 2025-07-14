@@ -43,6 +43,7 @@
     repo: "{{ item.dotfiles_repo }}"
     dest: "/home/{{ item.name }}/.dotfiles"
     version: "{{ item.dotfiles_version | default('master') }}"
+    force: true
   become: true
   become_user: "{{ item.name }}"
   when: item.dotfiles_repo is defined
