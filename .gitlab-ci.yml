@@ -130,7 +130,3 @@ deploy-ansible:
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - ./generate_inventory.sh
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
-      changes:
-        - ansible/**
