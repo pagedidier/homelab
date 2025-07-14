@@ -1,5 +1,5 @@
 ---
-- hosts: proxmox,proxmox-backup-server
+- hosts: proxmox,proxmox_backup_server
   become: yes
   roles:
     - common/package
