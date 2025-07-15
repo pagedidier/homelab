@@ -65,6 +65,7 @@ frontend web
   acl host_k3s.prod.twop.ch hdr_dom(host) k3s.prod.twop.ch
   acl host_nxtcld.twop.ch hdr(host) nxtcld.twop.ch
   acl host_audio.twop.ch hdr(host) audio.twop.ch
+  acl host_transmission.twop.ch hdr(host) transmission.twop.ch
   acl letsencrypt-acl path_beg /.well-known/acme-challenge/
   http-request redirect scheme https unless { ssl_fc }
   use_backend proxmox if host_proxmox.twop.ch
@@ -72,6 +73,7 @@ frontend web
   use_backend vault if host_vault.twop.ch
   use_backend srv3 if host_audio.twop.ch
   use_backend srv3 if host_nxtcld.twop.ch
+  use_backend ddpnas1 if host_transmission.twop.ch
 
   use_backend k3s_prod_ingress_controller if host_k3s.prod.twop.ch
 
@@ -86,6 +88,11 @@ backend k3s_prod_api
   server k3s-02.prod 192.168.1.52:6443 check
   server k3s-03.prod 192.168.1.53:6443 check
 
+backend ddpnas1
+  mode tcp
+  balance roundrobin
+  option tcp-check
+  server k3s-01.prod 192.168.0.29:9091 check
 
 backend k3s_prod_ingress_controller
   server k3s-01.prod 192.168.1.51:80 check
