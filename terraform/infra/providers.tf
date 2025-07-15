@@ -5,11 +5,19 @@ terraform {
       source = "bpg/proxmox"
       version = "0.61.1"
     }
-      null = {
-        source  = "hashicorp/null"
-        version = "3.2.3"
-      }
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.3"
+    }
+    infomaniak = {
+      source  = "Infomaniak/infomaniak"
+      version = "~> 1.0"
+    }
   }
+}
+
+provider "infomaniak" {
+  token = var.infomaniak_token
 }
 
 provider "proxmox" {

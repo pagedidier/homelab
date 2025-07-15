@@ -7,13 +7,21 @@ stages:
   - deploy
   - ansible
 
+variables:
+  INFOMANIAK_PROVIDER_VERSION: "0.0.1"
 validate_infra:
   stage: init
-  script:
+  before_script:
     - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/infra
+    - mkdir /local_providers
+    - wget -q "https://sos-ch-gva-2.exo.io/rp-test/terraform-provider-infomaniak/${INFOMANIAK_PROVIDER_VERSION}/terraform-provider-infomaniak_${INFOMANIAK_PROVIDER_VERSION}_linux_amd64" -O /local_providers/terraform-provider-infomaniak
+    - chmod +x /local_providers/terraform-provider-infomaniak
+    - rm .terraform.lock.hcl
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
+    - export TF_CLI_CONFIG_FILE=".terraform.rc"
     - terraform init -backend-config=backend.hcl
+  script:
     - terraform validate
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
@@ -23,14 +31,19 @@ validate_infra:
 plan_infra:
   stage: plan
   needs: [validate_infra]
-  script:
+  before_script:
     - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/infra
+    - mkdir /local_providers
+    - wget -q "https://sos-ch-gva-2.exo.io/rp-test/terraform-provider-infomaniak/${INFOMANIAK_PROVIDER_VERSION}/terraform-provider-infomaniak_${INFOMANIAK_PROVIDER_VERSION}_linux_amd64" -O /local_providers/terraform-provider-infomaniak
+    - chmod +x /local_providers/terraform-provider-infomaniak
+    - export TF_CLI_CONFIG_FILE=".terraform.rc"
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
+    - terraform init -backend-config=backend.hcl
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
-    - terraform init -backend-config=backend.hcl
     - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
+  script:
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -44,14 +57,19 @@ apply_infra:
   stage: apply
   when: manual
   needs: [plan_infra]
-  script:
+  before_script:
     - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/infra
+    - mkdir /local_providers
+    - wget -q "https://sos-ch-gva-2.exo.io/rp-test/terraform-provider-infomaniak/${INFOMANIAK_PROVIDER_VERSION}/terraform-provider-infomaniak_${INFOMANIAK_PROVIDER_VERSION}_linux_amd64" -O /local_providers/terraform-provider-infomaniak
+    - chmod +x /local_providers/terraform-provider-infomaniak
     - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
+    - export TF_CLI_CONFIG_FILE=".terraform.rc"
     - terraform init -backend-config=backend.hcl
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
     - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
+  script:
     - terraform apply -auto-approve tfplan
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
@@ -59,11 +77,12 @@ apply_infra:
         - terraform/infra/**
 validate_platform:
   stage: init
-  script:
+  before_script:
     - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
     - terraform init -backend-config=backend.hcl
+  script:
     - terraform validate
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
@@ -72,7 +91,7 @@ validate_platform:
 plan_platform:
   stage: plan
   needs: [validate_platform]
-  script:
+  before_script:
     - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
@@ -80,6 +99,7 @@ plan_platform:
     - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+  script:
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -93,7 +113,7 @@ apply_platform:
   stage: apply
   when: manual
   needs: [plan_platform]
-  script:
+  before_script:
     - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - cd terraform/platform
     - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
@@ -101,6 +121,7 @@ apply_platform:
     - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
     - mkdir -p ~/.kube
     - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+  script:
     - terraform apply -auto-approve tfplan
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
@@ -112,7 +133,7 @@ deploy-chart:
     - if: '$CI_PIPELINE_SOURCE == "pipeline"'
       when: always
     - when: never
-  script:
+  before_script:
     - apk add --no-cache helm --repository http://dl-3.alpinelinux.org/alpine/edge/community/ yq
     - echo $KUBECONFIG_CONTENT | base64 -d > kubeconfig.yml
     - chmod 600 kubeconfig.yml
@@ -121,12 +142,13 @@ deploy-chart:
       tee cicd-values.yaml <<EOF
       version: "$VERSION"
       EOF
+  script:
     - yq '. *= load("cicd-values.yaml")' ./k8s/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml > values.yaml
     - yq -i ".appVersion = \"$VERSION\"" ./charts/$PROJECT/Chart.yaml
     - helm upgrade --install $PROJECT-$ENVIRONMENT ./charts/$PROJECT/ --values=values.yaml -n $PROJECT
 deploy-ansible:
   stage: ansible
-  script:
+  before_script:
     - apk add jq yq python3 py3-pip openssh --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
     - pip install ansible
     - mkdir -p ~/.ssh
@@ -139,4 +161,5 @@ deploy-ansible:
     - cd ../../ansible
     - sh generate_inventory.sh
     - chmod o-w .
+  script:
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml

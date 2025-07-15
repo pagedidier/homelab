@@ -17,3 +17,4 @@ variable "proxmox_username" {}
 variable "proxmox_password" {}
 variable "proxmox_ssh_key_path" {}
 variable "proxmox_ssh_user" {}
+variable "infomaniak_token" {}

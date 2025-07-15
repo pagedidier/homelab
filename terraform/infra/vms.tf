@@ -10,6 +10,14 @@ module "k3s-node1" {
   gateway = "192.168.0.254"
 }
 
+resource "infomaniak_record" "k3s-node1" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.k3s-node1.vm.hostname
+  type = "A"
+  ttl = 300
+  target = module.k3s-node1.vm.ip
+}
+
 module "k3s-node2" {
   source = "./modules/vm"
   name   = "k3s-02.prod"
@@ -22,6 +30,14 @@ module "k3s-node2" {
   gateway = "192.168.0.254"
 }
 
+resource "infomaniak_record" "k3s-node2" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.k3s-node2.vm.hostname
+  type = "A"
+  ttl = 300
+  target = module.k3s-node2.vm.ip
+}
+
 module "k3s-node3" {
   source = "./modules/vm"
   name   = "k3s-03.prod"
@@ -32,5 +48,13 @@ module "k3s-node3" {
   ram_in_bytes = 8192
   ip="192.168.1.53/16"
   gateway = "192.168.0.254"
+}
+
+resource "infomaniak_record" "k3s-node3" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.k3s-node3.vm.hostname
+  type = "A"
+  ttl = 300
+  target = module.k3s-node3.vm.ip
 }
 

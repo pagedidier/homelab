@@ -11,6 +11,14 @@ module "swarm-node1" {
   agent_enable = true
 }
 
+resource "infomaniak_record" "swarm-node1" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.swarm-node1.vm.hostname
+  type = "A"
+  ttl = 300
+  target = module.swarm-node1.vm.ip
+}
+
 module "swarm-node2" {
   source = "./modules/vm"
   name   = "swarm-02.prod"
@@ -25,6 +33,14 @@ module "swarm-node2" {
 
 }
 
+resource "infomaniak_record" "swarm-node2" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.swarm-node2.vm.hostname
+  type = "A"
+  ttl = 300
+  target = module.swarm-node2.vm.ip
+}
+
 module "swarm-node3" {
   source = "./modules/vm"
   name   = "swarm-03.prod"
@@ -36,4 +52,12 @@ module "swarm-node3" {
   ip="192.168.0.113/16"
   gateway = "192.168.0.254"
   agent_enable = true
+}
+
+resource "infomaniak_record" "swarm-node3" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.swarm-node3.vm.hostname
+  type = "A"
+  ttl = 300
+  target = module.swarm-node3.vm.ip
 }
