@@ -22,5 +22,12 @@ module "prometheus-prod" {
   ip      = "192.168.1.100/16"
 }
 
+resource "infomaniak_record" "prometheus-prod" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.prometheus-prod.container.hostname
+  type = "A"
+  ttl = 300
+  target = module.prometheus-prod.container.ip
+}
 
 

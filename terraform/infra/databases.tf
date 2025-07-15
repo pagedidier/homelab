@@ -21,3 +21,11 @@ module "database-prod" {
   gateway = "192.168.0.254"
   ip      = "192.168.1.110/16"
 }
+
+resource "infomaniak_record" "database-prod" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.database-prod.container.hostname
+  type = "A"
+  ttl = 300
+  target = module.database-prod.container.ip
+}

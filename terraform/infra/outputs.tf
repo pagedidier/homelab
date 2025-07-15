@@ -16,7 +16,6 @@ output "inventory" {
     "databases" : [
       module.database-prod.container
     ]
-    "k3s_dev": module.k3s_dev.cluster
     "proxmox": [
       module.proxmox01.server,
       module.proxmox02.server,
