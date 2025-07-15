@@ -1,9 +1,4 @@
 ---
-- name: Upgrade the OS
-  apt:
-    upgrade: full
-    autoclean: true
-    autoremove: true
 - name: Install docker dependencies
   apt:
     pkg:
