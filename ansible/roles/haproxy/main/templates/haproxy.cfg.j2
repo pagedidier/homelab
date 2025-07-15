@@ -89,7 +89,7 @@ backend k3s_prod_api
   server k3s-03.prod 192.168.1.53:6443 check
 
 backend ddpnas1
-  mode tcp
+  mode http
   balance roundrobin
   option tcp-check
   server k3s-01.prod 192.168.0.29:9091 check
