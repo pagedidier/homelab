@@ -1,0 +1,68 @@
+# _md5hash=75334ad34f34ef1ebea3c012e4d432ca
+# _version=3702
+# Dataplaneapi managed File
+# changing file directly can cause a conflict if dataplaneapi is running
+
+global
+  daemon
+  chroot /var/lib/haproxy
+  user haproxy
+  group haproxy
+  ca-base /etc/ssl/certs
+  crt-base /etc/ssl/private
+  master-worker
+  stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+  stats timeout 30s
+  ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+  ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+  ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+  log /dev/log local0
+  log /dev/log local1 notice
+
+defaults
+  mode http
+  log global
+  option httplog
+  option dontlognull
+  timeout connect 5000
+  timeout client 50000
+  timeout server 50000
+  errorfile 400 /etc/haproxy/errors/400.http
+  errorfile 403 /etc/haproxy/errors/403.http
+  errorfile 408 /etc/haproxy/errors/408.http
+  errorfile 500 /etc/haproxy/errors/500.http
+  errorfile 502 /etc/haproxy/errors/502.http
+  errorfile 503 /etc/haproxy/errors/503.http
+  errorfile 504 /etc/haproxy/errors/504.http
+
+frontend stats
+  mode http
+  bind *:8404
+  stats enable
+  stats uri /stats
+  stats refresh 10s
+  stats admin if LOCALHOST
+
+frontend prometheus
+  bind *:8405
+  mode http
+  http-request use-service prometheus-exporter if { path /metrics }
+  no log
+
+frontend web
+  mode http
+  bind 0.0.0.0:80 name web_http_bind
+  bind 0.0.0.0:443 name web_https_bind ssl crt /etc/ssl/nohanbudry.com.pem
+  acl letsencrypt-acl path_beg /.well-known/acme-challenge/
+  http-request redirect scheme https unless { ssl_fc }
+  use_backend letsencrypt if letsencrypt-acl
+  default_backend nohan-tower
+
+backend nohan-tower
+  mode http
+  balance roundrobin
+  option tcp-check
+  server nohan-tower 192.168.1.14:30000 check
+
+backend letsencrypt
+  server local_certbot_server 127.0.0.1:8899 check

@@ -20,6 +20,7 @@ output "inventory" {
       module.proxmox01.server,
       module.proxmox02.server,
       module.proxmox03.server,
+      module.proxmox21.server,
     ]
     "proxmox_backup_server": [
       module.pbs01.server

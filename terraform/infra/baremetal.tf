@@ -20,6 +20,7 @@ module "proxmox21" {
   hostname = "proxmox21"
   ip       = "51.154.10.38"
   username = "root"
+  port = 5789
 }
 
 resource "infomaniak_record" "proxmox21" {
