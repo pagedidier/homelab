@@ -60,6 +60,8 @@ frontend web
   bind 0.0.0.0:80 name web_http_bind
   bind 0.0.0.0:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
   acl host_proxmox.twop.ch hdr_dom(host) proxmox.twop.ch
+  acl host_pvc01.twop.ch hdr_dom(host) pvc01.twop.ch
+  acl host_pvc02.twop.ch hdr_dom(host) pvc02.twop.ch
   acl host_pbc01.twop.ch hdr_dom(host) pbc01.twop.ch
   acl host_vault.twop.ch hdr_dom(host) vault.twop.ch
   acl host_k3s.prod.twop.ch hdr_dom(host) k3s.prod.twop.ch
@@ -68,7 +70,9 @@ frontend web
   acl host_transmission.twop.ch hdr(host) transmission.twop.ch
   acl letsencrypt-acl path_beg /.well-known/acme-challenge/
   http-request redirect scheme https unless { ssl_fc }
-  use_backend proxmox if host_proxmox.twop.ch
+  use_backend pvc01 if host_proxmox.twop.ch
+  use_backend pvc01 if host_pvc01.twop.ch
+  use_backend pvc02 if host_pvc02.twop.ch
   use_backend pbc01 if host_pbc01.twop.ch
   use_backend vault if host_vault.twop.ch
   use_backend srv3 if host_audio.twop.ch
@@ -115,7 +119,7 @@ backend k3s_tmp_ingress_controller
 backend letsencrypt
   server local_certbot_server 127.0.0.1:8899 check
 
-backend proxmox
+backend pvc01
   mode http
   balance roundrobin
   option http-server-close
@@ -127,6 +131,17 @@ backend proxmox
   server proxmox11 192.168.0.211:8006 ssl verify none check port 8006 inter 5s rise 2 fall 2 cookie proxmox_server
   server proxmox12 192.168.0.212:8006 ssl verify none check port 8006 inter 5s rise 2 fall 2 cookie proxmox_server
   server proxmox13 192.168.0.213:8006 ssl verify none check port 8006 inter 5s rise 2 fall 2 cookie proxmox_server
+
+backend pvc02
+  mode http
+  balance roundrobin
+  option http-server-close
+  option forwardfor
+  timeout tunnel 1h
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request add-header X-Forwarded-Proto https if { ssl_fc }
+  cookie SERVER indirect nocache insert
+  server proxmox21 51.154.10.38:8006 ssl verify none check port 8006 inter 5s rise 2 fall 2 cookie proxmox_server
 
 backend pbc01
   mode http

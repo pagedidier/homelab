@@ -5,4 +5,5 @@
       - git
       - logrotate
       - rsyslog
+      - unzip
     state: present

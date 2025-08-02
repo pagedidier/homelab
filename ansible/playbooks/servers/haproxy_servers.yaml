@@ -5,3 +5,9 @@
     - common/package
     - users
     - haproxy/main
+
+- hosts: proxmox21
+  become: yes
+  roles:
+    - common/package
+    - haproxy/nohan
