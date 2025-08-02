@@ -14,6 +14,22 @@ resource "infomaniak_record" "proxmox01" {
   target = module.proxmox01.server.ip
 }
 
+module "proxmox21" {
+  source = "./modules/bare_metal"
+
+  hostname = "proxmox21"
+  ip       = "51.154.10.38"
+  username = "root"
+}
+
+resource "infomaniak_record" "proxmox21" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.proxmox21.server.hostname
+  type = "A"
+  ttl = 300
+  target = module.proxmox21.server.ip
+}
+
 module "proxmox02" {
   source = "./modules/bare_metal"
 
