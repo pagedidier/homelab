@@ -1,7 +1,7 @@
 image: alpine:3.18
 
 stages:
-  - init
+  - validate
   - plan
   - apply  
   - deploy
@@ -22,6 +22,7 @@ variables:
   - mkdir -p ~/.ssh
   - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
   - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
+
 .default_terraform_setup_plateform: &terraform_setup_plateform
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
   - cd terraform/platform
@@ -32,7 +33,7 @@ variables:
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
 
 validate_infra:
-  stage: init
+  stage: validate
   before_script:
     - *terraform_setup_infra
   script:
@@ -72,7 +73,7 @@ apply_infra:
         - terraform/infra/**
 
 validate_platform:
-  stage: init
+  stage: validate
   before_script:
     - *terraform_setup_plateform
   script:
@@ -81,6 +82,7 @@ validate_platform:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
         - terraform/platform/**
+
 plan_platform:
   stage: plan
   needs: [validate_platform]
@@ -96,6 +98,7 @@ plan_platform:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
         - terraform/platform/**
+
 apply_platform:
   stage: apply
   when: manual
