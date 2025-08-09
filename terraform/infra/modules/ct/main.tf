@@ -30,7 +30,7 @@ resource "proxmox_virtual_environment_container" "ct" {
   }
 
   disk {
-    datastore_id = element(data.proxmox_virtual_environment_datastores.datastores.datastore_ids, index(data.proxmox_virtual_environment_datastores.datastores.datastore_ids, var.volume_name))
+    datastore_id = data.proxmox_virtual_environment_datastores.datastores.datastore_ids[index(data.proxmox_virtual_environment_datastores.datastores.datastore_ids, var.volume_name)]
     size         = var.disk_size
   }
 

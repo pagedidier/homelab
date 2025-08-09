@@ -66,8 +66,6 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
   description = local.description
 }
-
-
 output "vm" {
   value = {
     "ip": split("/",proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
