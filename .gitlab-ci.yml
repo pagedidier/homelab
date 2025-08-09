@@ -22,6 +22,14 @@ variables:
   - mkdir -p ~/.ssh
   - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
   - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
+.default_terraform_setup_plateform: &terraform_setup_plateform
+  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
+  - cd terraform/platform
+  - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
+  - terraform init -backend-config=backend.hcl
+  - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
+  - mkdir -p ~/.kube
+  - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
 
 validate_infra:
   stage: init
@@ -66,10 +74,7 @@ apply_infra:
 validate_platform:
   stage: init
   before_script:
-    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
-    - cd terraform/platform
-    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
-    - terraform init -backend-config=backend.hcl
+    - *terraform_setup_plateform
   script:
     - terraform validate
   rules:
@@ -80,13 +85,7 @@ plan_platform:
   stage: plan
   needs: [validate_platform]
   before_script:
-    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
-    - cd terraform/platform
-    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
-    - terraform init -backend-config=backend.hcl
-    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
-    - mkdir -p ~/.kube
-    - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+    - *terraform_setup_plateform
   script:
     - terraform plan -out=tfplan
   artifacts:
@@ -102,19 +101,14 @@ apply_platform:
   when: manual
   needs: [plan_platform]
   before_script:
-    - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
-    - cd terraform/platform
-    - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
-    - terraform init -backend-config=backend.hcl
-    - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
-    - mkdir -p ~/.kube
-    - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+    - *terraform_setup_plateform
   script:
     - terraform apply -auto-approve tfplan
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
         - terraform/platform/**
+
 deploy-chart:
   stage: deploy
   rules:
@@ -134,6 +128,7 @@ deploy-chart:
     - yq '. *= load("cicd-values.yaml")' ./k8s/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml > values.yaml
     - yq -i ".appVersion = \"$VERSION\"" ./charts/$PROJECT/Chart.yaml
     - helm upgrade --install $PROJECT-$ENVIRONMENT ./charts/$PROJECT/ --values=values.yaml -n $PROJECT
+
 deploy-ansible:
   stage: ansible
   before_script:
