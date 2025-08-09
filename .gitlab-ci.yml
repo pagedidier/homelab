@@ -26,7 +26,7 @@ variables:
 validate_infra:
   stage: init
   before_script:
-    <<: *terraform_setup_infra
+    - *terraform_setup_infra
   script:
     - terraform validate
   rules:
@@ -38,7 +38,7 @@ plan_infra:
   stage: plan
   needs: [validate_infra]
   before_script:
-    <<: *terraform_setup_infra
+    - *terraform_setup_infra
   script:
     - terraform plan -out=tfplan
   artifacts:
@@ -55,7 +55,7 @@ apply_infra:
   when: manual
   needs: [plan_infra]
   before_script:
-    <<: *terraform_setup_infra
+    - *terraform_setup_infra
   script:
     - terraform apply -auto-approve tfplan
   rules:
