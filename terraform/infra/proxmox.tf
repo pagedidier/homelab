@@ -10,6 +10,11 @@ data "proxmox_virtual_environment_node" "node13" {
   node_name = "proxmox13"
 }
 
+data "proxmox_virtual_environment_node" "node21" {
+  provider = proxmox.pvc02
+  node_name = "proxmox21"
+}
+
 #data "proxmox_virtual_environment_datastores" "datastores" {
 #  node_name = data.proxmox_virtual_environment_node.node2.node_name
 #}

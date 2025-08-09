@@ -21,13 +21,26 @@ provider "infomaniak" {
 }
 
 provider "proxmox" {
-  endpoint = var.proxmox_endpoint
-  username = var.proxmox_username
-  password = var.proxmox_password
+  alias    = "pvc02"
+  endpoint = var.pvc["pvc02"].proxmox_endpoint
+  username = var.pvc["pvc02"].proxmox_username
+  password = var.pvc["pvc02"].proxmox_password
   insecure = true
   ssh {
     agent = true
-    username = var.proxmox_ssh_user
-    private_key = file(var.proxmox_ssh_key_path)
+    username    = var.pvc["pvc02"].proxmox_ssh_user
+    private_key = file(var.pvc["pvc02"].proxmox_ssh_key_path)
+  }
+}
+
+provider "proxmox" {
+  endpoint = var.pvc["pvc01"].proxmox_endpoint
+  username = var.pvc["pvc01"].proxmox_username
+  password = var.pvc["pvc01"].proxmox_password
+  insecure = true
+  ssh {
+    agent = true
+    username    = var.pvc["pvc01"].proxmox_ssh_user
+    private_key = file(var.pvc["pvc01"].proxmox_ssh_key_path)
   }
 }
