@@ -94,3 +94,19 @@ resource "infomaniak_record" "proxy01" {
   ttl = 300
   target = module.proxy01.server.ip
 }
+
+module "nas01" {
+  source = "./modules/bare_metal"
+  hostname = "nas01"
+  ip       = "192.168.0.29"
+  username = "root"
+  port = 22
+}
+
+resource "infomaniak_record" "nas01" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = module.nas01.server.hostname
+  type = "A"
+  ttl = 300
+  target = module.nas01.server.ip
+}
