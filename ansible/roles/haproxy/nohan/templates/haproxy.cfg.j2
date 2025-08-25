@@ -53,9 +53,13 @@ frontend web
   mode http
   bind 0.0.0.0:80 name web_http_bind
   bind 0.0.0.0:443 name web_https_bind ssl crt /etc/ssl/nohanbudry.com.pem
+  acl host_proxmox21.nohanbudry.com hdr_dom(host) proxmox21.nohanbudry.com
+
   acl letsencrypt-acl path_beg /.well-known/acme-challenge/
   http-request redirect scheme https unless { ssl_fc }
   use_backend letsencrypt if letsencrypt-acl
+  use_backend proxmox21 if host_proxmox21.nohanbudry.com
+
   default_backend nohan-tower
 
 backend nohan-tower
@@ -66,3 +70,15 @@ backend nohan-tower
 
 backend letsencrypt
   server local_certbot_server 127.0.0.1:8899 check
+
+backend proxmox21
+  mode http
+  balance roundrobin
+  option http-server-close
+  option forwardfor
+  timeout tunnel 1h
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request add-header X-Forwarded-Proto https if { ssl_fc }
+  cookie SERVER indirect nocache insert
+  server proxmox21 192.168.1.47:8006 ssl verify none check port 8006 inter 5s rise 2 fall 2 cookie proxmox_server
+

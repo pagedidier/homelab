@@ -60,10 +60,13 @@ frontend web
   bind 0.0.0.0:80 name web_http_bind
   bind 0.0.0.0:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
   acl host_proxmox.twop.ch hdr_dom(host) proxmox.twop.ch
+  acl host_registry.twop.ch hdr_dom(host) registry.twop.ch
   acl host_pvc01.twop.ch hdr_dom(host) pvc01.twop.ch
   acl host_pvc02.twop.ch hdr_dom(host) pvc02.twop.ch
   acl host_pbc01.twop.ch hdr_dom(host) pbc01.twop.ch
   acl host_vault.twop.ch hdr_dom(host) vault.twop.ch
+  acl host_plex.twop.ch hdr_dom(host) plex.twop.ch
+  acl host_uptimekuma.twop.ch hdr_dom(host) uptimekuma.twop.ch
   acl host_k3s.prod.twop.ch hdr_dom(host) k3s.prod.twop.ch
   acl host_nxtcld.twop.ch hdr(host) nxtcld.twop.ch
   acl host_audio.twop.ch hdr(host) audio.twop.ch
@@ -75,8 +78,11 @@ frontend web
   use_backend pvc02 if host_pvc02.twop.ch
   use_backend pbc01 if host_pbc01.twop.ch
   use_backend vault if host_vault.twop.ch
+  use_backend plex if host_plex.twop.ch
+  use_backend uptimekuma if host_uptimekuma.twop.ch
   use_backend srv3 if host_audio.twop.ch
   use_backend srv3 if host_nxtcld.twop.ch
+  use_backend srv3_3001 if host_registry.twop.ch
   use_backend ddpnas1 if host_transmission.twop.ch
 
   use_backend k3s_prod_ingress_controller if host_k3s.prod.twop.ch
@@ -165,10 +171,31 @@ backend srv3
   cookie SERVER indirect nocache insert
   server srv3 192.168.0.30:81 cookie srv3 check
 
+backend srv3_3001
+  mode http
+  balance roundrobin
+  option http-server-close
+  option forwardfor
+  timeout tunnel 1h
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request add-header X-Forwarded-Proto https if { ssl_fc }
+  cookie SERVER indirect nocache insert
+  server srv3 192.168.0.30:3001 cookie srv3 check
+
 backend vault
     server swarm-01.prod 192.168.0.111:8200 check
     server swarm-02.prod 192.168.0.112:8200 check
     server swarm-03.prod 192.168.0.113:8200 check
+
+backend plex
+    server swarm-01.prod 192.168.0.111:32400 check
+    server swarm-02.prod 192.168.0.112:32400 check
+    server swarm-03.prod 192.168.0.113:32400 check
+
+backend uptimekuma
+    server swarm-01.prod 192.168.0.111:3001 check
+    server swarm-02.prod 192.168.0.112:3001 check
+    server swarm-03.prod 192.168.0.113:3001 check
 
 # Default SSL material locations
 # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
