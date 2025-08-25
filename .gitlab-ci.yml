@@ -151,6 +151,7 @@ deploy-ansible:
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
 
 pages:
+  image: python:3.11
   stage: deploy
   script:
     - pip install mkdocs mkdocs-material
