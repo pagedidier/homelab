@@ -1,0 +1,12 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1.23.16
+    ports:
+      - "3001:3001"
+    volumes:
+      - /mnt/cephfs/uptime-kuma/:/app/data
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    restart: unless-stopped
