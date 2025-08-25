@@ -1,4 +1,33 @@
 ---
+- name: Install HAProxy package
+  package:
+    name: haproxy
+    state: present
+
+- name: Allow HTTP port (80)
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Allow HTTPS port (443)
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+
+- name: Allow HAProxy stats port (8404)
+  ufw:
+    rule: allow
+    port: '8404'
+    proto: tcp
+
+- name: Allow HAProxy metrics port (8405)
+  ufw:
+    rule: allow
+    port: '8405'
+    proto: tcp
+
 - name: Upload HAProxy configuration file
   template:
     src: haproxy.cfg.j2
@@ -11,3 +40,4 @@
   service:
     name: haproxy
     state: reloaded
+
