@@ -30,6 +30,11 @@ provider "proxmox" {
     agent = true
     username    = var.pvc["pvc02"].proxmox_ssh_user
     private_key = file(var.pvc["pvc02"].proxmox_ssh_key_path)
+    node {
+      name    = "proxmox21"
+      address = "proxmox21.twop.ch"
+      port = 5789
+    }
   }
 }
 
