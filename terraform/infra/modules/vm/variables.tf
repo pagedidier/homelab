@@ -39,3 +39,7 @@ variable "formated_prometheus_extra_labels" {
   type = map(string)
   default = {}
 }
+
+variable "image_storage_name" {
+  default = "isos-templates"
+}
