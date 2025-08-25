@@ -1,0 +1,5 @@
+site_name: Twop's Homelab
+theme:
+  name: mkdocs
+nav:
+  - Home: index.md

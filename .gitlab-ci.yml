@@ -149,3 +149,14 @@ deploy-ansible:
     - chmod o-w .
   script:
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
+
+pages:
+  stage: deploy
+  script:
+    - pip install mkdocs mkdocs-material
+    - mkdocs build --site-dir public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
