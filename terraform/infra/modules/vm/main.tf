@@ -51,7 +51,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = var.volume_name
-    file_id      = "isos-templates:iso/noble-server-cloudimg-amd64.img"
+    file_id      = "${var.image_storage_name}:iso/noble-server-cloudimg-amd64.img"
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
