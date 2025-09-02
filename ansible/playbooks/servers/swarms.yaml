@@ -1,0 +1,8 @@
+---
+- hosts: swarm
+  become: yes
+  roles:
+    - common/package
+    - users
+    - geerlingguy.docker
+    - docker_post_setup
