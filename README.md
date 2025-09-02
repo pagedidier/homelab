@@ -1,34 +1,54 @@
 # Homelab
 
+This repository contains configuration for my personal homelab environment. 
+It includes various orchestration tools, containerization platforms, and infrastructure automation to
+manage a distributed system running multiple services.
 
-## Kubernetes
-### Setup
-#### Dashboard
-https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+This project serves as both a practical implementation and a learning platform for modern DevOps practices and
+infrastructure management.
 
-#### Admin Account
+The infrastructure is designed with a "configuration as code" mindset, emphasizing declarative specifications over
+imperative commands. 
+This approach ensures reproducibility, version control capabilities, and clear documentation
+of the entire system state, making it easier to maintain, modify, and scale the infrastructure.
 
-https://ubuntu.com/kubernetes/install
+# Stack
 
-```bash
-sudo k8s kubectl create sa kube-admin
-sudo k8s kubectl create clusterrolebinding kube-admin   --clusterrole=cluster-admin   --serviceaccount=default:kube-admin
-```
+| Logo                                                             | Name                                                                  | Description                                                                                                                                                                     |
+|------------------------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![](https://avatars.githubusercontent.com/u/2678585)             | [Proxmox virtual environment](https://pve.proxmox.com/wiki/Main_Page) | Virtualization platform that combines virtual machines, containers, software-defined storage, and networking into a single, easy-to-manage solution.                            |
+| ![](https://avatars.githubusercontent.com/u/2678585)             | [Proxmox Backup server](https://pbs.proxmox.com/docs/index.html)      | Enterprise-grade, open-source backup solution designed to efficiently back up and restore virtual machines, containers, and physical hosts.                                     |
+| ![](https://avatars.githubusercontent.com/u/11051457)            | [Terraform](https://developer.hashicorp.com/terraform)                | Infrastructure as Code (IaC) tool that lets you provision, manage, and version infrastructure across cloud and on-prem environments using a declarative configuration language. |
+| ![](https://avatars.githubusercontent.com/u/1507452)             | [Ansible](https://docs.ansible.com/)                                  | Automation tool that uses simple, agentless, declarative playbooks to manage configuration, application deployment, and IT orchestration across systems.                        |
+| ![](https://avatars.githubusercontent.com/u/49319725)            | [K3s](https://docs.k3s.io/)                                           | A lightweight, certified Kubernetes distribution designed for resource-constrained environments, edge computing, and simplified cluster deployment.                             |
+| ![](https://avatars.githubusercontent.com/u/7739233)             | [Docker](https://www.docker.com/)                                     | Platform that enables developers to build, package, and run applications in lightweight, portable containers.                                                                   |
+| ![](https://avatars.githubusercontent.com/u/15859888)            | [Helm](https://helm.sh/)                                              | Package manager for Kubernetes that simplifies the deployment, versioning, and management of applications using reusable charts.                                                |
+| ![](https://avatars.githubusercontent.com/u/3380462)             | [Prometheus](https://prometheus.io/)                                  | Monitoring and alerting system that collects metrics, stores them in a time-series database, and provides powerful querying and visualization capabilities.                     |
+| ![](https://avatars.githubusercontent.com/u/7195757)             | [Grafana](https://grafana.com/)                                       | Analytics and visualization platform that lets you create interactive dashboards from metrics, logs, and other data sources.                                                    |
+| ![](https://avatars.githubusercontent.com/u/38220289)            | [HaProxy](https://www.haproxy.com/)                                   | High-performance load balancer and reverse proxy that distributes network traffic across servers to ensure reliability and scalability.                                         |
+| ![](https://icon.icepanel.io/Technology/svg/HashiCorp-Vault.svg) | [Vault](https://www.hashicorp.com/en/products/vault)                  | Tool for securely managing secrets, encryption keys, and sensitive data, with dynamic access control and audit capabilities.                                                    |
+| ![](https://avatars.githubusercontent.com/u/1086321)             | [Gitlab](https://gitlab.com/)                                         | Web-based DevOps platform that provides Git repository management, CI/CD pipelines, and collaborative software development tools in a single application.                       |
 
-#### Ingress Controller
-##### Traefik
-```bash
-helm install -f traefik/traefik-values.yml traefik traefik/traefik
-k create -f traefik/middlewares/middleware.yml
-```
+## Current feature
+ - Single internet entrypoint
+ - Automatic backup with proxmox backup server 
+ - Automatic VM/LXC configuration with terraform
+ - Automatic DNS configuration with terraform
+ - Dynamic ansible inventory file based on terraform configuration
+ - Automatic gitlab CI/CD variable for kubernetes authentification (rbac)
+ - Automatic kubernetes namespace configuration
+ - Application of configuration (Terraform and Ansible) using gitlab-ci
+ - Remote terraform storage on gitlab
+ - Ansible configuration of k3s
 
-#### Certmanager
-https://cert-manager.io/docs/installation/kubectl/
-```bash
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.0/cert-manager.yaml
+## Todo
+ - Add configuration of self-hosted gitlab runners
+ - Add configuration of grafana
+ - Setup kubernetes configuration to get secrets from vault for application deployment
+ - Setup ansible configuration for docker swarm
 
-kubectl config set-context --current --namespace=cert-manager
-k apply -f cert-manager/issuer-prod.yaml
-#https://letsencrypt.org/docs/staging-environment/
-k apply -f cert-manager/issuer-staging.yaml
-```
+## Future learning objectives
+
+ - How to setup and manage a multi-tenant kubernetes,
+ - How to have a multi-region kubernetes cluster configuration
+ - Use declarative nix configuration to setup vms with NixOS
