@@ -1,0 +1,9 @@
+---
+- name: Add cron to cleanup
+  cron:
+    name: "Docker system cleanup"
+    weekday: "0"
+    hour: "0"
+    minute: "0"
+    job: "docker system prune -f"
+    user: root
