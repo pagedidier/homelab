@@ -2,13 +2,9 @@ terraform {
   required_providers {
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.61.1"
+      version = "0.82.1"
     }
   }
-}
-
-data "proxmox_virtual_environment_datastores" "datastores" {
-  node_name = var.node_name
 }
 
 resource "proxmox_virtual_environment_container" "ct" {
@@ -23,14 +19,14 @@ resource "proxmox_virtual_environment_container" "ct" {
 
     ip_config {
       ipv4 {
-        address = var.ip
-        gateway = var.gateway
+        address = var.use_dhcp ? "dhcp" : var.ip
+        gateway = var.use_dhcp ? null : var.gateway
       }
     }
   }
 
   disk {
-    datastore_id = data.proxmox_virtual_environment_datastores.datastores.datastore_ids[index(data.proxmox_virtual_environment_datastores.datastores.datastore_ids, var.volume_name)]
+    datastore_id = var.volume_name
     size         = var.disk_size
   }
 
@@ -56,11 +52,17 @@ resource "proxmox_virtual_environment_container" "ct" {
   unprivileged = true
 }
 
-# Export the container as an output to be used by the ansible inventory
+data "external" "container_ip" {
+  program = [
+    "ssh", "root@${var.node_ip}", "pct", "exec", proxmox_virtual_environment_container.ct.id, "--", "hostname", "-I", "|", "awk",
+    "'{print \"{\\\"ip\\\":\\\"\"$1\"\\\"}\"}'",
+  ]
+}
+
 output "container" {
   value = {
-    "ip": split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username": "root"
+    "ip": var.use_dhcp ? data.external.container_ip.result.ip : split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
+    "username": "ubuntu"
     "hostname": proxmox_virtual_environment_container.ct.initialization[0].hostname
   }
 }

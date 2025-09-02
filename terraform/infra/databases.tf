@@ -5,7 +5,9 @@ module "database-prod" {
   init_user_password = var.init_user_password
 
   name = "database.prod"
-  node_name = data.proxmox_virtual_environment_node.node12.node_name
+  node_name = module.proxmox12.proxmox_data.node_name
+  node_ip =  module.proxmox12.proxmox.ip
+
 
   cpu_cores = 2
   disk_size = 20
