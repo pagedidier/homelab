@@ -43,3 +43,23 @@ variable "formated_prometheus_extra_labels" {
 variable "image_storage_name" {
   default = "isos-templates"
 }
+
+variable "enable_usb" {
+  type = bool
+  default = false
+}
+variable "usb_host" {
+  default = ""
+}
+
+variable "use_usb3" {
+  default = false
+}
+variable "iso_filename" {
+  default = "noble-server-cloudimg-amd64.img"
+}
+
+variable "cpu_architecture" {
+  type = string
+  default = "x86_64"
+}

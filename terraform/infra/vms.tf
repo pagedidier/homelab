@@ -1,7 +1,8 @@
 module "k3s-node1" {
   source = "./modules/vm"
   name   = "k3s-01.prod"
-  node_name = data.proxmox_virtual_environment_node.node11.node_name
+  node_name = module.proxmox11.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -21,7 +22,8 @@ resource "infomaniak_record" "k3s-node1" {
 module "k3s-node2" {
   source = "./modules/vm"
   name   = "k3s-02.prod"
-  node_name = data.proxmox_virtual_environment_node.node12.node_name
+  node_name = module.proxmox12.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -41,7 +43,8 @@ resource "infomaniak_record" "k3s-node2" {
 module "k3s-node3" {
   source = "./modules/vm"
   name   = "k3s-03.prod"
-  node_name = data.proxmox_virtual_environment_node.node13.node_name
+  node_name = module.proxmox13.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
