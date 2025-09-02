@@ -9,18 +9,18 @@ output "inventory" {
       module.swarm-node1.vm,
       module.swarm-node2.vm,
       module.swarm-node3.vm
-    ]
-    "prometheus" : [
-      module.prometheus-prod.container
+    ],
+    "swarm02": [
+      module.swarm-node11.vm
     ]
     "databases" : [
       module.database-prod.container
     ]
     "proxmox": [
-      module.proxmox01.server,
-      module.proxmox02.server,
-      module.proxmox03.server,
-      module.proxmox21.server,
+      module.proxmox11.proxmox,
+      module.proxmox12.proxmox,
+      module.proxmox13.proxmox,
+      module.proxmox21.proxmox,
     ]
     "proxmox_backup_server": [
       module.pbs01.server
