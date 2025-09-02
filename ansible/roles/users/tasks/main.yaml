@@ -3,6 +3,10 @@
   ansible.builtin.package:
     name: zsh
     state: present
+- name: Ensure unzip is installed
+  ansible.builtin.package:
+    name: unzip
+    state: present
 
 - name: Ensure stow is installed
   ansible.builtin.package:
