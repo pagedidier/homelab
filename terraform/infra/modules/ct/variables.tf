@@ -7,6 +7,7 @@ variable "init_ssh_keys" {
 variable "node_name" {
 
 }
+variable "node_ip" {}
 variable "name" {}
 
 
@@ -23,8 +24,24 @@ variable "operating_system_type" {}
 
 variable "network_interface_name" {}
 variable "network_interface_bridge" {}
-variable "ip" {}
-variable "gateway" {}
+
+
+
+variable "use_dhcp" {
+  type = bool
+  default = false
+}
+variable "ip" {
+  type      = string
+  default   = null
+  nullable  = true
+
+}
+variable "gateway" {
+  type      = string
+  default   = null
+  nullable  = true
+}
 variable "volume_name" {
   default = "local-lvm"
 }
