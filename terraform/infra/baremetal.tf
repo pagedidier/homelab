@@ -1,66 +1,69 @@
-module "proxmox01" {
-  source = "./modules/bare_metal"
+module "proxmox11" {
+  source = "./modules/bare_metal_proxmox"
 
-  hostname = "proxmox01"
+  hostname = "proxmox11"
   ip       = "192.168.0.211"
   username = "root"
 }
 
-resource "infomaniak_record" "proxmox01" {
+resource "infomaniak_record" "proxmox11" {
   zone_name = data.infomaniak_zone.twop.fqdn
-  source = module.proxmox01.server.hostname
+  source = module.proxmox11.proxmox.hostname
   type = "A"
   ttl = 300
-  target = module.proxmox01.server.ip
+  target = module.proxmox11.proxmox.ip
 }
 
 module "proxmox21" {
-  source = "./modules/bare_metal"
+  source = "./modules/bare_metal_proxmox"
 
   hostname = "proxmox21"
   ip       = "51.154.10.38"
   username = "root"
   port = 5789
+  providers = {
+    proxmox = proxmox.pvc02,
+  }
 }
 
 resource "infomaniak_record" "proxmox21" {
   zone_name = data.infomaniak_zone.twop.fqdn
-  source = module.proxmox21.server.hostname
+  source = module.proxmox21.proxmox.hostname
   type = "A"
   ttl = 300
-  target = module.proxmox21.server.ip
+  target = module.proxmox21.proxmox.ip
 }
 
-module "proxmox02" {
-  source = "./modules/bare_metal"
+module "proxmox12" {
+  source = "./modules/bare_metal_proxmox"
 
-  hostname = "proxmox01"
+  hostname = "proxmox12"
   ip       = "192.168.0.212"
   username = "root"
 }
 
-resource "infomaniak_record" "proxmox02" {
+resource "infomaniak_record" "proxmox12" {
   zone_name = data.infomaniak_zone.twop.fqdn
-  source = module.proxmox02.server.hostname
+  source = module.proxmox12.proxmox.hostname
   type = "A"
   ttl = 300
-  target = module.proxmox02.server.ip
+  target = module.proxmox12.proxmox.ip
 }
 
-module "proxmox03" {
-  source = "./modules/bare_metal"
+module "proxmox13" {
+  source = "./modules/bare_metal_proxmox"
 
-  hostname = "proxmox01"
+  hostname = "proxmox13"
   ip       = "192.168.0.213"
   username = "root"
 }
 
-resource "infomaniak_record" "proxmox03" {
+resource "infomaniak_record" "proxmox13" {
   zone_name = data.infomaniak_zone.twop.fqdn
-  source = module.proxmox03.server.hostname
+  source = module.proxmox13.proxmox.hostname
   type = "A"
   ttl = 300
-  target = module.proxmox03.server.ip
+  target = module.proxmox13.proxmox.ip
 }
 
 module "pbs01" {
@@ -109,4 +112,20 @@ resource "infomaniak_record" "nas01" {
   type = "A"
   ttl = 300
   target = module.nas01.server.ip
+}
+
+resource "infomaniak_record" "pvc01" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = "pvc01"
+  type = "A"
+  ttl = 300
+  target = infomaniak_record.proxy01_private.target
+}
+
+resource "infomaniak_record" "pbc01" {
+  zone_name = data.infomaniak_zone.twop.fqdn
+  source = "pbc01"
+  type = "A"
+  ttl = 300
+  target = infomaniak_record.proxy01_private.target
 }
