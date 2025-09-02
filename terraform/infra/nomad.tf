@@ -1,7 +1,7 @@
 module "nomad-server01" {
   source = "./modules/vm"
   name   = "nomad-server01.prod"
-  node_name = data.proxmox_virtual_environment_node.node12.node_name
+  node_name = module.proxmox12.proxmox_data.node_name
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -22,7 +22,7 @@ resource "infomaniak_record" "nomad-server01" {
 module "nomad-client01" {
   source = "./modules/vm"
   name   = "nomad-client01.prod"
-  node_name = data.proxmox_virtual_environment_node.node12.node_name
+  node_name = module.proxmox12.proxmox_data.node_name
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username

@@ -1,7 +1,8 @@
 module "swarm-node1" {
   source = "./modules/vm"
   name   = "swarm-01.prod"
-  node_name = data.proxmox_virtual_environment_node.node12.node_name
+  node_name = module.proxmox12.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -9,6 +10,7 @@ module "swarm-node1" {
   ip="192.168.0.111/16"
   gateway = "192.168.0.254"
   agent_enable = true
+  volume_name = "vm-disks"
 }
 
 resource "infomaniak_record" "swarm-node1" {
@@ -22,7 +24,8 @@ resource "infomaniak_record" "swarm-node1" {
 module "swarm-node2" {
   source = "./modules/vm"
   name   = "swarm-02.prod"
-  node_name = data.proxmox_virtual_environment_node.node13.node_name
+  node_name = module.proxmox13.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -30,7 +33,7 @@ module "swarm-node2" {
   ip="192.168.0.112/16"
   gateway = "192.168.0.254"
   agent_enable = true
-
+  volume_name = "vm-disks"
 }
 
 resource "infomaniak_record" "swarm-node2" {
@@ -44,7 +47,8 @@ resource "infomaniak_record" "swarm-node2" {
 module "swarm-node3" {
   source = "./modules/vm"
   name   = "swarm-03.prod"
-  node_name = data.proxmox_virtual_environment_node.node11.node_name
+  node_name = module.proxmox11.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -52,6 +56,8 @@ module "swarm-node3" {
   ip="192.168.0.113/16"
   gateway = "192.168.0.254"
   agent_enable = true
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "swarm-node3" {
@@ -65,7 +71,8 @@ resource "infomaniak_record" "swarm-node3" {
 module "swarm-node11" {
   source = "./modules/vm"
   name   = "swarm-11.prod"
-  node_name = data.proxmox_virtual_environment_node.node21.node_name
+  node_name = module.proxmox21.proxmox_data.node_name
+
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
@@ -74,6 +81,8 @@ module "swarm-node11" {
   gateway = "192.168.1.1"
   agent_enable = true
   image_storage_name = "local"
+  enable_usb = true
+  usb_host = "2-3"
   providers = {
     proxmox = proxmox.pvc02,
   }

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.61.1"
+      version = "0.82.1"
     }
   }
 }
@@ -39,6 +39,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   cpu {
     cores = var.nb_cpus
     type = "host"
+    #architecture = var.cpu_architecture
   }
 
   memory {
@@ -51,7 +52,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = var.volume_name
-    file_id      = "${var.image_storage_name}:iso/noble-server-cloudimg-amd64.img"
+    file_id      = "${var.image_storage_name}:iso/${var.iso_filename}"
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -64,6 +65,15 @@ resource "proxmox_virtual_environment_vm" "vm" {
   agent {
     enabled = var.agent_enable
   }
+
+  dynamic "usb" {
+    for_each = var.enable_usb ? [1] : []
+    content {
+      host = var.usb_host
+      usb3 = var.use_usb3
+    }
+  }
+
   description = local.description
 }
 output "vm" {
