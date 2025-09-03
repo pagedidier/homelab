@@ -23,3 +23,4 @@ ansible -i ansible/inventory.yml all -m ping
 
 # Run a playbook against a specific group
 ansible-playbook -i ansible/inventory.yml playbooks/your-playbook.yml -l k3s_cluster
+```

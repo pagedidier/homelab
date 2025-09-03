@@ -12,23 +12,35 @@ imperative commands.
 This approach ensures reproducibility, version control capabilities, and clear documentation
 of the entire system state, making it easier to maintain, modify, and scale the infrastructure.
 
+# Layered architecture
+
+The focus in this repository is to split the infrastructure in layers where each layer have is own set of tools to configure it.
+
+| Layer       | Tool                        | location in repository                       |
+| ----------- | --------------------------- | -------------------------------------------- |
+| Infra       | terraform                   | [./terraform/infra](./terraform/infra)       |
+| runtime     | Ansible                     | [./ansible](./ansible)                       |
+| platform    | terraform                   | [./terraform/platform](./terraform/platform) |
+| application | Helm, docker compose, nomad | [./charts](./charts) [./k8ss](./k8s) [./swarm](./swarm) [./nomad](./nomad)                       |
+
+
 # Stack
 
 | Logo                                                             | Name                                                                  | Description                                                                                                                                                                     |
 |------------------------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ![](https://avatars.githubusercontent.com/u/2678585)             | [Proxmox virtual environment](https://pve.proxmox.com/wiki/Main_Page) | Virtualization platform that combines virtual machines, containers, software-defined storage, and networking into a single, easy-to-manage solution.                            |
-| ![](https://avatars.githubusercontent.com/u/2678585)             | [Proxmox Backup server](https://pbs.proxmox.com/docs/index.html)      | Enterprise-grade, open-source backup solution designed to efficiently back up and restore virtual machines, containers, and physical hosts.                                     |
-| ![](https://avatars.githubusercontent.com/u/11051457)            | [Terraform](https://developer.hashicorp.com/terraform)                | Infrastructure as Code (IaC) tool that lets you provision, manage, and version infrastructure across cloud and on-prem environments using a declarative configuration language. |
-| ![](https://avatars.githubusercontent.com/u/1507452)             | [Ansible](https://docs.ansible.com/)                                  | Automation tool that uses simple, agentless, declarative playbooks to manage configuration, application deployment, and IT orchestration across systems.                        |
-| ![](https://avatars.githubusercontent.com/u/49319725)            | [K3s](https://docs.k3s.io/)                                           | A lightweight, certified Kubernetes distribution designed for resource-constrained environments, edge computing, and simplified cluster deployment.                             |
-| ![](https://avatars.githubusercontent.com/u/7739233)             | [Docker](https://www.docker.com/)                                     | Platform that enables developers to build, package, and run applications in lightweight, portable containers.                                                                   |
-| ![](https://avatars.githubusercontent.com/u/15859888)            | [Helm](https://helm.sh/)                                              | Package manager for Kubernetes that simplifies the deployment, versioning, and management of applications using reusable charts.                                                |
-| ![](https://avatars.githubusercontent.com/u/3380462)             | [Prometheus](https://prometheus.io/)                                  | Monitoring and alerting system that collects metrics, stores them in a time-series database, and provides powerful querying and visualization capabilities.                     |
-| ![](https://avatars.githubusercontent.com/u/7195757)             | [Grafana](https://grafana.com/)                                       | Analytics and visualization platform that lets you create interactive dashboards from metrics, logs, and other data sources.                                                    |
-| ![](https://avatars.githubusercontent.com/u/38220289)            | [HaProxy](https://www.haproxy.com/)                                   | High-performance load balancer and reverse proxy that distributes network traffic across servers to ensure reliability and scalability.                                         |
+| ![](https://avatars.githubusercontent.com/u/2678585?s=50)             | [Proxmox virtual environment](https://pve.proxmox.com/wiki/Main_Page) | Virtualization platform that combines virtual machines, containers, software-defined storage, and networking into a single, easy-to-manage solution.                            |
+| ![](https://avatars.githubusercontent.com/u/2678585?s=50)             | [Proxmox Backup server](https://pbs.proxmox.com/docs/index.html)      | Enterprise-grade, open-source backup solution designed to efficiently back up and restore virtual machines, containers, and physical hosts.                                     |
+| ![](https://avatars.githubusercontent.com/u/11051457?s=50)            | [Terraform](https://developer.hashicorp.com/terraform)                | Infrastructure as Code (IaC) tool that lets you provision, manage, and version infrastructure across cloud and on-prem environments using a declarative configuration language. |
+| ![](https://avatars.githubusercontent.com/u/1507452?s=50)             | [Ansible](https://docs.ansible.com/)                                  | Automation tool that uses simple, agentless, declarative playbooks to manage configuration, application deployment, and IT orchestration across systems.                        |
+| ![](https://avatars.githubusercontent.com/u/49319725?s=50)            | [K3s](https://docs.k3s.io/)                                           | A lightweight, certified Kubernetes distribution designed for resource-constrained environments, edge computing, and simplified cluster deployment.                             |
+| ![](https://avatars.githubusercontent.com/u/7739233?s=50)             | [Docker](https://www.docker.com/)                                     | Platform that enables developers to build, package, and run applications in lightweight, portable containers.                                                                   |
+| ![](https://avatars.githubusercontent.com/u/15859888?s=50)            | [Helm](https://helm.sh/)                                              | Package manager for Kubernetes that simplifies the deployment, versioning, and management of applications using reusable charts.                                                |
+| ![](https://avatars.githubusercontent.com/u/3380462?s=50)             | [Prometheus](https://prometheus.io/)                                  | Monitoring and alerting system that collects metrics, stores them in a time-series database, and provides powerful querying and visualization capabilities.                     |
+| ![](https://avatars.githubusercontent.com/u/7195757?s=50)             | [Grafana](https://grafana.com/)                                       | Analytics and visualization platform that lets you create interactive dashboards from metrics, logs, and other data sources.                                                    |
+| ![](https://avatars.githubusercontent.com/u/38220289?s=50)            | [HaProxy](https://www.haproxy.com/)                                   | High-performance load balancer and reverse proxy that distributes network traffic across servers to ensure reliability and scalability.                                         |
 | ![](https://icon.icepanel.io/Technology/svg/HashiCorp-Vault.svg) | [Vault](https://www.hashicorp.com/en/products/vault)                  | Tool for securely managing secrets, encryption keys, and sensitive data, with dynamic access control and audit capabilities.                                                    |
-| ![](https://avatars.githubusercontent.com/u/1086321)             | [Gitlab](https://gitlab.com/)                                         | Web-based DevOps platform that provides Git repository management, CI/CD pipelines, and collaborative software development tools in a single application.                       |
-
+| ![](https://avatars.githubusercontent.com/u/1086321?s=50)             | [Gitlab](https://gitlab.com/)                                         | Web-based DevOps platform that provides Git repository management, CI/CD pipelines, and collaborative software development tools in a single application.                       |
+| ![](https://avatars.githubusercontent.com/u/13991055?s=50)             | [WireGuard](https://www.wireguard.com/)                                         | WireGuard is a lightweight, modern VPN protocol that uses state-of-the-art cryptography to securely connect devices over the internet.                       |
 ## Current feature
  - Single internet entrypoint
  - Automatic backup with proxmox backup server 
