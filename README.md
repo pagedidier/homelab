@@ -1,34 +1,66 @@
 # Homelab
 
+This repository contains configuration for my personal homelab environment. 
+It includes various orchestration tools, containerization platforms, and infrastructure automation to
+manage a distributed system running multiple services.
 
-## Kubernetes
-### Setup
-#### Dashboard
-https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+This project serves as both a practical implementation and a learning platform for modern DevOps practices and
+infrastructure management.
 
-#### Admin Account
+The infrastructure is designed with a "configuration as code" mindset, emphasizing declarative specifications over
+imperative commands. 
+This approach ensures reproducibility, version control capabilities, and clear documentation
+of the entire system state, making it easier to maintain, modify, and scale the infrastructure.
 
-https://ubuntu.com/kubernetes/install
+# Layered architecture
 
-```bash
-sudo k8s kubectl create sa kube-admin
-sudo k8s kubectl create clusterrolebinding kube-admin   --clusterrole=cluster-admin   --serviceaccount=default:kube-admin
-```
+The focus in this repository is to split the infrastructure in layers where each layer have is own set of tools to configure it.
 
-#### Ingress Controller
-##### Traefik
-```bash
-helm install -f traefik/traefik-values.yml traefik traefik/traefik
-k create -f traefik/middlewares/middleware.yml
-```
+| Layer       | Tool                        | location in repository                       |
+| ----------- | --------------------------- | -------------------------------------------- |
+| Infra       | terraform                   | [./terraform/infra](./terraform/infra)       |
+| runtime     | Ansible                     | [./ansible](./ansible)                       |
+| platform    | terraform                   | [./terraform/platform](./terraform/platform) |
+| application | Helm, docker compose, nomad | [./charts](./charts) [./k8ss](./k8s) [./swarm](./swarm) [./nomad](./nomad)                       |
 
-#### Certmanager
-https://cert-manager.io/docs/installation/kubectl/
-```bash
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.0/cert-manager.yaml
 
-kubectl config set-context --current --namespace=cert-manager
-k apply -f cert-manager/issuer-prod.yaml
-#https://letsencrypt.org/docs/staging-environment/
-k apply -f cert-manager/issuer-staging.yaml
-```
+# Stack
+
+| Logo                                                             | Name                                                                  | Description                                                                                                                                                                     |
+|------------------------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![](https://avatars.githubusercontent.com/u/2678585?s=50)             | [Proxmox virtual environment](https://pve.proxmox.com/wiki/Main_Page) | Virtualization platform that combines virtual machines, containers, software-defined storage, and networking into a single, easy-to-manage solution.                            |
+| ![](https://avatars.githubusercontent.com/u/2678585?s=50)             | [Proxmox Backup server](https://pbs.proxmox.com/docs/index.html)      | Enterprise-grade, open-source backup solution designed to efficiently back up and restore virtual machines, containers, and physical hosts.                                     |
+| ![](https://avatars.githubusercontent.com/u/11051457?s=50)            | [Terraform](https://developer.hashicorp.com/terraform)                | Infrastructure as Code (IaC) tool that lets you provision, manage, and version infrastructure across cloud and on-prem environments using a declarative configuration language. |
+| ![](https://avatars.githubusercontent.com/u/1507452?s=50)             | [Ansible](https://docs.ansible.com/)                                  | Automation tool that uses simple, agentless, declarative playbooks to manage configuration, application deployment, and IT orchestration across systems.                        |
+| ![](https://avatars.githubusercontent.com/u/49319725?s=50)            | [K3s](https://docs.k3s.io/)                                           | A lightweight, certified Kubernetes distribution designed for resource-constrained environments, edge computing, and simplified cluster deployment.                             |
+| ![](https://avatars.githubusercontent.com/u/7739233?s=50)             | [Docker](https://www.docker.com/)                                     | Platform that enables developers to build, package, and run applications in lightweight, portable containers.                                                                   |
+| ![](https://avatars.githubusercontent.com/u/15859888?s=50)            | [Helm](https://helm.sh/)                                              | Package manager for Kubernetes that simplifies the deployment, versioning, and management of applications using reusable charts.                                                |
+| ![](https://avatars.githubusercontent.com/u/3380462?s=50)             | [Prometheus](https://prometheus.io/)                                  | Monitoring and alerting system that collects metrics, stores them in a time-series database, and provides powerful querying and visualization capabilities.                     |
+| ![](https://avatars.githubusercontent.com/u/7195757?s=50)             | [Grafana](https://grafana.com/)                                       | Analytics and visualization platform that lets you create interactive dashboards from metrics, logs, and other data sources.                                                    |
+| ![](https://avatars.githubusercontent.com/u/38220289?s=50)            | [HaProxy](https://www.haproxy.com/)                                   | High-performance load balancer and reverse proxy that distributes network traffic across servers to ensure reliability and scalability.                                         |
+| ![](https://icon.icepanel.io/Technology/svg/HashiCorp-Vault.svg) | [Vault](https://www.hashicorp.com/en/products/vault)                  | Tool for securely managing secrets, encryption keys, and sensitive data, with dynamic access control and audit capabilities.                                                    |
+| ![](https://avatars.githubusercontent.com/u/1086321?s=50)             | [Gitlab](https://gitlab.com/)                                         | Web-based DevOps platform that provides Git repository management, CI/CD pipelines, and collaborative software development tools in a single application.                       |
+| ![](https://avatars.githubusercontent.com/u/13991055?s=50)             | [WireGuard](https://www.wireguard.com/)                                         | WireGuard is a lightweight, modern VPN protocol that uses state-of-the-art cryptography to securely connect devices over the internet.                       |
+## Current feature
+ - Single internet entrypoint
+ - Automatic backup with proxmox backup server 
+ - Automatic VM/LXC configuration with terraform
+ - Automatic DNS configuration with terraform
+ - Dynamic ansible inventory file based on terraform configuration
+ - Automatic gitlab CI/CD variable for kubernetes authentification (rbac)
+ - Automatic kubernetes namespace configuration
+ - Application of configuration (Terraform and Ansible) using gitlab-ci
+ - Remote terraform storage on gitlab
+ - Ansible configuration of k3s
+
+## Todo
+ - Add configuration of self-hosted gitlab runners
+ - Add configuration of grafana
+ - Setup kubernetes configuration to get secrets from vault for application deployment
+ - Setup ansible configuration for docker swarm
+
+## Future learning objectives
+
+ - How to setup and manage a multi-tenant kubernetes,
+ - How to have a multi-region kubernetes cluster configuration
+ - Use declarative nix configuration to setup vms with NixOS
