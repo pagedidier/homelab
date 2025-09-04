@@ -12,12 +12,12 @@ terraform -chdir=../terraform/infra output  -json inventory > $TF_OUTPUT_FILE
 TMP_YAML=$(mktemp)
 
 jq -r '
-  to_entries | map(
-    {
+  to_entries
+  | map({
       key: .key,
       value: {
-        "hosts": (
-          .value | map({
+        hosts: (
+          (.value | flatten) | map({
             (.hostname): (
               {
                 ansible_host: .ip,
@@ -28,8 +28,8 @@ jq -r '
           }) | add
         )
       }
-    }
-  ) | { all: { children: (map({ (.key): .value }) | add) } }
+    })
+  | { all: { children: (map({ (.key): .value }) | add) } }
 ' "$TF_OUTPUT_FILE" | yq -P > "$TMP_YAML"
 
 # Merge with original inventory
