@@ -13,13 +13,17 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "3.6.2"
     }
+    mysql = {
+      source = "petoju/mysql"
+      version = "~> 3.0.72"
+    }
   }
 }
 
-provider "haproxy" {
-  url         = "http://192.168.0.20:5555"
-  username    = "admin"
-  password    = "adminpwd"
+provider "mysql" {
+  endpoint = var.database["database.prod"].endpoint
+  username = var.database["database.prod"].username
+  password = var.database["database.prod"].password
 }
 
 provider "gitlab" {
@@ -34,7 +38,3 @@ provider "docker" {
 provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
-# provider "vault" {
-#    address = "https://vault.twop.ch"
-#   token = var.vault_token
-# }

@@ -8,3 +8,11 @@ variable "registry_server" {
 }
 variable "domain_name" {}
 variable "vault_token" {}
+
+variable "database" {
+  type = map(object({
+    endpoint     = string
+    username     = string
+    password     = string
+  }))
+}
