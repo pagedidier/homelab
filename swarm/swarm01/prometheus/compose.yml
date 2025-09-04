@@ -17,7 +17,17 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-
+  blackbox:
+    image: prom/blackbox-exporter:v0.27.0
+    command:
+      - "--config.file=/etc/blackbox/blackbox.yml"
+    ports:
+      - "9115:9115"
+    configs:
+      - source: blackbox_config
+        target: /etc/blackbox/blackbox.yml
 configs:
   prometheus_config:
     file: ./prometheus.yml
+  blackbox_config:
+    file: ./blackbox.yml
