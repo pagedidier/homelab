@@ -1,0 +1,18 @@
+services:
+  vault:
+    image: hashicorp/vault:1.20
+    ports:
+      - "8300:8300"
+    configs:
+      - source: vault_config
+        target: /vault/config/vault.hcl
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.hcl
+    deploy:
+      mode: replicated
+      replicas: 1
+
+configs:
+  vault_config:
+    file: ./config.hcl

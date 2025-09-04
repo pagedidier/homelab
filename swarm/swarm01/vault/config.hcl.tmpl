@@ -1,0 +1,13 @@
+listener "tcp" {
+  address     = "0.0.0.0:8300"
+  tls_disable = 1
+}
+
+storage "mysql" {
+  address  = "${endpoint}"
+  username = "${username}"
+  password = "${password}"
+  database = "${database}"
+}
+
+ui = true
