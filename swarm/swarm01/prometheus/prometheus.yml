@@ -23,3 +23,23 @@ scrape_configs:
           - "proxmox12.twop.ch:9100"
           - "proxmox13.twop.ch:9100"
           - "proxmox21.twop.ch:9100"
+  - job_name: 'blackbox_http_srv'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    dns_sd_configs:
+      - names:
+          - "_myservice._tcp.twop.ch"
+        type: SRV
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
+      - source_labels: [__param_target]
+        regex: (.*)
+        replacement: https://$1
+        target_label: __param_target
