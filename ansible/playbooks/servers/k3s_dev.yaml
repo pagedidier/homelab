@@ -1,5 +1,5 @@
 ---
-- hosts: k3s_tmp
+- hosts: k3s_dev
   become: yes
   roles:
     - k3s
