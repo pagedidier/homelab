@@ -5,6 +5,11 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.plex.rule=Host(`plex.twop.ch`)"
+        - "traefik.http.routers.plex.entrypoints=web"
+        - "traefik.http.services.plex.loadbalancer.server.port=32400"
     ports:
       - "32400:32400"
       - "1900:1900/udp"

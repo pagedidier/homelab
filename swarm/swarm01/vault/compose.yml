@@ -1,8 +1,6 @@
 services:
   vault:
     image: hashicorp/vault:1.20
-    ports:
-      - "8300:8300"
     configs:
       - source: vault_config
         target: /vault/config/vault.hcl
@@ -12,7 +10,17 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.vault.rule=Host(`vault.twop.ch`)"
+        - "traefik.http.routers.vault.entrypoints=web"
+        - "traefik.http.services.vault.loadbalancer.server.port=8300"
+    networks:
+      - traefik_proxy
 configs:
   vault_config:
     file: ./config.hcl
+
+networks:
+  traefik_proxy:
+    external: true
