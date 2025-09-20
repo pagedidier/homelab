@@ -6,8 +6,21 @@
     owner: root
     group: root
     mode: '0644'
-
-- name: Restart HAProxy service
+- name: Upload HAProxy private map file
+  template:
+    src: private-hostnames.map
+    dest: /etc/haproxy/private-hostnames.map
+    owner: root
+    group: root
+    mode: '0644'
+- name: Upload HAProxy public map file
+  template:
+    src: public-hostnames.map
+    dest: /etc/haproxy/public-hostnames.map
+    owner: root
+    group: root
+    mode: '0644'
+- name: Reload HAProxy service
   service:
     name: haproxy
     state: reloaded
