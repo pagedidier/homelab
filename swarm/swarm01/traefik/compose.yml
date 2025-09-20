@@ -1,0 +1,31 @@
+services:
+  traefik:
+    image: traefik:v3.5.1
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.swarm.watch=true"
+#      - "--providers.kubernetesingress=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=TRACE"
+      - "--providers.swarm.network=traefik_proxy"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/cephfs/traefik/certs:/certs:ro
+
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    driver: overlay
+    attachable: true
