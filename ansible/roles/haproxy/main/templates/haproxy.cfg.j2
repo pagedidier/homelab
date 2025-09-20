@@ -11,7 +11,7 @@ global
   ca-base /etc/ssl/certs
   crt-base /etc/ssl/private
   master-worker
-  stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+  stats socket ipv4@*:9999  level admin  expose-fd listeners
   stats timeout 30s
   ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
   ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
@@ -61,22 +61,7 @@ frontend web_public
   bind 192.168.0.20:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
 
   http-request redirect scheme https unless { ssl_fc }
-
-  acl host_pvc02.twop.ch hdr_dom(host) pvc02.twop.ch
-  acl host_nxtcld.twop.ch hdr(host) nxtcld.twop.ch
-  acl host_audio.twop.ch hdr(host) audio.twop.ch
-  acl host_plex.twop.ch hdr(host) plex.twop.ch
-  acl host_transmission.twop.ch hdr(host) transmission.twop.ch
-  acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-
-  use_backend pvc02 if host_pvc02.twop.ch
-  use_backend srv3 if host_nxtcld.twop.ch
-  use_backend srv3 if host_audio.twop.ch
-  use_backend plex if host_plex.twop.ch
-  use_backend ddpnas1 if host_transmission.twop.ch
-  use_backend letsencrypt if letsencrypt-acl
-
-  default_backend k3s_prod_ingress_controller
+  use_backend %[req.hdr(host),map(/etc/haproxy/public-hostnames.map,k3s_prod_ingress_controller)]
 
 frontend web_private
   mode http
@@ -85,23 +70,7 @@ frontend web_private
 
   http-request redirect scheme https unless { ssl_fc }
 
-  acl host_pvc01.twop.ch hdr_dom(host) pvc01.twop.ch
-  acl host_pbc01.twop.ch hdr_dom(host) pbc01.twop.ch
-  acl host_vault.twop.ch hdr_dom(host) vault.twop.ch
-  acl host_uptimekuma.twop.ch hdr_dom(host) uptimekuma.twop.ch
-  acl host_grafana.twop.ch hdr_dom(host) grafana.twop.ch
-  acl host_k3s.prod.twop.ch hdr_dom(host) k3s.prod.twop.ch
-  acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-
-  use_backend pvc01 if host_pvc01.twop.ch
-  use_backend pbc01 if host_pbc01.twop.ch
-  use_backend vault if host_vault.twop.ch
-  use_backend uptimekuma if host_uptimekuma.twop.ch
-  use_backend grafana if host_grafana.twop.ch
-  use_backend k3s_prod_ingress_controller if host_k3s.prod.twop.ch
-  use_backend letsencrypt if letsencrypt-acl
-
-  default_backend k3s_prod_ingress_controller
+  use_backend %[req.hdr(host),map(/etc/haproxy/private-hostnames.map,k3s_prod_ingress_controller)]
 
 backend k3s_prod_api
   mode tcp
@@ -122,6 +91,16 @@ backend k3s_prod_ingress_controller
   server k3s-02.prod 192.168.1.52:80 check
   server k3s-03.prod 192.168.1.53:80 check
 
+backend k3s_prod_traefik
+  server k3s-01.prod 192.168.1.51:80 check
+  server k3s-02.prod 192.168.1.52:80 check
+  server k3s-03.prod 192.168.1.53:80 check
+
+backend swarm_prod_traefik
+  server swarm-01.prod 192.168.0.111:80 check
+  server swarm-02.prod 192.168.0.112:80 check
+  server swarm-03.prod 192.168.0.113:80 check
+
 backend k3s_tmp_api
   mode tcp
   balance roundrobin
@@ -134,9 +113,6 @@ backend k3s_tmp_ingress_controller
   server k3s-01.tmp 192.168.1.61:80 check
   server k3s-02.tmp 192.168.1.62:80 check
   server k3s-03.tmp 192.168.1.63:80 check
-
-backend letsencrypt
-  server local_certbot_server 127.0.0.1:8899 check
 
 backend pvc01
   mode http
@@ -194,21 +170,6 @@ backend srv3_3001
   http-request add-header X-Forwarded-Proto https if { ssl_fc }
   cookie SERVER indirect nocache insert
   server srv3 192.168.0.30:3001 cookie srv3 check
-
-backend vault
-    server swarm-01.prod 192.168.0.111:8200 check
-    server swarm-02.prod 192.168.0.112:8200 check
-    server swarm-03.prod 192.168.0.113:8200 check
-
-backend plex
-    server swarm-01.prod 192.168.0.111:32400 check
-    server swarm-02.prod 192.168.0.112:32400 check
-    server swarm-03.prod 192.168.0.113:32400 check
-
-backend uptimekuma
-    server swarm-01.prod 192.168.0.111:3001 check
-    server swarm-02.prod 192.168.0.112:3001 check
-    server swarm-03.prod 192.168.0.113:3001 check
 
 backend grafana
     server swarm-01.prod 192.168.0.111:3000 check
