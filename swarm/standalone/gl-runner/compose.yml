@@ -1,0 +1,25 @@
+services:
+  gitlab-runner-register:
+    image: gitlab/gitlab-runner
+    container_name: gitlab-runner-register
+    volumes:
+      - /srv/gitlab-runner/config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - RUNNER_TOKEN=${RUNNER_TOKEN}
+    command: >
+      run
+#      register
+#      --non-interactive
+#      --url "https://gitlab.com/"
+#      --token "$RUNNER_TOKEN"
+#      --executor "docker"
+#      --docker-image alpine:latest
+#      --description "docker-runner"
+#      --request-concurrency 5
+
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 4096m

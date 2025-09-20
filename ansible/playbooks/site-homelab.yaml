@@ -1,4 +1,5 @@
-- import_playbook: servers/k3s_dev  .yaml
+- import_playbook: servers/k3s_dev.yaml
 - import_playbook: servers/haproxy_servers.yaml
 - import_playbook: servers/proxmox.yaml
 - import_playbook: servers/swarms.yaml
+- import_playbook: servers/glrunner.yaml

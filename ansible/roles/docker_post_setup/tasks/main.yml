@@ -1,4 +1,5 @@
 ---
+
 - name: Add cron to cleanup
   cron:
     name: "Docker system cleanup"
@@ -7,3 +8,48 @@
     minute: "0"
     job: "docker system prune -f"
     user: root
+
+- name: Ensure Docker daemon directory exists
+  file:
+    path: /etc/docker
+    state: directory
+    mode: '0755'
+
+- name: Configure Docker daemon
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"],
+        "log-opts": {
+          "max-size": "50m",
+          "max-file": "5"
+        }
+      }
+    mode: '0644'
+
+- name: Create systemd override directory
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: '0755'
+
+- name: Configure Docker daemon systemd override
+  copy:
+    dest: /etc/systemd/system/docker.service.d/override.conf
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=/usr/bin/dockerd
+    mode: '0644'
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Restart Docker service
+  systemd:
+    name: docker
+    state: restarted
+
+
