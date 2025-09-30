@@ -9,7 +9,7 @@ output "inventory" {
       module.swarm-node1.vm,
       module.swarm-node2.vm,
       module.swarm-node3.vm
-    ],
+    ]
     "swarm02": [
       module.swarm-node11.vm
     ]

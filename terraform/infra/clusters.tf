@@ -8,9 +8,9 @@
 #   cidr = "192.168.1.61/24"
 #   nb_node = 3
 #   node_array = [
-#     data.proxmox_virtual_environment_node.node11.node_name,
-#     data.proxmox_virtual_environment_node.node12.node_name,
-#     data.proxmox_virtual_environment_node.node13.node_name
+#     module.proxmox11.proxmox_data.node_name,
+#     module.proxmox12.proxmox_data.node_name,
+#     module.proxmox13.proxmox_data.node_name,
 #   ]
 # }
-
+#
