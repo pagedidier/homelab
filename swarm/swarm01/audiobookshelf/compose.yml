@@ -10,6 +10,11 @@ services:
         - "traefik.http.routers.audio.rule=Host(`audio.twop.ch`)"
         - "traefik.http.routers.audio.entrypoints=web"
         - "traefik.http.services.audio.loadbalancer.server.port=80"
+        - "homepage.group=Media"
+        - "homepage.name=Audiobookshelf"
+        - "homepage.icon=https://www.audiobookshelf.org/Logo.png"
+        - "homepage.href=https://audio.twop.ch"
+        - "homepage.description=Audiobookshelf"
     ports:
       - "13378:80"
     restart: unless-stopped

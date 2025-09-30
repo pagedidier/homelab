@@ -1,0 +1,27 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v1.5.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.homepage.rule=Host(`homepage.twop.ch`)"
+        - "traefik.http.routers.homepage.entrypoints=web"
+        - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+      - /mnt/cephfs/homelab/config:/app/config
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=homepage.twop.ch
+    restart: unless-stopped
+    networks:
+      - traefik_proxy
+
+networks:
+  traefik_proxy:
+    external: true
