@@ -65,8 +65,8 @@ frontend web_public
 
 frontend web_private
   mode http
-  bind 192.168.0.21:80 name web_http_bind
-  bind 192.168.0.21:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
+  bind 192.168.0.253:80 name web_http_bind
+  bind 192.168.0.253:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
 
   http-request redirect scheme https unless { ssl_fc }
 
