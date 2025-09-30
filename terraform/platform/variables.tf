@@ -8,6 +8,7 @@ variable "registry_server" {
 }
 variable "domain_name" {}
 variable "vault_token" {}
+variable "vault_addr" {}
 
 variable "database" {
   type = map(object({

@@ -22,14 +22,11 @@ module "todo" {
   domain_name      = var.domain_name
   project_name = "todo"
 }
-#
-# module "auth" {
-#   source = "./modules/project"
-#   project_id = 40847160
-#   registry_server = var.registry_server
-#   domain_name      = var.domain_name
-#   project_name = "auth"
-# }
-#
-#
-# */
+
+module "auth" {
+  source = "./modules/project"
+  gitlab_project_id = 40847160
+  registry_server = var.registry_server
+  domain_name      = var.domain_name
+  project_name = "auth"
+}
