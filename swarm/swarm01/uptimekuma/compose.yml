@@ -13,5 +13,16 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.uptime-kuma.rule=Host(`uptimekuma.twop.ch`)"
         - "traefik.http.routers.uptime-kuma.entrypoints=web"
-        - "traefik.http.services.vault.loadbalancer.server.port=3001"
+        - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
+        - "homepage.group=Monitoring"
+        - "homepage.name=Uptimekuma"
+        - "homepage.icon=https://uptimekuma.org/wp-content/uploads/2025/01/Uptime-Kuma-Logo.png"
+        - "homepage.href=https://uptimekuma.twop.ch"
+        - "homepage.description=Uptimekuma"
     restart: unless-stopped
+    networks:
+      - traefik_proxy
+
+networks:
+  traefik_proxy:
+    external: true

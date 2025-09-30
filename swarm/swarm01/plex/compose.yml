@@ -10,6 +10,11 @@ services:
         - "traefik.http.routers.plex.rule=Host(`plex.twop.ch`)"
         - "traefik.http.routers.plex.entrypoints=web"
         - "traefik.http.services.plex.loadbalancer.server.port=32400"
+        - "homepage.group=Media"
+        - "homepage.name=Plex"
+        - "homepage.icon=https://www.plex.tv/wp-content/themes/plex/assets/img/plex-logo.svg"
+        - "homepage.href=https://plex.twop.ch"
+        - "homepage.description=Plex media server"
     ports:
       - "32400:32400"
       - "1900:1900/udp"
@@ -29,6 +34,8 @@ services:
       - /mnt/cephfs/plex/:/config
       - media:/media
     restart: unless-stopped
+    networks:
+      - traefik_proxy
 
 volumes:
   media:
@@ -36,3 +43,6 @@ volumes:
       type: "nfs"
       o: "addr=192.168.0.29,rw,nfsvers=4"
       device: ":/volume1/dpage"
+networks:
+  traefik_proxy:
+    external: true

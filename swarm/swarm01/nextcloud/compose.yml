@@ -10,6 +10,11 @@ services:
         - "traefik.http.routers.nextcloud.rule=Host(`nxtcld.twop.ch`)"
         - "traefik.http.routers.nextcloud.entrypoints=web"
         - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+        - "homepage.group=Media"
+        - "homepage.name=NextCloud"
+        - "homepage.icon=https://nextcloud.com/c/uploads/2023/02/logo_nextcloud_white.svg"
+        - "homepage.href=https://nxtcld.twop.ch"
+        - "homepage.description=NextCloud"
     restart: unless-stopped
     volumes:
       - /mnt/cephfs/nextcloud:/var/www/html
