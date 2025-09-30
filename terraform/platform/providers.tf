@@ -7,7 +7,7 @@ terraform {
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
-      version = "2.31.0"
+      version = "2.38.0"
     }
     docker = {
       source  = "kreuzwerker/docker"
@@ -16,6 +16,10 @@ terraform {
     mysql = {
       source = "petoju/mysql"
       version = "~> 3.0.72"
+    }
+    vault = {
+      source = "hashicorp/vault"
+      version = "5.3.0"
     }
   }
 }
@@ -37,4 +41,8 @@ provider "docker" {
 
 provider "kubernetes" {
   config_path    = "~/.kube/config"
+}
+provider "vault" {
+  address = var.vault_addr
+  token = var.vault_token
 }

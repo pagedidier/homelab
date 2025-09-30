@@ -1,8 +1,12 @@
 terraform {
   required_providers {
     gitlab = {
-      source = "gitlabhq/gitlab"
+      source  = "gitlabhq/gitlab"
       version = "17.0.1"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.38.0"
     }
   }
 }
@@ -13,12 +17,31 @@ resource "kubernetes_namespace" "project_name" {
   }
 }
 
+resource "kubernetes_service_account" "vault_service_account" {
+  metadata {
+    name = "vault-${var.project_name}"
+    namespace = kubernetes_namespace.project_name.metadata[0].name
+  }
+}
+
+resource "kubernetes_secret" "vault_token" {
+  metadata {
+    name = "vault-token-g955r"
+    namespace = kubernetes_namespace.project_name.metadata[0].name
+    annotations = {
+      "kubernetes.io/service-account.name" = kubernetes_service_account.vault_service_account.metadata[0].name
+    }
+  }
+
+  type = "kubernetes.io/service-account-token"
+}
+
 
 
 resource "kubernetes_role" "gitlab_deployment_pipeline_role" {
   metadata {
     name      = "gitlab-deployment-pipeline-role-${var.project_name}"
-    namespace = var.project_name
+    namespace = kubernetes_namespace.project_name.metadata[0].name
   }
 
   rule {
@@ -57,13 +80,13 @@ resource "kubernetes_role" "gitlab_deployment_pipeline_role" {
 resource "kubernetes_role_binding" "deployment_pipeline_binding" {
   metadata {
     name      = "deployment-pipeline-binding-${var.project_name}"
-    namespace = var.project_name
+    namespace = kubernetes_namespace.project_name.metadata[0].name
   }
 
   subject {
     kind      = "ServiceAccount"
     name      = kubernetes_service_account.gitlab_deployment_pipeline_service_account.metadata[0].name
-    namespace = var.project_name
+    namespace = kubernetes_namespace.project_name.metadata[0].name
   }
 
   role_ref {
@@ -78,7 +101,7 @@ resource "kubernetes_role_binding" "deployment_pipeline_binding" {
 resource "kubernetes_secret" "gitlab_deployment_pipeline_service_account_token" {
   metadata {
     name      = "gitlab-deployment-pipeline-service-account-token-${var.project_name}"
-    namespace = var.project_name
+    namespace = kubernetes_namespace.project_name.metadata[0].name
 
     annotations = {
       "kubernetes.io/service-account.name" = kubernetes_service_account.gitlab_deployment_pipeline_service_account.metadata[0].name
@@ -94,7 +117,7 @@ resource "kubernetes_secret" "gitlab_deployment_pipeline_service_account_token" 
 resource "kubernetes_service_account" "gitlab_deployment_pipeline_service_account" {
   metadata {
     name      = "gitlab-deployment-pipeline-service-account-${var.project_name}"
-    namespace = var.project_name
+    namespace = kubernetes_namespace.project_name.metadata[0].name
   }
   depends_on = [kubernetes_namespace.project_name]
 }
@@ -131,7 +154,7 @@ resource "gitlab_deploy_token" "k3s_deploy_token" {
 resource "kubernetes_secret" "example" {
   metadata {
     name = "regcred-${data.gitlab_project.project.name}"
-    namespace = var.project_name
+    namespace = kubernetes_namespace.project_name.metadata[0].name
   }
 
   type = "kubernetes.io/dockerconfigjson"
