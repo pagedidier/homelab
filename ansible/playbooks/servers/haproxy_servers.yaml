@@ -10,4 +10,5 @@
   become: yes
   roles:
     - common/package
+    - users
     - haproxy/nohan
