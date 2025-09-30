@@ -52,11 +52,12 @@ The focus in this repository is to split the infrastructure in layers where each
  - Application of configuration (Terraform and Ansible) using gitlab-ci
  - Remote terraform storage on gitlab
  - Ansible configuration of k3s
+ - Add configuration of self-hosted gitlab runners
+ - Setup kubernetes configuration to get secrets from vault for application deployment
+
 
 ## Todo
- - Add configuration of self-hosted gitlab runners
- - Add configuration of grafana
- - Setup kubernetes configuration to get secrets from vault for application deployment
+ - Move terraform configuration of grafana to docker swarm
  - Setup ansible configuration for docker swarm
 
 ## Future learning objectives
