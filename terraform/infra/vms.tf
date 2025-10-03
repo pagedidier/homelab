@@ -9,6 +9,8 @@ module "k3s-node1" {
   ram_in_bytes = 8192
   ip="192.168.1.51/16"
   gateway = "192.168.0.254"
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "k3s-node1" {
@@ -30,6 +32,8 @@ module "k3s-node2" {
   ram_in_bytes = 8192
   ip="192.168.1.52/16"
   gateway = "192.168.0.254"
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "k3s-node2" {
@@ -51,6 +55,8 @@ module "k3s-node3" {
   ram_in_bytes = 8192
   ip="192.168.1.53/16"
   gateway = "192.168.0.254"
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "k3s-node3" {
@@ -72,6 +78,8 @@ module "glrunner" {
   ram_in_bytes = 2048
   ip="192.168.1.120/16"
   gateway = "192.168.0.254"
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "glrunner" {
