@@ -63,3 +63,17 @@ variable "cpu_architecture" {
   type = string
   default = "x86_64"
 }
+
+variable "disk_size" {
+  default = 20
+}
+
+variable "attached_disk" {
+  type = list(object({
+    datastore_id = string
+    interface    = string
+    disk_size    = number
+    iothread = bool
+  }))
+  default = []
+}
