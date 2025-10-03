@@ -22,6 +22,7 @@ module "database-prod" {
 
   gateway = "192.168.0.254"
   ip      = "192.168.1.110/16"
+  volume_name = "vm-disks"
 }
 
 resource "infomaniak_record" "database-prod" {
