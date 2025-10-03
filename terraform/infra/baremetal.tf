@@ -113,19 +113,3 @@ resource "infomaniak_record" "nas01" {
   ttl = 300
   target = module.nas01.server.ip
 }
-
-resource "infomaniak_record" "pvc01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
-  source = "pvc01"
-  type = "A"
-  ttl = 300
-  target = infomaniak_record.proxy01_private.target
-}
-
-resource "infomaniak_record" "pbc01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
-  source = "pbc01"
-  type = "A"
-  ttl = 300
-  target = infomaniak_record.proxy01_private.target
-}
