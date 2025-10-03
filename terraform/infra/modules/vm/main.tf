@@ -56,7 +56,18 @@ resource "proxmox_virtual_environment_vm" "vm" {
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 20
+    size         = var.disk_size
+  }
+
+  dynamic "disk" {
+    for_each = var.attached_disk
+    content {
+      datastore_id = disk.value.datastore_id
+      interface    = disk.value.interface
+      size         = disk.value.disk_size
+      iothread     = disk.value.iothread
+
+    }
   }
 
   network_device {

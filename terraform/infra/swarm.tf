@@ -10,7 +10,16 @@ module "swarm-node1" {
   ip="192.168.0.111/16"
   gateway = "192.168.0.254"
   agent_enable = true
-  volume_name = "vm-disks"
+  disk_size = 30
+  attached_disk = [
+    {
+      datastore_id = "local-lvm"
+      interface    = "virtio1"
+      disk_size    = 60
+      iothread = true
+    }
+  ]
+
 }
 
 resource "infomaniak_record" "swarm-node1" {
@@ -33,7 +42,15 @@ module "swarm-node2" {
   ip="192.168.0.112/16"
   gateway = "192.168.0.254"
   agent_enable = true
-  volume_name = "vm-disks"
+  disk_size = 30
+  attached_disk = [
+    {
+      datastore_id = "local-lvm"
+      interface    = "virtio1"
+      disk_size    = 40
+      iothread = true
+    }
+  ]
 }
 
 resource "infomaniak_record" "swarm-node2" {
@@ -56,7 +73,15 @@ module "swarm-node3" {
   ip="192.168.0.113/16"
   gateway = "192.168.0.254"
   agent_enable = true
-  volume_name = "vm-disks"
+  disk_size = 30
+  attached_disk = [
+    {
+      datastore_id = "local-lvm"
+      interface    = "virtio1"
+      disk_size    = 40
+      iothread = true
+    }
+  ]
 
 }
 
@@ -86,6 +111,7 @@ module "swarm-node11" {
   providers = {
     proxmox = proxmox.pvc02,
   }
+
 }
 
 resource "infomaniak_record" "swarm-node11" {
