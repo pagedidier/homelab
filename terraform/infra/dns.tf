@@ -18,5 +18,5 @@ resource "infomaniak_record" "proxy01_private" {
   source = "proxy01.private"
   type = "A"
   ttl = 300
-  target = "192.168.0.21"
+  target = "192.168.0.253"
 }
