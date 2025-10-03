@@ -9,6 +9,8 @@ module "nomad-server01" {
   ip="192.168.0.131/16"
   gateway = "192.168.0.254"
   agent_enable = true
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "nomad-server01" {
@@ -30,6 +32,8 @@ module "nomad-client01" {
   ip="192.168.0.141/16"
   gateway = "192.168.0.254"
   agent_enable = true
+  volume_name = "vm-disks"
+
 }
 
 resource "infomaniak_record" "nomad-client01" {
