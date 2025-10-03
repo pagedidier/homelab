@@ -1,0 +1,28 @@
+services:
+  grafana:
+    image: grafana/grafana:12.2
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.twop.ch`)"
+        - "traefik.http.routers.grafana.entrypoints=web"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+        - "homepage.group=Monitoring"
+        - "homepage.name=Grafana"
+        - "homepage.icon=https://avatars.githubusercontent.com/u/7195757?s=200&v=4"
+        - "homepage.href=https://grafana.twop.ch"
+        - "homepage.description=Grafana"
+    volumes:
+      - /mnt/cephfs/grafana/data:/var/lib/grafana
+    environment:
+      - GF_SERVER_ROOT_URL=https://grafana.twop.ch/
+    restart: unless-stopped
+    networks:
+      - traefik_proxy
+
+networks:
+  traefik_proxy:
+    external: true
