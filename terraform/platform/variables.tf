@@ -17,3 +17,6 @@ variable "database" {
     password     = string
   }))
 }
+variable "infomaniak_token" {
+  type = string
+}

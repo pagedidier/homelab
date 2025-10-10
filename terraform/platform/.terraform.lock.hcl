@@ -102,6 +102,29 @@ provider "registry.terraform.io/hashicorp/vault" {
   ]
 }
 
+provider "registry.terraform.io/infomaniak/infomaniak" {
+  version     = "1.1.9"
+  constraints = "1.1.9"
+  hashes = [
+    "h1:dnPTsoq9yAUnqrLjyi89FEP1I6/dBGdtqlJpmNzVX+Q=",
+    "zh:24ede1aee4b39604eda881fa6992ce11a373d08ded7d0dc2d037aba2493b38a1",
+    "zh:271bb6dfb08b3f0da00c1be29e41f83d67e11afdf485ecc70fd69fb893c197f8",
+    "zh:3c32fa694e8e591a1820cafdf2fe1364f821368ed759beff97e37540002f33e7",
+    "zh:5b9661bd3c16036a465e3e029f9291c0819d13b6bca7a6ab102c5cb8ff349156",
+    "zh:5ccb0a305f34f1025f1e6d61343e86d63895a051fa26dd5179a8add9326259bb",
+    "zh:6d88049ab9ea86e51d7295ba0c0504b4886362e582c3aff125e7320f43b1732e",
+    "zh:750ef6017cdd02459edb15b26cf45c9bc80e5fb50422c66991f7ca4229423cba",
+    "zh:78565d9c4d372f43edffaeda11ea37440944077ff018eeba747e7eadc5722b15",
+    "zh:7ebc1a7d9c3c58f37bca0d22d779b9a5d85c48b3d3c2885638faf80426b99db6",
+    "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
+    "zh:8a3abe48b5d3e7b7f0fcf45e6a610fce76c9a78c1e7458c2e504fb12c2f78cbe",
+    "zh:90346decb88d12c76a239ceb7d5d6b2f8639511af83898bd3bfce5d569809886",
+    "zh:911af7636a6c8c453719730a573b6169426131bb8f3d3b2cfadd3930e1b77396",
+    "zh:91d73c783da64d20fa2e8f1b12d2ac43f22cfe25ff88664e4a166abb6a8e734f",
+    "zh:b174cc4bf0700d20fc9c5d522243c2cc17e2dad730dfa27d9f9e3cc7a3e7a2e8",
+  ]
+}
+
 provider "registry.terraform.io/kreuzwerker/docker" {
   version     = "3.6.2"
   constraints = "3.6.2"
