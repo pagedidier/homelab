@@ -21,7 +21,15 @@ terraform {
       source = "hashicorp/vault"
       version = "5.3.0"
     }
+    infomaniak = {
+      source  = "Infomaniak/infomaniak"
+      version = "1.1.9"
+    }
   }
+}
+
+provider "infomaniak" {
+  token = var.infomaniak_token
 }
 
 provider "mysql" {
