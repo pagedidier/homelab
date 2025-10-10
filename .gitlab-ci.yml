@@ -7,15 +7,9 @@ stages:
   - deploy
   - ansible
 
-variables:
-  INFOMANIAK_PROVIDER_VERSION: "0.0.1"
-
 .default_terraform_setup_infra: &terraform_setup_infra
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
   - cd terraform/infra
-  - mkdir /local_providers
-  - wget -q "https://sos-ch-gva-2.exo.io/rp-test/terraform-provider-infomaniak/${INFOMANIAK_PROVIDER_VERSION}/terraform-provider-infomaniak_${INFOMANIAK_PROVIDER_VERSION}_linux_amd64" -O /local_providers/terraform-provider-infomaniak
-  - chmod +x /local_providers/terraform-provider-infomaniak
   - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
   - export TF_CLI_CONFIG_FILE=".terraform.rc"
   - terraform init -backend-config=backend.hcl
