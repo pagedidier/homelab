@@ -23,7 +23,7 @@ module "swarm-node1" {
 }
 
 resource "infomaniak_record" "swarm-node1" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.swarm-node1.vm.hostname
   type = "A"
   ttl = 300
@@ -54,7 +54,7 @@ module "swarm-node2" {
 }
 
 resource "infomaniak_record" "swarm-node2" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.swarm-node2.vm.hostname
   type = "A"
   ttl = 300
@@ -86,7 +86,7 @@ module "swarm-node3" {
 }
 
 resource "infomaniak_record" "swarm-node3" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.swarm-node3.vm.hostname
   type = "A"
   ttl = 300
@@ -115,7 +115,7 @@ module "swarm-node11" {
 }
 
 resource "infomaniak_record" "swarm-node11" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.swarm-node11.vm.hostname
   type = "A"
   ttl = 300
@@ -123,7 +123,7 @@ resource "infomaniak_record" "swarm-node11" {
 }
 
 resource "infomaniak_record" "swarm-node11-plex" {
-  zone_name = data.infomaniak_zone.nohanbudry.fqdn
+  zone_fqdn = infomaniak_zone.nohanbudry.fqdn
   source = "plex"
   type = "A"
   ttl = 300

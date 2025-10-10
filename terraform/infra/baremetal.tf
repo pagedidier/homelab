@@ -7,7 +7,7 @@ module "proxmox11" {
 }
 
 resource "infomaniak_record" "proxmox11" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.proxmox11.proxmox.hostname
   type = "A"
   ttl = 300
@@ -27,7 +27,7 @@ module "proxmox21" {
 }
 
 resource "infomaniak_record" "proxmox21" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.proxmox21.proxmox.hostname
   type = "A"
   ttl = 300
@@ -43,7 +43,7 @@ module "proxmox12" {
 }
 
 resource "infomaniak_record" "proxmox12" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.proxmox12.proxmox.hostname
   type = "A"
   ttl = 300
@@ -59,7 +59,7 @@ module "proxmox13" {
 }
 
 resource "infomaniak_record" "proxmox13" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.proxmox13.proxmox.hostname
   type = "A"
   ttl = 300
@@ -75,7 +75,7 @@ module "pbs01" {
 }
 
 resource "infomaniak_record" "pbs01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.pbs01.server.hostname
   type = "A"
   ttl = 300
@@ -91,7 +91,7 @@ module "proxy01" {
 }
 
 resource "infomaniak_record" "proxy01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.proxy01.server.hostname
   type = "A"
   ttl = 300
@@ -107,7 +107,7 @@ module "nas01" {
 }
 
 resource "infomaniak_record" "nas01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.nas01.server.hostname
   type = "A"
   ttl = 300

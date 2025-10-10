@@ -26,7 +26,7 @@ module "database-prod" {
 }
 
 resource "infomaniak_record" "database-prod" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.database-prod.container.hostname
   type = "A"
   ttl = 300
