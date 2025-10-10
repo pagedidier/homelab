@@ -14,7 +14,7 @@ module "nomad-server01" {
 }
 
 resource "infomaniak_record" "nomad-server01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.nomad-server01.vm.hostname
   type = "A"
   ttl = 300
@@ -37,7 +37,7 @@ module "nomad-client01" {
 }
 
 resource "infomaniak_record" "nomad-client01" {
-  zone_name = data.infomaniak_zone.twop.fqdn
+  zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.nomad-client01.vm.hostname
   type = "A"
   ttl = 300
