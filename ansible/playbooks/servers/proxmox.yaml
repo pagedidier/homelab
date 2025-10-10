@@ -7,3 +7,5 @@
     - geerlingguy.docker
     - docker_post_setup
     - graphite_exporter
+    - ceph_exporter
+    - node_exporter

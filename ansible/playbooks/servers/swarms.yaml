@@ -6,3 +6,5 @@
     - users
     - geerlingguy.docker
     - docker_post_setup
+    - microceph_exporter
+    - node_exporter
