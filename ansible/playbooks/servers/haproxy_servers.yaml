@@ -12,3 +12,4 @@
     - common/package
     - users
     - haproxy/nohan
+    - node_exporter

@@ -3,3 +3,4 @@
   become: yes
   roles:
     - k3s
+    - node_exporter

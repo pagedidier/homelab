@@ -1,0 +1,8 @@
+services:
+  ceph_exporter:
+    image: digitalocean/ceph_exporter:4.2.5
+    restart: unless-stopped
+    ports:
+      - "9128:9128"
+    volumes:
+      - "/etc/ceph:/etc/ceph"
