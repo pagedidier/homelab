@@ -8,8 +8,8 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.grafana.rule=Host(`grafana.twop.ch`)"
-        - "traefik.http.routers.grafana.entrypoints=web"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+        - "traefik.http.routers.grafana.entrypoints=web-private"
         - "homepage.group=Monitoring"
         - "homepage.name=Grafana"
         - "homepage.icon=https://avatars.githubusercontent.com/u/7195757?s=200&v=4"
