@@ -1,0 +1,30 @@
+---
+- name: Upload HAProxy configuration file
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: '0644'
+- name: Reload HAProxy service
+  service:
+    name: haproxy
+    state: reloaded
+- name: Create application directory
+  file:
+    path: "/opt/haproxy-traefik-sidecar"
+    state: directory
+    mode: '0755'
+
+- name: Copy Docker Compose file
+  template:
+    src: compose.yml
+    dest: "/opt/haproxy-traefik-sidecar/compose.yml"
+    mode: '0644'
+
+- name: Restart Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "/opt/haproxy-traefik-sidecar"
+    files:
+      - compose.yml
+    state: present

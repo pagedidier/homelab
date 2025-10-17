@@ -12,6 +12,10 @@ output "inventory" {
     ]
     "swarm02": [
       module.swarm-node11.vm
+    ],
+    "nlb": [
+      module.nlb01.container,
+      module.nlb02.container
     ]
     "databases" : [
       module.database-prod.container

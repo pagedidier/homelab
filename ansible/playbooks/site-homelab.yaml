@@ -3,3 +3,4 @@
 - import_playbook: servers/proxmox.yaml
 - import_playbook: servers/swarms.yaml
 - import_playbook: servers/glrunner.yaml
+- import_playbook: servers/nlb.yaml

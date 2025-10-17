@@ -1,0 +1,24 @@
+---
+- name: Install Keepalived package
+  ansible.builtin.package:
+    name: keepalived
+    state: present
+
+- name: Ensure Keepalived service is enabled and started
+  ansible.builtin.service:
+    name: keepalived
+    state: started
+    enabled: true
+
+- name: Deploy Keepalived configuration
+  ansible.builtin.template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Restart Keepalived service
+  systemd:
+    name: keepalived
+    state: restarted
