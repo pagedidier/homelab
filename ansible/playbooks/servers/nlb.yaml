@@ -1,0 +1,22 @@
+---
+- hosts: nlb
+  become: yes
+  vars:
+    keepalived_state: BACKUP
+    keepalived_interface: eth0
+    keepalived_virtual_router_id: 10
+    keepalived_priority: 100
+    keepalived_advert_int: 1
+    keepalived_auth_type: PASS
+    keepalived_auth_pass: 1234
+    keepalived_virtual_ipaddress:
+      - 192.168.1.246/16
+      - 192.168.1.253/16
+
+  roles:
+    - common/package
+    - users
+    - geerlingguy.docker
+    - docker_post_setup
+    - keepalived
+    - haproxy/nlb
