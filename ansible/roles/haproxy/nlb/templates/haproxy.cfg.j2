@@ -5,6 +5,7 @@
 
 global
   daemon
+  expose-deprecated-directives
   chroot /var/lib/haproxy
   user haproxy
   group haproxy
@@ -58,20 +59,29 @@ frontend prometheus
 
 frontend web_public
   mode http
-  bind 192.168.0.20:80 name web_http_bind
-  bind 192.168.0.20:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
+  bind 192.168.1.246:80 name web_http_bind
+  bind 192.168.1.246:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
 
   http-request redirect scheme https unless { ssl_fc }
-  use_backend %[req.hdr(host),map(/etc/haproxy/public-hostnames.map,k3s_prod_ingress_controller)]
+  use_backend %[req.hdr(host),map(virt@web.map,swarm_prod_traefik-web)]
 
 frontend web_private
   mode http
-  bind 192.168.0.253:80 name web_http_bind
-  bind 192.168.0.253:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
+
+  bind 192.168.1.253:80 name web_http_bind
+  bind 192.168.1.253:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
 
   http-request redirect scheme https unless { ssl_fc }
 
-  use_backend %[req.hdr(host),map(/etc/haproxy/private-hostnames.map,k3s_prod_ingress_controller)]
+  acl host_pvc01.twop.ch hdr_dom(host) pvc01.twop.ch
+  acl host_pvc02.twop.ch hdr_dom(host) pvc02.twop.ch
+  acl host_pbc01.twop.ch hdr_dom(host) pbc01.twop.ch
+
+  use_backend pvc01 if host_pvc01.twop.ch
+  use_backend pvc02 if host_pvc02.twop.ch
+  use_backend pbc01 if host_pbc01.twop.ch
+
+  use_backend %[req.hdr(host),map(virt@web-private.map,swarm_prod_traefik-web-private)]
 
 backend k3s_prod_api
   mode tcp
@@ -106,6 +116,16 @@ backend swarm_prod_traefik-web-private
   server swarm-01.prod 192.168.0.111:81 check
   server swarm-02.prod 192.168.0.112:81 check
   server swarm-03.prod 192.168.0.113:81 check
+
+backend external_traefik-web
+  server swarm-01.prod 192.168.0.111:82 check
+  server swarm-02.prod 192.168.0.112:82 check
+  server swarm-03.prod 192.168.0.113:82 check
+
+backend external_traefik-web-private
+  server swarm-01.prod 192.168.0.111:83 check
+  server swarm-02.prod 192.168.0.112:83 check
+  server swarm-03.prod 192.168.0.113:83 check
 
 backend pvc01
   mode http
@@ -142,8 +162,3 @@ backend pbc01
   cookie SERVER indirect nocache insert
   server pbs01 192.168.0.214:8007 ssl verify none check port 8007 inter 5s rise 2 fall 2 cookie proxmox_backup_servers
 
-# Default SSL material locations
-# See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
-program api
-  command dataplaneapi -f /etc/haproxy/dataplaneapi.yml
-  no option start-on-reload

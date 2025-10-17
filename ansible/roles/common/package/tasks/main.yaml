@@ -6,4 +6,6 @@
       - logrotate
       - rsyslog
       - unzip
+      - curl
+      - tree
     state: present
