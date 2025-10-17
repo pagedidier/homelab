@@ -8,12 +8,14 @@
     minute: "0"
     job: "docker system prune -f"
     user: root
+  run_once: true
 
 - name: Ensure Docker daemon directory exists
   file:
     path: /etc/docker
     state: directory
     mode: '0755'
+  run_once: true
 
 - name: Configure Docker daemon
   copy:
@@ -27,12 +29,14 @@
         }
       }
     mode: '0644'
+  run_once: true
 
 - name: Create systemd override directory
   file:
     path: /etc/systemd/system/docker.service.d
     state: directory
     mode: '0755'
+  run_once: true
 
 - name: Configure Docker daemon systemd override
   copy:
@@ -42,14 +46,15 @@
       ExecStart=
       ExecStart=/usr/bin/dockerd
     mode: '0644'
+  run_once: true
 
 - name: Reload systemd daemon
   ansible.builtin.systemd:
     daemon_reload: yes
+  run_once: true
 
 - name: Restart Docker service
   systemd:
     name: docker
     state: restarted
-
-
+  run_once: true

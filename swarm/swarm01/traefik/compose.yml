@@ -7,17 +7,22 @@ services:
       - "--providers.swarm.watch=true"
 #      - "--providers.kubernetesingress=true"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-private.address=:81"
       - "--entrypoints.websecure.address=:443"
       - "--log.level=TRACE"
       - "--providers.swarm.network=traefik_proxy"
+
     ports:
       - "80:80"
+      - "81:81"
       - "443:443"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /mnt/cephfs/traefik/certs:/certs:ro
     deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
       placement:
         constraints:
           - node.role == manager
