@@ -35,9 +35,10 @@
     owner: root
     group: root
     mode: '0644'
+  register: haproxy_config
 
 - name: Restart HAProxy service
   service:
     name: haproxy
     state: reloaded
-
+  when: haproxy_config.changed
