@@ -34,6 +34,8 @@ resource "proxmox_virtual_environment_vm" "vm" {
         gateway = var.gateway
       }
     }
+
+    user_data_file_id = var.user_data_file_id
   }
 
   cpu {
@@ -75,6 +77,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
   agent {
     enabled = var.agent_enable
+    timeout = "30s"
   }
 
   dynamic "usb" {
