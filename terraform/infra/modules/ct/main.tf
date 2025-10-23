@@ -10,6 +10,11 @@ terraform {
 resource "proxmox_virtual_environment_container" "ct" {
   node_name = var.node_name
 
+  # newer linux distributions require unprivileged user namespaces
+  features {
+    nesting = true
+  }
+
   initialization {
     hostname = var.name
     user_account {

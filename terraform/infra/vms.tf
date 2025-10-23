@@ -90,18 +90,18 @@ resource "infomaniak_record" "glrunner" {
   target = module.glrunner.vm.ip
 }
 
-module "test" {
-  source = "./modules/vm"
-  name   = "test.prod"
-  node_name = module.proxmox11.proxmox_data.node_name
-
-  init_ssh_keys = var.init_ssh_keys
-  init_user_password = var.init_user_password
-  init_user_username = var.init_user_username
-  ram_in_bytes = 4096
-  ip="192.168.1.121/16"
-  gateway = "192.168.0.254"
-  volume_name = "vm-disks"
-  user_data_file_id = proxmox_virtual_environment_file.user_data_cloud_config.id
-  agent_enable = true
-}
+# module "test" {
+#   source = "./modules/vm"
+#   name   = "test.prod"
+#   node_name = module.proxmox11.proxmox_data.node_name
+#
+#   init_ssh_keys = var.init_ssh_keys
+#   init_user_password = var.init_user_password
+#   init_user_username = var.init_user_username
+#   ram_in_bytes = 4096
+#   ip="192.168.1.121/16"
+#   gateway = "192.168.0.254"
+#   volume_name = "vm-disks"
+#   user_data_file_id = proxmox_virtual_environment_file.user_data_cloud_config.id
+#   agent_enable = true
+# }
