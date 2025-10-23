@@ -2,5 +2,6 @@
 - hosts: k3s_dev
   become: yes
   roles:
+    - common/package
     - k3s
     - node_exporter

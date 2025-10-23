@@ -4,8 +4,15 @@
   roles:
     - common/package
     - users
-    - geerlingguy.docker
-    - docker_post_setup
     - graphite_exporter
     - ceph_exporter
     - node_exporter
+    - pve
+- hosts: proxmox_backup_server
+  become: yes
+  roles:
+    - common/package
+    - users
+    - graphite_exporter
+    - node_exporter
+    - pbs

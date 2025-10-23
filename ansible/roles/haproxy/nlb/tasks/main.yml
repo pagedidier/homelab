@@ -1,4 +1,36 @@
 ---
+- name: Ensure dirmngr and gnupg are installed
+  apt:
+    name:
+      - dirmngr
+      - gnupg
+    state: present
+    update_cache: yes
+
+- name: Enable non-local bind in sysctl
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: '1'
+    state: present
+    reload: yes
+
+- name: Add HAProxy PPA repository
+  apt_repository:
+    repo: ppa:vbernat/haproxy-3.2
+    state: present
+
+- name: Install HAProxy 3.2
+  apt:
+    name: haproxy=3.2.*
+    state: present
+    update_cache: yes
+
+- name: Start HAProxy service
+  service:
+    name: haproxy
+    state: started
+    enabled: yes
+
 - name: Upload HAProxy configuration file
   template:
     src: haproxy.cfg.j2
@@ -6,10 +38,13 @@
     owner: root
     group: root
     mode: '0644'
+
 - name: Reload HAProxy service
   service:
     name: haproxy
     state: reloaded
+  ignore_errors: true
+
 - name: Create application directory
   file:
     path: "/opt/haproxy-traefik-sidecar"
@@ -28,3 +63,37 @@
     files:
       - compose.yml
     state: present
+
+- name: Ensure certbot in install
+  apt:
+    name:
+      - certbot
+      - python3-certbot-dns-infomaniak
+    state: present
+    update_cache: yes
+- name: Create application directory
+  file:
+    path: "/opt/certbot"
+    state: directory
+    mode: '0755'
+
+- name: Copy infomaniak.ini
+  template:
+    src: infomaniak.ini
+    dest: "/opt/certbot/infomaniak.ini"
+    mode: '0644'
+
+- name: Copy updatecerts.sh
+  template:
+    src: updatecerts.sh
+    dest: "/opt/certbot/updatecerts.sh"
+    mode: '0755'
+
+- name: Add certificate update cronjob
+  cron:
+    name: "Update SSL certificates"
+    minute: "0"
+    hour: "1"
+    job: "/opt/certbot/updatecerts.sh"
+    state: present
+

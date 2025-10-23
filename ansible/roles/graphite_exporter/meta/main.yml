@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: ufw
+    vars:
+      ufw_ports:
+        - '9109'
+  - role: geerlingguy.docker
+  - role: docker_post_setup

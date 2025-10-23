@@ -24,3 +24,8 @@
   service:
     name: haproxy
     state: reloaded
+- name: Allow port
+  ufw:
+    rule: allow
+    port: '5789'
+    proto: tcp
