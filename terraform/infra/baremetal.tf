@@ -19,7 +19,7 @@ module "proxmox21" {
 
   hostname = "proxmox21"
   ip       = "51.154.10.38"
-  username = "root"
+  username = "dpage"
   port = 5789
   providers = {
     proxmox = proxmox.pvc02,
@@ -86,7 +86,7 @@ module "proxy01" {
   source = "./modules/bare_metal"
   hostname = "proxy01"
   ip       = "192.168.0.20"
-  username = "root"
+  username = "dpage"
   port = 5789
 }
 
