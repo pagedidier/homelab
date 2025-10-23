@@ -1,0 +1,7 @@
+---
+- name: Allow MicroCeph port range
+  ufw:
+    rule: allow
+    port: '6800:7300'
+    proto: tcp
+  

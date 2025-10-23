@@ -1,0 +1,10 @@
+---
+dependencies:
+  - role: ufw
+    vars:
+      ufw_ports:
+        - '22'
+        - '8007'
+        - '8080'
+        - '9000'
+        - '85'

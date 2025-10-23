@@ -1,5 +1,4 @@
 ---
-
 - name: Add cron to cleanup
   cron:
     name: "Docker system cleanup"
@@ -29,6 +28,7 @@
         }
       }
     mode: '0644'
+  notify: Restart Docker
   run_once: true
 
 - name: Create systemd override directory
@@ -46,15 +46,5 @@
       ExecStart=
       ExecStart=/usr/bin/dockerd
     mode: '0644'
-  run_once: true
-
-- name: Reload systemd daemon
-  ansible.builtin.systemd:
-    daemon_reload: yes
-  run_once: true
-
-- name: Restart Docker service
-  systemd:
-    name: docker
-    state: restarted
+  notify: Reload systemd
   run_once: true

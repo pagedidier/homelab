@@ -31,6 +31,9 @@ output "inventory" {
     ]
     "haproxy_servers": [
       module.proxy01.server
+    ],
+    "wireguards": [
+      module.proxy01.server
     ]
     "glrunners": [
       module.glrunner.vm

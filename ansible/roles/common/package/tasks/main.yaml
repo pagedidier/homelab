@@ -8,4 +8,15 @@
       - unzip
       - curl
       - tree
+      - fail2ban
     state: present
+
+- name: Allow HTTP port (22)
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+
+- name: Enable UFW
+  ufw:
+    state: enabled

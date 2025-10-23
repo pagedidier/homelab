@@ -9,7 +9,4 @@
 - hosts: proxmox21
   become: yes
   roles:
-    - common/package
-    - users
     - haproxy/nohan
-    - node_exporter
