@@ -2,7 +2,3 @@ all:
   children:
     docker:
       hosts:
-        srv3:
-          ansible_host: 192.168.0.30
-          ansible_user: ubuntu
-          ansible_port: 22
