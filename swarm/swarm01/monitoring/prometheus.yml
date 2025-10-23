@@ -8,21 +8,26 @@ scrape_configs:
 
   - job_name: 'proxmox_graphite_exporter'
     metrics_path: "/metrics"
-    static_configs:
-      - targets:
-        - "proxmox11.twop.ch:9108"
-        - "proxmox12.twop.ch:9108"
-        - "proxmox13.twop.ch:9108"
-        - "proxmox21.twop.ch:9108"
+    dns_sd_configs:
+      - names:
+          - "_graphite-exporter._tcp.twop.ch"
+        type: SRV
+        refresh_interval: 30s
 
   - job_name: 'proxmox_node_exporter'
     metrics_path: "/metrics"
-    static_configs:
-      - targets:
-          - "proxmox11.twop.ch:9100"
-          - "proxmox12.twop.ch:9100"
-          - "proxmox13.twop.ch:9100"
-          - "proxmox21.twop.ch:9100"
+    dns_sd_configs:
+    - names:
+        - "_node-exporter._tcp.twop.ch"
+      type: SRV
+      refresh_interval: 30s
+  - job_name: 'ceph_exporter'
+    metrics_path: "/metrics"
+    dns_sd_configs:
+      - names:
+          - "_ceph-exporter._tcp.twop.ch"
+        type: SRV
+        refresh_interval: 30s
   - job_name: 'blackbox_http_srv'
     metrics_path: /probe
     params:
