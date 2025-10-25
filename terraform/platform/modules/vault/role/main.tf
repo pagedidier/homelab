@@ -11,7 +11,7 @@ resource "vault_policy" "k8s-role-policy" {
 }
 
 resource "vault_kubernetes_auth_backend_role" "k8s-test" {
-  backend = "kubernetes"
+  backend = var.backend
   bound_service_account_names      = [var.vault_k8s_service_account]
   bound_service_account_namespaces = [var.project_name]
   token_policies                         = [vault_policy.k8s-role-policy.name]
