@@ -107,39 +107,39 @@ resource "infomaniak_record" "swarm-node3" {
   target = module.swarm-node3.vm.ip
 }
 
-module "swarm-node11" {
-  source = "./modules/vm"
-  name   = "swarm-11.prod"
-  node_name = module.proxmox21.proxmox_data.node_name
-
-  init_ssh_keys = var.init_ssh_keys
-  init_user_password = var.init_user_password
-  init_user_username = var.init_user_username
-  ram_in_bytes = 4096
-  ip="192.168.1.48/16"
-  gateway = "192.168.1.1"
-  agent_enable = true
-  image_storage_name = "local"
-  enable_usb = true
-  usb_host = "2-3"
-  providers = {
-    proxmox = proxmox.pvc02,
-  }
-
-}
-
-resource "infomaniak_record" "swarm-node11" {
-  zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.swarm-node11.vm.hostname
-  type = "A"
-  ttl = 300
-  target = module.swarm-node11.vm.ip
-}
-
-resource "infomaniak_record" "swarm-node11-plex" {
-  zone_fqdn = infomaniak_zone.nohanbudry.fqdn
-  source = "plex"
-  type = "A"
-  ttl = 300
-  target = module.swarm-node11.vm.ip
-}
+# module "swarm-node11" {
+#   source = "./modules/vm"
+#   name   = "swarm-11.prod"
+#   node_name = module.proxmox21.proxmox_data.node_name
+#
+#   init_ssh_keys = var.init_ssh_keys
+#   init_user_password = var.init_user_password
+#   init_user_username = var.init_user_username
+#   ram_in_bytes = 4096
+#   ip="192.168.1.48/16"
+#   gateway = "192.168.1.1"
+#   agent_enable = true
+#   image_storage_name = "local"
+#   enable_usb = true
+#   usb_host = "2-3"
+#   providers = {
+#     proxmox = proxmox.pvc02,
+#   }
+#
+# }
+#
+# resource "infomaniak_record" "swarm-node11" {
+#   zone_fqdn = infomaniak_zone.twop.fqdn
+#   source = module.swarm-node11.vm.hostname
+#   type = "A"
+#   ttl = 300
+#   target = module.swarm-node11.vm.ip
+# }
+#
+# resource "infomaniak_record" "swarm-node11-plex" {
+#   zone_fqdn = infomaniak_zone.nohanbudry.fqdn
+#   source = "plex"
+#   type = "A"
+#   ttl = 300
+#   target = module.swarm-node11.vm.ip
+# }
