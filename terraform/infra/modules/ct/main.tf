@@ -66,6 +66,7 @@ data "external" "container_ip" {
 
 output "container" {
   value = {
+    "id" : proxmox_virtual_environment_container.ct.id
     "ip": var.use_dhcp ? data.external.container_ip.result.ip : split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
     "username": "root"
     "hostname": proxmox_virtual_environment_container.ct.initialization[0].hostname
