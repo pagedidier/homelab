@@ -1,17 +1,3 @@
-# resource "proxmox_virtual_environment_hagroup" "main" {
-#   group   = "main"
-#
-#   nodes = {
-#     proxmox11 = null
-#     proxmox12 = null
-#     proxmox12 = null
-#   }
-#
-#   restricted  = false
-#   no_failback = false
-# }
-#
-
 resource "proxmox_virtual_environment_download_file" "ubuntu_cloud_image" {
   content_type = "import"
   datastore_id = "isos-templates"

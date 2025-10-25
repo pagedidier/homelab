@@ -79,8 +79,18 @@ module "glrunner" {
   ip="192.168.1.120/16"
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
-
 }
+
+resource "proxmox_virtual_environment_haresource" "glrunner-main" {
+  depends_on = [
+    proxmox_virtual_environment_hagroup.main
+  ]
+  resource_id = "vm:${module.glrunner.vm.id}"
+  state       = "started"
+  group       = proxmox_virtual_environment_hagroup.main.id
+  comment     = "Managed by Terraform"
+}
+
 
 resource "infomaniak_record" "glrunner" {
   zone_fqdn = infomaniak_zone.twop.fqdn
