@@ -21,6 +21,12 @@ resource "infomaniak_record" "k3s-node1" {
   target = module.k3s-node1.vm.ip
 }
 
+resource "time_sleep" "wait_30_seconds-k3s-node1" {
+  depends_on = [module.k3s-node1]
+
+  create_duration = "30s"
+}
+
 module "k3s-node2" {
   source = "./modules/vm"
   name   = "k3s-02.prod"
@@ -34,6 +40,8 @@ module "k3s-node2" {
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
 
+  depends_on = [time_sleep.wait_30_seconds-k3s-node1]
+
 }
 
 resource "infomaniak_record" "k3s-node2" {
@@ -42,6 +50,12 @@ resource "infomaniak_record" "k3s-node2" {
   type = "A"
   ttl = 300
   target = module.k3s-node2.vm.ip
+}
+
+resource "time_sleep" "wait_30_seconds-k3s-node2" {
+  depends_on = [module.k3s-node2]
+
+  create_duration = "30s"
 }
 
 module "k3s-node3" {
@@ -57,6 +71,7 @@ module "k3s-node3" {
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
 
+  depends_on = [time_sleep.wait_30_seconds-k3s-node2]
 }
 
 resource "infomaniak_record" "k3s-node3" {
