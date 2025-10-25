@@ -13,6 +13,10 @@ terraform {
       source  = "Infomaniak/infomaniak"
       version = "1.1.9"
     }
+    time = {
+      source = "hashicorp/time"
+      version = "0.13.1"
+    }
   }
 }
 
