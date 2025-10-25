@@ -37,9 +37,9 @@ defaults
   errorfile 503 /etc/haproxy/errors/503.http
   errorfile 504 /etc/haproxy/errors/504.http
 
-frontend kube_apiserver
+frontend k3s_api
   mode tcp
-  bind 0.0.0.0:6443 name kube_apiserver_bind
+  bind 192.168.1.253:6443 name kube_apiserver_bind
   option tcplog
   default_backend k3s_prod_api
 
@@ -63,6 +63,10 @@ frontend web_public
   bind 192.168.1.246:443 name web_https_bind ssl crt /etc/ssl/twop.ch.pem
 
   http-request redirect scheme https unless { ssl_fc }
+
+  acl host_transmission.twop.ch hdr_dom(host) transmission.twop.ch
+
+  use_backend transmission if host_transmission.twop.ch
   use_backend %[req.hdr(host),map(virt@web.map,swarm_prod_traefik-web)]
 
 frontend web_private
@@ -91,11 +95,11 @@ backend k3s_prod_api
   server k3s-02.prod 192.168.1.52:6443 check
   server k3s-03.prod 192.168.1.53:6443 check
 
-backend ddpnas1
+backend transmission
   mode http
   balance roundrobin
   option tcp-check
-  server k3s-01.prod 192.168.0.29:9091 check
+  server ddpnas1 192.168.0.29:9091 check
 
 backend k3s_prod_traefik-web
   server k3s-01.prod 192.168.1.51:80 check
