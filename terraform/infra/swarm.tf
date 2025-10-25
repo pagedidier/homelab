@@ -30,6 +30,12 @@ resource "infomaniak_record" "swarm-node1" {
   target = module.swarm-node1.vm.ip
 }
 
+resource "time_sleep" "wait_30_seconds1" {
+  depends_on = [module.swarm-node1]
+
+  create_duration = "30s"
+}
+
 module "swarm-node2" {
   source = "./modules/vm"
   name   = "swarm-02.prod"
@@ -51,6 +57,8 @@ module "swarm-node2" {
       iothread = true
     }
   ]
+
+  depends_on = [time_sleep.wait_30_seconds1]
 }
 
 resource "infomaniak_record" "swarm-node2" {
@@ -59,6 +67,12 @@ resource "infomaniak_record" "swarm-node2" {
   type = "A"
   ttl = 300
   target = module.swarm-node2.vm.ip
+}
+
+resource "time_sleep" "wait_30_seconds2" {
+  depends_on = [module.swarm-node2]
+
+  create_duration = "30s"
 }
 
 module "swarm-node3" {
@@ -82,7 +96,7 @@ module "swarm-node3" {
       iothread = true
     }
   ]
-
+  depends_on = [time_sleep.wait_30_seconds2]
 }
 
 resource "infomaniak_record" "swarm-node3" {
