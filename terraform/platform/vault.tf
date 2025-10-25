@@ -1,3 +1,22 @@
+resource "vault_auth_backend" "k3s_prod" {
+  type = "kubernetes"
+  path = "kubernetes/k3s_prod"
+}
+
+resource "vault_mount" "projects" {
+  path        = "projects"
+  type        = "kv"
+  options     = { version = "2" }
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "vault_kv_secret_backend_v2" "example" {
+  mount                = vault_mount.projects.path
+  max_versions         = 5
+}
+
 module "timer-k8s-role" {
   source = "./modules/vault/role"
 
@@ -5,6 +24,7 @@ module "timer-k8s-role" {
   project_name     = "timer"
   service_name     = "webapp"
   vault_k8s_service_account = module.timer.vault_k8s_service_account
+  backend = vault_auth_backend.k3s_prod.path
 }
 
 module "todo-k8s-role-dev" {
@@ -14,6 +34,7 @@ module "todo-k8s-role-dev" {
   project_name     = "todo"
   service_name     = "api"
   vault_k8s_service_account = module.todo.vault_k8s_service_account
+  backend = vault_auth_backend.k3s_prod.path
 
 }
 
@@ -24,6 +45,7 @@ module "k8s-todo-webapp-role" {
   project_name     = "todo"
   service_name     = "webapp"
   vault_k8s_service_account = module.todo.vault_k8s_service_account
+  backend = vault_auth_backend.k3s_prod.path
 
 }
 
@@ -35,6 +57,7 @@ module "k8s-auth-api-role" {
   project_name     = "auth"
   service_name     = "api"
   vault_k8s_service_account = module.auth.vault_k8s_service_account
+  backend = vault_auth_backend.k3s_prod.path
 
 }
 
@@ -45,5 +68,6 @@ module "k8s-navan-server-role" {
   project_name     = "navan"
   service_name     = "server"
   vault_k8s_service_account = module.navan.vault_k8s_service_account
+  backend = vault_auth_backend.k3s_prod.path
 
 }
