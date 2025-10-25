@@ -28,3 +28,27 @@ resource "infomaniak_record" "twop_pbc01" {
   ttl = "300"
   target = "proxy01.private.twop.ch"
 }
+
+resource "infomaniak_record" "twop_k3s_api" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "k3s.api.prod"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_k3s_prod" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "k3s.prod"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_k3s" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "k3s"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
