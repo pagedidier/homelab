@@ -5,6 +5,14 @@ resource "infomaniak_record" "twop_grafana" {
   ttl = "300"
   target = "proxy01.private.twop.ch"
 }
+
+resource "infomaniak_record" "twop_homepage" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "homepage"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
 resource "infomaniak_record" "twop_vault" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = "vault"
