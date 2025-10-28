@@ -1,5 +1,50 @@
 ---
-- name: Ensure wireguard is installed
+- name: Install WireGuard
   ansible.builtin.package:
-    name: wireguard
+    name:
+      - wireguard
+      - wireguard-tools
     state: present
+
+- name: Ensure /etc/wireguard exists
+  ansible.builtin.file:
+    path: /etc/wireguard
+    state: directory
+    mode: '0700'
+
+- name: Generate private key if missing
+  ansible.builtin.command: wg genkey
+  register: wg_private_key
+  args:
+    creates: /etc/wireguard/private.key
+
+- name: Save private key to file
+  ansible.builtin.copy:
+    dest: /etc/wireguard/private.key
+    content: "{{ wg_private_key.stdout }}"
+    mode: '0600'
+  when: wg_private_key is changed
+
+- name: Read existing private key if present
+  ansible.builtin.slurp:
+    src: /etc/wireguard/private.key
+  register: wg_private_key_existing
+  ignore_errors: true
+
+- name: Derive public key
+  ansible.builtin.command: bash -c "cat /etc/wireguard/private.key | wg pubkey"
+  register: wg_public_key
+
+- name: Create wg0.conf
+  ansible.builtin.template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf
+    mode: '0600'
+  notify: restart wireguard
+  register: wg0_conf
+
+- name: Enable and start WireGuard
+  ansible.builtin.systemd:
+    name: wg-quick@wg0
+    enabled: true
+    state: started
