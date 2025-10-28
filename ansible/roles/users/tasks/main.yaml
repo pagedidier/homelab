@@ -18,6 +18,11 @@
     name: git
     state: present
 
+- name: Ensure direnv is installed
+  ansible.builtin.package:
+    name: direnv
+    state: present
+
 - name: Ensure users exist
   ansible.builtin.user:
     name: "{{ item.name }}"
