@@ -33,7 +33,8 @@ output "inventory" {
       module.proxy01.server
     ],
     "wireguards": [
-      module.proxy01.server
+      #module.proxy01.server
+      module.vpn.container
     ]
     "glrunners": [
       module.glrunner.vm
