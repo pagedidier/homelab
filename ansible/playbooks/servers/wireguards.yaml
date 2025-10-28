@@ -1,5 +1,13 @@
 ---
 - hosts: wireguards
   become: yes
+  vars:
+    wireguard_peers:
+      - public_key: dZB4Wiq8WkiBtCxsLy1ZCIqOniqYZu+9Mupx61k4oS8=
+        allowed_ips:  10.10.0.2/32
+      - public_key: jw8oC8kOJMMA3r2alK5Sxj9DOVCoeK4o1A9LMWcegDI=
+        allowed_ips:  10.10.0.3/32
   roles:
+    - common/package
+    - users
     - wireguard
