@@ -15,7 +15,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.vault.rule=Host(`vault.twop.ch`)"
-        - "traefik.http.routers.vault.entrypoints=web"
+        - "traefik.http.routers.vault.entrypoints=web-private"
         - "traefik.http.services.vault.loadbalancer.server.port=8300"
         - "homepage.group=Secrets"
         - "homepage.name=Vault"

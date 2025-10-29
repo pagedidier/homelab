@@ -13,12 +13,37 @@ resource "infomaniak_record" "twop_homepage" {
   ttl = "300"
   target = "proxy01.private.twop.ch"
 }
+
+resource "infomaniak_record" "twop_prometheus" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "prometheus"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_traefik" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "traefik"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_uptimekuma" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "uptimekuma"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
 resource "infomaniak_record" "twop_vault" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = "vault"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.public.twop.ch"
+  target = "proxy01.private.twop.ch"
 }
 
 resource "infomaniak_record" "twop_pvc01" {
