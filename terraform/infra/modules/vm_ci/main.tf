@@ -13,6 +13,23 @@ locals {
     formated_prometheus_extra_labels: ${local.formated_prometheus_extra_labels}
   EOT
 }
+
+resource "proxmox_virtual_environment_file" "meta_data_cloud_config" {
+  content_type = "snippets"
+  datastore_id = "isos-templates"
+  node_name    = var.node_name
+
+  source_raw {
+    data = <<-EOF
+    #cloud-config
+    local-hostname: ${var.name}
+    EOF
+
+    file_name = "metadata-cloud-config-${var.name}.yaml"
+  }
+}
+
+
 resource "proxmox_virtual_environment_vm" "vm" {
   name      = var.name
   node_name = var.node_name
@@ -20,18 +37,15 @@ resource "proxmox_virtual_environment_vm" "vm" {
   keyboard_layout = "fr-ch"
 
   initialization {
-    user_account {
-      username = var.init_user_username
-      password = var.init_user_password
-      keys = var.init_ssh_keys
-    }
-
     ip_config {
       ipv4 {
         address = var.ip
         gateway = var.gateway
       }
     }
+
+    user_data_file_id = var.user_data_file_id
+    meta_data_file_id = proxmox_virtual_environment_file.meta_data_cloud_config.id
   }
 
   cpu {
@@ -91,7 +105,7 @@ output "vm" {
   value = {
     "id": proxmox_virtual_environment_vm.vm.id
     "ip": split("/",proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username": proxmox_virtual_environment_vm.vm.initialization[0].user_account[0].username
+    "username": "ubuntu"
     "hostname": proxmox_virtual_environment_vm.vm.name
   }
 }
