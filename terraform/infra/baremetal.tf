@@ -113,3 +113,19 @@ resource "infomaniak_record" "nas01" {
   ttl = 300
   target = module.nas01.server.ip
 }
+
+module "vps01" {
+  source = "./modules/bare_metal"
+
+  hostname = "vps01"
+  ip       = "83.228.212.138"
+  username = "ansible"
+}
+
+resource "infomaniak_record" "vps01" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = module.vps01.server.hostname
+  type = "A"
+  ttl = 300
+  target = module.vps01.server.ip
+}

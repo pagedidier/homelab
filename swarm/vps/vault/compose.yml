@@ -1,0 +1,36 @@
+services:
+  vault:
+    image: hashicorp/vault:1.21.0
+    configs:
+      - source: vault_config
+        target: /vault/config/vault.hcl
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.hcl
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.vault-http.rule=Host(`vault.infra.twop.ch`)"
+        - "traefik.http.routers.vault-http.entrypoints=web"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.vault-http.middlewares=redirect-to-https"
+
+        - "traefik.http.routers.vault-https.rule=Host(`vault.infra.twop.ch`)"
+        - "traefik.http.routers.vault-https.entrypoints=websecure"
+        - "traefik.http.routers.vault-https.tls.certresolver=letsencrypt"
+
+        - "traefik.http.services.vault.loadbalancer.server.port=8300"
+    networks:
+      - traefik_proxy
+      - mysql_default
+configs:
+  vault_config:
+    file: ./config.hcl
+
+networks:
+  traefik_proxy:
+    external: true
+  mysql_default:
+    external: true

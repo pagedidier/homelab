@@ -1,0 +1,36 @@
+services:
+  traefik:
+    image: traefik:v3.5.1
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.swarm.watch=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--log.level=TRACE"
+      - "--providers.swarm.network=traefik_proxy"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.email=d+letsencrypt@twop.ch"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik:/etc/traefik/
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - proxy
+volumes:
+  traefik:
+networks:
+  proxy:
+    driver: overlay
+    attachable: true

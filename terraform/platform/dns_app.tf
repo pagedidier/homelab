@@ -46,6 +46,14 @@ resource "infomaniak_record" "twop_vault" {
   target = "proxy01.private.twop.ch"
 }
 
+resource "infomaniak_record" "twop_vault_infra" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "vault.infra"
+  type = "CNAME"
+  ttl = "300"
+  target = "vps01.twop.ch"
+}
+
 resource "infomaniak_record" "twop_pvc01" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = "pvc01"
