@@ -1,0 +1,21 @@
+---
+- name: Initialize Docker Swarm
+  shell: |
+    docker swarm init --advertise-addr {{ ansible_host }}
+  register: swarm_init
+  args:
+    creates: /var/lib/docker/.swarm_initialized
+
+- name: Set swarm_initialized file
+  shell: >
+    touch /var/lib/docker/.swarm_initialized
+  args:
+    creates: /var/lib/docker/.swarm_initialized
+- name: Get worker join token
+  shell: docker swarm join-token -q worker
+  register: worker_token
+  changed_when: false
+
+- name: Set fact for worker token
+  set_fact:
+    swarm_worker_token: "{{ worker_token.stdout }}"
