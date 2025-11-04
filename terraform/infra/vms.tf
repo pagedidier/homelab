@@ -10,6 +10,7 @@ module "k3s-node1" {
   ip="192.168.1.51/16"
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
+  agent_enable = true
 
 }
 
@@ -39,6 +40,7 @@ module "k3s-node2" {
   ip="192.168.1.52/16"
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
+  agent_enable = true
 
   depends_on = [time_sleep.wait_30_seconds-k3s-node1]
 
@@ -70,6 +72,7 @@ module "k3s-node3" {
   ip="192.168.1.53/16"
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
+  agent_enable = true
 
   depends_on = [time_sleep.wait_30_seconds-k3s-node2]
 }
