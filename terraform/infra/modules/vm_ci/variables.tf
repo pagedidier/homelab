@@ -77,3 +77,6 @@ variable "attached_disk" {
   }))
   default = []
 }
+
+variable "user_data_file_id" {
+}
