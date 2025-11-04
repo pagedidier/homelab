@@ -6,7 +6,7 @@ module "swarm-node1" {
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
-  ram_in_bytes = 4096
+  ram_in_bytes = 8192
   ip="192.168.0.111/16"
   gateway = "192.168.0.254"
   agent_enable = true
@@ -44,7 +44,7 @@ module "swarm-node2" {
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
-  ram_in_bytes = 4096
+  ram_in_bytes = 8192
   ip="192.168.0.112/16"
   gateway = "192.168.0.254"
   agent_enable = true
@@ -83,7 +83,7 @@ module "swarm-node3" {
   init_ssh_keys = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
-  ram_in_bytes = 4096
+  ram_in_bytes = 8192
   ip="192.168.0.113/16"
   gateway = "192.168.0.254"
   agent_enable = true

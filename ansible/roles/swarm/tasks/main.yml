@@ -1,7 +1,14 @@
 ---
+- name: Initialize Docker Swarm (manager only)
+  include_tasks: init_manager.yml
+  when: inventory_hostname in groups[swarm_manager_group]
+
+- name: Join workers to the Swarm
+  include_tasks: join_workers.yml
+  when: inventory_hostname in groups[swarm_worker_group]
+
 - name: Allow MicroCeph port range
   ufw:
     rule: allow
     port: '6800:7300'
     proto: tcp
-  

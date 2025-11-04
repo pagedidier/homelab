@@ -1,11 +1,13 @@
 ---
-- hosts: swarm
+- hosts: swarm_dev
   become: yes
+  vars:
+    swarm_manager_group: "managers"
+    swarm_worker_group: "workers"
   roles:
     - common/package
     - users
     - geerlingguy.docker
     - docker_post_setup
-    - microceph_exporter
     - node_exporter
     - swarm
