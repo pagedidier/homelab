@@ -1,12 +1,8 @@
 ---
-- name: Install K3s server and init cluster
-  when: inventory_hostname == groups['k3s_dev'][0]
-  shell: curl -sfL https://get.k3s.io | K3S_TOKEN=ACF8e7Azu6syGSB2ONWOkmIOocCwtTJX sh -s - server --cluster-init --tls-san k3s.dev.twop.ch --disable=traefik
-  args:
-    creates: /usr/local/bin/k3s
+- name: Initialize k3s cluster
+  include_tasks: init.yml
+  when: inventory_hostname in groups[k3s_init_group]
 
-- name: Install K3s server and join cluster
-  when: inventory_hostname != groups['k3s_dev'][0]
-  shell: curl -sfL https://get.k3s.io | sh -s - server --server https://192.168.1.61:6443 --token ACF8e7Azu6syGSB2ONWOkmIOocCwtTJX --tls-san k3s.dev.twop.ch --disable=traefik
-  args:
-    creates: /usr/local/bin/k3s
+- name: Join workers to the k3s cluster
+  include_tasks: join.yml
+  when: inventory_hostname in groups[k3s_join_group]
