@@ -105,7 +105,7 @@ output "vm" {
   value = {
     "id": proxmox_virtual_environment_vm.vm.id
     "ip": split("/",proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username": "ubuntu"
+    "username": var.init_user_username
     "hostname": proxmox_virtual_environment_vm.vm.name
   }
 }

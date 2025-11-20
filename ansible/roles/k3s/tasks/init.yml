@@ -8,7 +8,7 @@
     k3s_token: "{{ hostvars[groups[k3s_init_group][0]]['k3s_token'] }}"
   run_once: true
   delegate_to: "{{ item }}"
-  loop: "{{ groups['k3s_dev'] }}"
+  loop: "{{ ansible_play_hosts }}"
 
 - name: Install K3s on the first manager node
   shell: |
