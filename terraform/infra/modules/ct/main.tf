@@ -58,8 +58,10 @@ resource "proxmox_virtual_environment_container" "ct" {
 }
 
 data "external" "container_ip" {
+  count = var.use_dhcp ? 1 : 0
   program = [
-    "ssh", "root@${var.node_ip}", "pct", "exec", proxmox_virtual_environment_container.ct.id, "--", "hostname", "-I", "|", "awk",
+    "ssh", "root@${var.node_ip}", "pct", "exec", proxmox_virtual_environment_container.ct.id, "--", "hostname", "-I",
+    "|", "awk",
     "'{print \"{\\\"ip\\\":\\\"\"$1\"\\\"}\"}'",
   ]
 }
@@ -67,7 +69,7 @@ data "external" "container_ip" {
 output "container" {
   value = {
     "id" : proxmox_virtual_environment_container.ct.id
-    "ip": var.use_dhcp ? data.external.container_ip.result.ip : split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
+    "ip": var.use_dhcp ? data.external.container_ip[0].result.ip : split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
     "username": "root"
     "hostname": proxmox_virtual_environment_container.ct.initialization[0].hostname
   }
