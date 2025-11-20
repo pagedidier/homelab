@@ -14,7 +14,7 @@ resource "proxmox_virtual_environment_file" "user_data_cloud_config" {
     timezone: Europe/Zurich
     users:
       - default
-      - name: ubuntu
+      - name: ${var.init_user_username}
         groups:
           - sudo
         shell: /bin/bash

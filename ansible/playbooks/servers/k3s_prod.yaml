@@ -1,9 +1,9 @@
 ---
-- hosts: k3s_dev
+- hosts: k3s_prod
   become: yes
   vars:
-    k3s_init_group: "init_dev"
-    k3s_join_group: "join_dev"
+    k3s_init_group: "init_prod"
+    k3s_join_group: "join_prod"
   roles:
     - common/package
     - k3s
