@@ -38,6 +38,14 @@ resource "infomaniak_record" "twop_uptimekuma" {
   target = "proxy01.private.twop.ch"
 }
 
+resource "infomaniak_record" "twop_checkmk" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "checkmk"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
 resource "infomaniak_record" "twop_vault" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = "vault"
@@ -89,6 +97,22 @@ resource "infomaniak_record" "twop_k3s_prod" {
 resource "infomaniak_record" "twop_k3s" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = "k3s"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "zabbix" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "zabbix"
+  type = "CNAME"
+  ttl = "300"
+  target = "vps01.ovh.twop.ch"
+}
+
+resource "infomaniak_record" "timer-dev" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "timer.dev"
   type = "CNAME"
   ttl = "300"
   target = "proxy01.private.twop.ch"
