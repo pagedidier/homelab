@@ -145,7 +145,7 @@ data "gitlab_project" "project" {
 
 resource "gitlab_deploy_token" "k3s_deploy_token" {
   project    = data.gitlab_project.project.path_with_namespace
-  name       = "k3s ${data.gitlab_project.project.name} deploy token"
+  name       = "k3s-${data.gitlab_project.project.name}-deploy-token"
   username   = "k3s-${data.gitlab_project.project.name}"
 
   scopes = ["read_registry"]
@@ -153,7 +153,7 @@ resource "gitlab_deploy_token" "k3s_deploy_token" {
 
 resource "kubernetes_secret" "example" {
   metadata {
-    name = "regcred-${data.gitlab_project.project.name}"
+    name = "regcred-${var.project_name}"
     namespace = kubernetes_namespace.project_name.metadata[0].name
   }
 
