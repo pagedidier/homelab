@@ -117,3 +117,11 @@ resource "infomaniak_record" "timer-dev" {
   ttl = "300"
   target = "proxy01.private.twop.ch"
 }
+
+resource "infomaniak_record" "twop_traefik_k3s_prod" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "traefik.k3s.prod"
+  type = "CNAME"
+  ttl = "300"
+  target = "k3s-server01.prod.twop.ch"
+}
