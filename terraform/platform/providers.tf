@@ -25,6 +25,10 @@ terraform {
       source  = "Infomaniak/infomaniak"
       version = "1.1.9"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.13"
+    }
   }
 }
 
@@ -50,6 +54,12 @@ provider "docker" {
 provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
 provider "vault" {
   address = var.vault_addr
   token = var.vault_token
