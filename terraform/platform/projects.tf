@@ -14,6 +14,14 @@ module "navan" {
   project_name = "navan"
 }
 
+module "navan-api" {
+  source = "./modules/project"
+  gitlab_project_id = 71696511
+  registry_server = var.registry_server
+  domain_name      = var.domain_name
+  project_name = "navan-api"
+}
+
 
 module "todo" {
   source = "./modules/project"
