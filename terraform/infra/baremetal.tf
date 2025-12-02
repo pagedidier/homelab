@@ -129,3 +129,19 @@ resource "infomaniak_record" "vps01" {
   ttl = 300
   target = module.vps01.server.ip
 }
+
+module "vps01-ovh" {
+  source = "./modules/bare_metal"
+
+  hostname = "vps01.ovh"
+  ip       = "91.134.132.21"
+  username = "ubuntu"
+}
+
+resource "infomaniak_record" "vps01-ovh" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = module.vps01-ovh.server.hostname
+  type = "A"
+  ttl = 300
+  target = module.vps01-ovh.server.ip
+}
