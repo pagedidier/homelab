@@ -7,29 +7,12 @@
     minute: "0"
     job: "docker system prune -f"
     user: root
-  run_once: true
 
 - name: Ensure Docker daemon directory exists
   file:
     path: /etc/docker
     state: directory
     mode: '0755'
-  run_once: true
-
-- name: Configure Docker daemon
-  copy:
-    dest: /etc/docker/daemon.json
-    content: |
-      {
-        "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"],
-        "log-opts": {
-          "max-size": "50m",
-          "max-file": "5"
-        }
-      }
-    mode: '0644'
-  notify: Restart Docker
-  run_once: true
 
 - name: Create systemd override directory
   file:
@@ -47,4 +30,21 @@
       ExecStart=/usr/bin/dockerd
     mode: '0644'
   notify: Reload systemd
+  run_once: true
+
+- meta: flush_handlers
+
+- name: Configure Docker daemon
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"],
+        "log-opts": {
+          "max-size": "50m",
+          "max-file": "5"
+        }
+      }
+    mode: '0644'
+  notify: Restart Docker
   run_once: true
