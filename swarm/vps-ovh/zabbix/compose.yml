@@ -1,0 +1,84 @@
+services:
+  postgres:
+    image: postgres:15
+    volumes:
+      - zabbix-postgres:/var/lib/postgresql/data
+    env_file:
+      - .postgres.env
+    networks:
+      - zabbix
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${ZABBIX_DB_NAME}", "-U", "${ZABBIX_DB_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:7.4.5-ubuntu
+    env_file:
+      - .zabbix-server.env
+    networks:
+      - zabbix
+    ports:
+      - "10051:10051"
+    healthcheck:
+      test: grep -qr "zabbix_server" /proc/*/status || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    restart: unless-stopped
+    depends_on:
+      - postgres
+  zabbix-agent:
+    image: zabbix/zabbix-agent2:7.4.5-alpine
+    environment:
+      ZBX_HOSTNAME: Zabbix server
+      ZBX_SERVER_HOST: zabbix-server
+    networks:
+      - zabbix
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - zabbix-server
+  zabbix-dashboard:
+    image: zabbix/zabbix-web-nginx-pgsql:7.4.5-ubuntu
+    env_file:
+      - .zabbix-dashboard.env
+    networks:
+      - zabbix
+      - traefik_proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.zabbix-http.rule=Host(`zabbix.twop.ch`)"
+        - "traefik.http.routers.zabbix-http.entrypoints=web"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.zabbix-http.middlewares=redirect-to-https"
+
+        - "traefik.http.routers.zabbix-https.rule=Host(`zabbix.twop.ch`)"
+        - "traefik.http.routers.zabbix-https.entrypoints=websecure"
+        - "traefik.http.routers.zabbix-https.tls.certresolver=letsencrypt"
+
+        - "traefik.http.services.zabbix.loadbalancer.server.port=8080"
+    depends_on:
+      - postgres
+      - zabbix-server
+networks:
+  zabbix:
+    external: false
+  traefik_proxy:
+    external: true
+volumes:
+  zabbix-postgres:
