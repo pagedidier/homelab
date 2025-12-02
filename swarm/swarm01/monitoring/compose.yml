@@ -23,6 +23,10 @@ services:
       - "--storage.tsdb.retention.time=60d"
     ports:
       - "9090:9090"
+    networks:
+      - traefik_proxy
+      - monitoring
+
   blackbox:
     image: prom/blackbox-exporter:v0.27.0
     command:
@@ -32,8 +36,16 @@ services:
     configs:
       - source: blackbox_config
         target: /etc/blackbox/blackbox.yml
+    networks:
+      - monitoring
 configs:
   prometheus_config:
     file: ./prometheus.yml
   blackbox_config:
     file: ./blackbox.yml
+
+networks:
+  monitoring:
+    external: false
+  traefik_proxy:
+    external: true
