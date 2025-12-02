@@ -1,5 +1,0 @@
-site_name: Twop's Homelab
-theme:
-  name: material
-nav:
-  - Home: index.md
