@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-api-{{ .Values.environment }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-api-{{ .Values.environment }}
+  replicas: {{ .Values.api.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-api-{{ .Values.environment }}
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: {{ .Chart.Name }}-api-{{ .Values.environment }}
+        vault.hashicorp.com/auth-path: "auth/kubernetes/k3s_prod"
+        vault.hashicorp.com/agent-inject-template-config: |-
+          {{`{{ with secret "projects/data/`}}{{ .Chart.Name }}{{`/`}}{{ .Values.environment }}{{`/`}}{{`/api" }}
+              {{ range $k, $v := .Data.data }}
+                  export {{ $k }}="{{ $v }}"
+              {{ end }}
+          {{ end }}`}}
+    spec:
+      serviceAccountName: vault-{{ .Chart.Name }}
+      imagePullSecrets:
+          - name: regcred-{{ .Chart.Name }}
+      containers:
+        - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
+          imagePullPolicy: Always
+          image: registry.gitlab.com/two-p/navanstudio/api:{{ .Values.version }}
+          env:
+            - name: PRE_RUN_COMMAND
+              value: '. /vault/secrets/config'
+          ports:
+            - name: api-port
+              containerPort: 8080
+          resources:
+            limits:
+              memory: {{ .Values.api.resources.memory.limit}}
+            requests:
+              memory: {{ .Values.api.resources.memory.request }}
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: api-port
+#            initialDelaySeconds: 5
+#            periodSeconds: 3
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: api-port
+#            initialDelaySeconds: 5
+#            periodSeconds: 3
