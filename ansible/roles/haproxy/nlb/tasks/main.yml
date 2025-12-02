@@ -64,36 +64,5 @@
       - compose.yml
     state: present
 
-- name: Ensure certbot in install
-  apt:
-    name:
-      - certbot
-      - python3-certbot-dns-infomaniak
-    state: present
-    update_cache: yes
-- name: Create application directory
-  file:
-    path: "/opt/certbot"
-    state: directory
-    mode: '0755'
 
-- name: Copy infomaniak.ini
-  template:
-    src: infomaniak.ini
-    dest: "/opt/certbot/infomaniak.ini"
-    mode: '0644'
-
-- name: Copy updatecerts.sh
-  template:
-    src: updatecerts.sh
-    dest: "/opt/certbot/updatecerts.sh"
-    mode: '0755'
-
-- name: Add certificate update cronjob
-  cron:
-    name: "Update SSL certificates"
-    minute: "0"
-    hour: "1"
-    job: "/opt/certbot/updatecerts.sh"
-    state: present
 
