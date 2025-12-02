@@ -12,9 +12,20 @@
     keepalived_virtual_ipaddress:
       - 192.168.1.246/16
       - 192.168.1.253/16
-
+    certbot_domains:
+      - "twop.ch"
+      - "*.twop.ch"
+      - "*.dev.twop.ch"
+      - "*.staging.twop.ch"
+      - "*.prod.twop.ch"
+      - "*.test.twop.ch"
+      - "*.k3s.prod.twop.ch"
+      - "*.k3s.dev.twop.ch"
+      - "*.k3s.test.twop.ch"
+      - "*.k3s.staging.twop.ch"
   roles:
     - common/package
     - users
     - keepalived
     - haproxy/nlb
+    - certbot

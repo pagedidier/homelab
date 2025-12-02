@@ -1,0 +1,106 @@
+---
+- name: Ensure apt cache is up to date
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install OS packages required for certbot and pip
+  apt:
+    name:
+      - certbot
+      - python3-pip
+      - python3-venv
+    state: present
+  become: true
+
+- name: Create venv directory
+  file:
+    path: "/opt/certbot/venv"
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Setup Python virtual environment
+  pip:
+    name: pip
+    virtualenv: "/opt/certbot/venv"
+    virtualenv_command: python3 -m venv
+  become: true
+
+- name: Install certbot Infomaniak DNS plugin in virtualenv
+  pip:
+    name: certbot-dns-infomaniak
+    virtualenv: "/opt/certbot/venv"
+  become: true
+
+- name: Ensure directory for credentials file exists
+  file:
+    path: "/opt/certbot"
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Copy infomaniak.ini
+  template:
+    src: infomaniak.ini
+    dest: "/opt/certbot/infomaniak.ini"
+    mode: '0644'
+
+- name: Request certificate using Infomaniak DNS challenge (idempotent via creates)
+  command: >
+    certbot certonly
+    --expand
+    --authenticator dns-infomaniak
+    --server https://acme-v02.api.letsencrypt.org/directory
+    --dns-infomaniak-credentials /opt/certbot/infomaniak.ini
+    --email d+letsencrypt@twop.ch
+    --agree-tos
+    --rsa-key-size 4096
+    --non-interactive
+    {% for d in certbot_domains %}
+    -d {{ d }}
+    {% endfor %}
+  become: true
+
+- name: Ensure HAProxy cert directory exists
+  file:
+    path: "/etc/haproxy/certs"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+  become: true
+
+- name: Build combined PEM for HAProxy (fullchain + privkey)
+  shell: |
+    set -o pipefail
+    cat "/etc/letsencrypt/live/{{ certbot_domains[0] }}/fullchain.pem" \
+        "/etc/letsencrypt/live/{{ certbot_domains[0] }}/privkey.pem" \
+        > "/etc/ssl/twop.ch.pem"
+  args:
+    creates: "/etc/ssl/twop.ch.pem"
+  notify: reload haproxy
+  become: true
+
+- name: Install Certbot renewal hook for HAProxy
+  copy:
+    dest: /etc/letsencrypt/renewal-hooks/deploy/haproxy-reload.sh
+    mode: "0755"
+    content: |
+      #!/usr/bin/env bash
+
+      # Rebuild HAProxy certificate
+      cat /etc/letsencrypt/live/twop.ch/fullchain.pem \
+          /etc/letsencrypt/live/twop.ch/privkey.pem \
+          > /etc/ssl/twop.ch.pem
+
+      # Reload HAProxy
+      systemctl reload haproxy
+
+- name: Ensure haproxy combined pem has correct ownership and perms
+  file:
+    path: "/etc/ssl/twop.ch.pem"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
