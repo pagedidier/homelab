@@ -4,7 +4,9 @@
   vars:
     k3s_init_group: "init_prod"
     k3s_join_group: "join_prod"
+    k3s_tls_san: "k3s.prod.twop.ch"
   roles:
     - common/package
+    - users
     - k3s
     - node_exporter
