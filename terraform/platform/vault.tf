@@ -3,6 +3,11 @@ resource "vault_auth_backend" "k3s_prod" {
   path = "kubernetes/k3s_prod"
 }
 
+resource "vault_auth_backend" "k3s_dev" {
+  type = "kubernetes"
+  path = "kubernetes/k3s_dev"
+}
+
 resource "vault_mount" "projects" {
   path        = "projects"
   type        = "kv"
