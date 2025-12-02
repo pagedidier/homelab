@@ -10,3 +10,16 @@
       - tree
       - fail2ban
     state: present
+
+- name: Enable and start fail2ban service
+  ansible.builtin.systemd:
+    name: fail2ban
+    state: started
+    enabled: yes
+
+- name: Check fail2ban service status
+  ansible.builtin.systemd:
+    name: fail2ban
+    state: started
+  register: fail2ban_status
+  failed_when: fail2ban_status.status.ActiveState != "active"
