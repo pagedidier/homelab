@@ -74,5 +74,14 @@ module "k8s-navan-server-role" {
   service_name     = "server"
   vault_k8s_service_account = module.navan.vault_k8s_service_account
   backend = vault_auth_backend.k3s_prod.path
+}
 
+module "k8s-navan-api-role" {
+  source = "./modules/vault/role"
+
+  environment_name = "dev"
+  project_name     = "navan-api"
+  service_name     = "api"
+  vault_k8s_service_account = module.navan-api.vault_k8s_service_account
+  backend = vault_auth_backend.k3s_prod.path
 }
