@@ -12,7 +12,7 @@ output "inventory" {
           module.k3s-server03-prod.vm
         ]
       }
-    ]
+    ],
     "swarm_prod" : [
       module.swarm-node1.vm,
       module.swarm-node2.vm,

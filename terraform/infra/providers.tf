@@ -11,7 +11,7 @@ terraform {
     }
     infomaniak = {
       source  = "Infomaniak/infomaniak"
-      version = "1.1.9"
+      version = "1.3.1"
     }
     time = {
       source = "hashicorp/time"

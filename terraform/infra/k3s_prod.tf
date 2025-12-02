@@ -65,7 +65,7 @@ module "k3s-server03-prod" {
 
 }
 
-resource "infomaniak_record" "k3s-server03" {
+resource "infomaniak_record" "k3s-server03-prod" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = module.k3s-server03-prod.vm.hostname
   type = "A"
