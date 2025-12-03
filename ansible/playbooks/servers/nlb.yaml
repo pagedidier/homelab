@@ -26,6 +26,14 @@
   roles:
     - common/package
     - users
-    - keepalived
-    - haproxy/nlb
-    - certbot
+    - role: keepalived
+      tags:
+        - main
+        - keepalived
+    - role: haproxy/nlb
+      tags:
+        - main
+    - role: certbot
+      tags:
+        - main
+        - certbot

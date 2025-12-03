@@ -6,4 +6,6 @@
     - users
     - geerlingguy.docker
     - docker_post_setup
-    - cadvisor/docker
+    - role: cadvisor/docker
+      tags:
+        - monitoring

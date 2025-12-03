@@ -6,5 +6,9 @@
     - users
     - geerlingguy.docker
     - docker_post_setup
-    - node_exporter
-    - cadvisor/docker
+    - role: node_exporter
+      tags:
+        - monitoring
+    - role: cadvisor/docker
+      tags:
+        - monitoring
