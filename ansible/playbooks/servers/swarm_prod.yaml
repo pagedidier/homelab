@@ -1,5 +1,5 @@
 ---
-- hosts: swarm_dev
+- hosts: swarm_prod
   become: yes
   roles:
     - common/package
@@ -9,3 +9,4 @@
     - microceph_exporter
     - node_exporter
     - swarm
+    - cadvisor/docker

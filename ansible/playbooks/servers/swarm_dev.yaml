@@ -11,3 +11,4 @@
     - docker_post_setup
     - node_exporter
     - swarm
+    - cadvisor/docker

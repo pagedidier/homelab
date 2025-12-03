@@ -1,5 +1,5 @@
 ---
-- hosts: proxmox,proxmox_backup_server
+- hosts: proxmox
   become: yes
   roles:
     - common/package
@@ -8,11 +8,11 @@
     - ceph_exporter
     - node_exporter
     - pve
+    - cadvisor/lxc
 - hosts: proxmox_backup_server
   become: yes
   roles:
     - common/package
     - users
-    - graphite_exporter
     - node_exporter
     - pbs
