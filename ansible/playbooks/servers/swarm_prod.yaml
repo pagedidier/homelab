@@ -6,7 +6,16 @@
     - users
     - geerlingguy.docker
     - docker_post_setup
-    - microceph_exporter
-    - node_exporter
-    - swarm
-    - cadvisor/docker
+    - role: microceph_exporter
+      tags:
+        - monitoring
+    - role: node_exporter
+      tags:
+        - monitoring
+    - role: swarm
+      tags:
+        - main
+    - role: cadvisor/docker
+      tags:
+        - monitoring
+

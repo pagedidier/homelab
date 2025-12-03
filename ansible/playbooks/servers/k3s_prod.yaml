@@ -8,5 +8,9 @@
   roles:
     - common/package
     - users
-    - k3s
-    - node_exporter
+    - role: k3s
+      tags:
+        - main
+    - role: node_exporter
+      tags:
+        - monitoring

@@ -4,9 +4,13 @@
   roles:
     - common/package
     - users
-    - haproxy/main
+    - role: haproxy/main
+      tags:
+        - main
 
 - hosts: proxmox21
   become: yes
   roles:
-    - haproxy/nohan
+    - role: haproxy/nohan
+      tags:
+        - main

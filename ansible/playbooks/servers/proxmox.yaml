@@ -4,15 +4,29 @@
   roles:
     - common/package
     - users
-    - graphite_exporter
-    - ceph_exporter
-    - node_exporter
-    - pve
-    - cadvisor/lxc
+    - role: graphite_exporter
+      tags:
+        - monitoring
+    - role: ceph_exporter
+      tags:
+        - monitoring
+    - role: node_exporter
+      tags:
+        - monitoring
+    - role: pve
+      tags:
+        - main
+    - role: cadvisor/lxc
+      tags:
+        - monitoring
 - hosts: proxmox_backup_server
   become: yes
   roles:
     - common/package
     - users
-    - node_exporter
-    - pbs
+    - role: node_exporter
+      tags:
+        - monitoring
+    - role: pbs
+      tags:
+        - main

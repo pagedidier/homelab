@@ -10,4 +10,6 @@
   roles:
     - common/package
     - users
-    - wireguard
+    - role: wireguard
+      tags:
+        - main
