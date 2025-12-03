@@ -1,0 +1,19 @@
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.1
+    container_name: cadvisor-lxc
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      # Host system info
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro  # safe even if not using Docker
+      # LXC container metadata
+      - /var/lib/lxc:/var/lib/lxc:ro
+      # Optional: LXCFS (if installed)
+      - /var/lib/lxcfs:/var/lib/lxcfs:ro
+      # Cgroup access (the key for LXC process detection)
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro

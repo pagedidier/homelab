@@ -7,3 +7,4 @@
     - geerlingguy.docker
     - docker_post_setup
     - node_exporter
+    - cadvisor/docker
