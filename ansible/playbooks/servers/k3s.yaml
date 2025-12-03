@@ -14,3 +14,18 @@
     - role: node_exporter
       tags:
         - monitoring
+- hosts: k3s_dev
+  become: yes
+  vars:
+    k3s_init_group: "init_dev"
+    k3s_join_group: "join_dev"
+    k3s_tls_san: "k3s.dev.twop.ch"
+  roles:
+    - common/package
+    - users
+    - role: k3s
+      tags:
+        - main
+    - role: node_exporter
+      tags:
+        - monitoring
