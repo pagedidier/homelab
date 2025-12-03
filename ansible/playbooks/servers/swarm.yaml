@@ -1,4 +1,24 @@
 ---
+- hosts: swarm_prod
+  become: yes
+  roles:
+    - common/package
+    - users
+    - geerlingguy.docker
+    - docker_post_setup
+    - role: microceph_exporter
+      tags:
+        - monitoring
+    - role: node_exporter
+      tags:
+        - monitoring
+    - role: swarm
+      tags:
+        - main
+    - role: cadvisor/docker
+      tags:
+        - monitoring
+
 - hosts: swarm_dev
   become: yes
   vars:

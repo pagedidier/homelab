@@ -1,4 +1,20 @@
 ---
+- hosts: haproxy_servers
+  become: yes
+  roles:
+    - common/package
+    - users
+    - role: haproxy/main
+      tags:
+        - main
+
+- hosts: proxmox21
+  become: yes
+  roles:
+    - role: haproxy/nohan
+      tags:
+        - main
+
 - hosts: nlb
   become: yes
   vars:

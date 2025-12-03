@@ -1,21 +1,21 @@
 ---
-- hosts: swarm_prod
+- hosts: vps01.ovh
   become: yes
   roles:
     - common/package
     - users
     - geerlingguy.docker
     - docker_post_setup
-    - role: microceph_exporter
-      tags:
-        - monitoring
-    - role: node_exporter
-      tags:
-        - monitoring
-    - role: swarm
-      tags:
-        - main
     - role: cadvisor/docker
       tags:
         - monitoring
-
+- hosts: vps01
+  become: yes
+  roles:
+    - common/package
+    - users
+    - geerlingguy.docker
+    - docker_post_setup
+    - role: cadvisor/docker
+      tags:
+        - monitoring
