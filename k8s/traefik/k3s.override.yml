@@ -1,3 +1,0 @@
-additionalArguments:
-  - "--api.insecure=true"      # Only for testing, unsafe in production
-  - "--api.dashboard=true"
