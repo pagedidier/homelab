@@ -19,3 +19,28 @@
       --tls-san {{ k3s_tls_san }}
   args:
     creates: /usr/local/bin/k3s
+
+- name: Read K3s kubeconfig from first manager node
+  slurp:
+    src: /etc/rancher/k3s/k3s.yaml
+  delegate_to: "{{ groups[k3s_init_group][0] }}"
+  register: k3s_kubeconfig_raw
+  run_once: true
+
+- name: Upload kubeconfig to Vault using HTTP API (KV v2)
+  uri:
+    url: "{{ vault_addr }}/v1/kubernetes/data/{{ k3s_tls_san }}"
+    method: POST
+    headers:
+      "X-Vault-Token": "{{ vault_token }}"
+      "Content-Type": "application/json"
+    body_format: json
+    body:
+      data:
+        kubeconfig: "{{ k3s_kubeconfig_raw }}"
+    status_code:
+      - 200
+      - 204
+  delegate_to: localhost
+  become: false
+  run_once: true

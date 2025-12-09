@@ -4,3 +4,6 @@ users_list:
     sudo: true
     ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL57+7cJOQBhC0enJxLrR6eWYLOwIkngvrlNmMhO/Ahn"
     dotfiles_repo: "https://gitlab.com/two-p/dotfiles.git"
+
+vault_addr: "https://vault.infra.twop.ch"
+vault_token: "{{ lookup('env', 'VAULT_TOKEN') }}"
