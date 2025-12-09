@@ -54,10 +54,22 @@ provider "docker" {
 provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
+
+provider "kubernetes" {
+  config_path    = "~/.kube/k3s_dev"
+  alias    = "k3s_dev"
+}
 provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
   }
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/k3s_dev"
+  }
+  alias    = "k3s_dev"
 }
 
 provider "vault" {
