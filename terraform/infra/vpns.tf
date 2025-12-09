@@ -21,7 +21,7 @@ module "vpn" {
   network_interface_name = "eth0"
 
   gateway = "192.168.0.254"
-  ip      = "192.168.1.1/16"
+  ip      = "192.168.0.1/16"
   volume_name = "vm-disks"
 }
 
