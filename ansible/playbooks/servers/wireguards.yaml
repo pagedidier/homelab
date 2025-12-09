@@ -7,6 +7,9 @@
         allowed_ips:  10.10.0.2/32
       - public_key: jw8oC8kOJMMA3r2alK5Sxj9DOVCoeK4o1A9LMWcegDI=
         allowed_ips:  10.10.0.3/32
+      - public_key: zenF3pj4hjiMiCJeFVkTaGyR/q/H0cgUgPwtkqDZNSM=
+        allowed_ips:  10.10.0.4/32
+
   roles:
     - common/package
     - users
