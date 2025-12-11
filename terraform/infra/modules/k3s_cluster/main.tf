@@ -19,7 +19,7 @@ module "k3s_nodes_tmp" {
 
 output "cluster" {
   value = [for node in module.k3s_nodes_tmp : {
-    hostname = node.vm.hostname
+    hostname = node.vm.name
     ip       = node.vm.ip
     username = node.vm.username
   }]

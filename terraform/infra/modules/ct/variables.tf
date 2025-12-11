@@ -47,3 +47,8 @@ variable "volume_name" {
 }
 # variable "secret_mount" {
 # }
+
+variable "domain_name" {
+  type = string
+  default = ""
+}

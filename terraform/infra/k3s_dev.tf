@@ -12,11 +12,13 @@ module "k3s-node1-dev" {
   agent_enable = true
   disk_size = 30
   user_data_file_id = proxmox_virtual_environment_file.user_data_cloud_config.id
+  domain_name = infomaniak_zone.twop.fqdn
+
 }
 
 resource "infomaniak_record" "k3s-node1-dev" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.k3s-node1-dev.vm.hostname
+  source = module.k3s-node1-dev.vm.name
   type = "A"
   ttl = 300
   target = module.k3s-node1-dev.vm.ip
@@ -37,12 +39,14 @@ module "k3s-node2-dev" {
   agent_enable = true
   disk_size = 30
   user_data_file_id = proxmox_virtual_environment_file.user_data_cloud_config.id
+  domain_name = infomaniak_zone.twop.fqdn
+
 
 }
 
 resource "infomaniak_record" "k3s-node2-dev" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.k3s-node2-dev.vm.hostname
+  source = module.k3s-node2-dev.vm.name
   type = "A"
   ttl = 300
   target = module.k3s-node2-dev.vm.ip
@@ -63,12 +67,14 @@ module "k3s-node3-dev" {
   agent_enable = true
   disk_size = 30
   user_data_file_id = proxmox_virtual_environment_file.user_data_cloud_config.id
+  domain_name = infomaniak_zone.twop.fqdn
+
 
 }
 
 resource "infomaniak_record" "k3s-node3-dev" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.k3s-node3-dev.vm.hostname
+  source = module.k3s-node3-dev.vm.name
   type = "A"
   ttl = 300
   target = module.k3s-node3-dev.vm.ip
