@@ -28,13 +28,30 @@ scrape_configs:
           - "_ceph-exporter._tcp.twop.ch"
         type: SRV
         refresh_interval: 30s
+  - job_name: 'cadvisor'
+    metrics_path: "/metrics"
+    metric_relabel_configs:
+      - source_labels: [ "id" ]
+        regex: ".*lxc/([0-9]+).*"
+        target_label: "lxc_id"
+        replacement: "$1"
+      - source_labels: [ "id" ]
+        regex: ".*/system.slice/([^/]+)"
+        target_label: "systemd_service"
+        replacement: "$1"
+    dns_sd_configs:
+      - names:
+          - "_cadvisor._tcp.twop.ch"
+        type: SRV
+        refresh_interval: 30s
+
   - job_name: 'blackbox_http_srv'
     metrics_path: /probe
     params:
       module: [http_2xx]
     dns_sd_configs:
       - names:
-          - "_myservice._tcp.twop.ch"
+          - "_blackbox-exporter._tcp.twop.ch"
         type: SRV
         refresh_interval: 30s
     relabel_configs:
