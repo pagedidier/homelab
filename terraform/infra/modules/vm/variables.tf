@@ -77,3 +77,7 @@ variable "attached_disk" {
   }))
   default = []
 }
+variable "domain_name" {
+  type = string
+  default = ""
+}

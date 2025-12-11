@@ -10,6 +10,7 @@ module "glrunner" {
   ip="192.168.1.120/16"
   gateway = "192.168.0.254"
   volume_name = "vm-disks"
+  domain_name = infomaniak_zone.twop.fqdn
 }
 
 resource "proxmox_virtual_environment_haresource" "glrunner-main" {
@@ -25,7 +26,7 @@ resource "proxmox_virtual_environment_haresource" "glrunner-main" {
 
 resource "infomaniak_record" "glrunner" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.glrunner.vm.hostname
+  source = module.glrunner.vm.name
   type = "A"
   ttl = 300
   target = module.glrunner.vm.ip

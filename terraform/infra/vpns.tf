@@ -23,11 +23,12 @@ module "vpn" {
   gateway = "192.168.0.254"
   ip      = "192.168.0.1/16"
   volume_name = "vm-disks"
+  domain_name = infomaniak_zone.twop.fqdn
 }
 
 resource "infomaniak_record" "vpn" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.vpn.container.hostname
+  source = module.vpn.container.name
   type = "A"
   ttl = 300
   target = module.vpn.container.ip

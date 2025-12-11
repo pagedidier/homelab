@@ -16,9 +16,11 @@ jq -r '
   # Convert a host definition into an Ansible-compatible mapping
   def host_entry:
     {
-      (.hostname): (
+      (.name): (
         {
           ansible_host: .ip,
+          name: .name,
+          hostname: .hostname,
           ansible_user: .username
         }
         + (if has("port") then { ansible_port: .port } else {} end)
@@ -27,12 +29,12 @@ jq -r '
 
   # Determine if a group contains nested children (e.g. swarm_dev -> managers/workers)
   def group_entry:
-    if (map(keys) | add | unique | any(. as $k | $k != "hostname" and $k != "ip" and $k != "username" and $k != "id" and $k != "port")) then
+    if (map(keys) | add | unique | any(. as $k | $k != "name" and $k != "ip" and $k != "username" and $k != "id" and $k != "port" and $k != "hostname")) then
       {
         children: (
           map(
             to_entries[]
-            | select(.key != "hostname" and .key != "ip" and .key != "username" and .key != "id" and .key != "port")
+            | select(.key != "name" and .key != "ip" and .key != "username" and .key != "id" and .key != "port")
             | { (.key): { hosts: (.value | map(host_entry) | add) } }
           )
           | add

@@ -1,3 +1,4 @@
+
 module "swarm-node1" {
   source = "./modules/vm"
   name   = "swarm-01.prod"
@@ -19,12 +20,13 @@ module "swarm-node1" {
       iothread = true
     }
   ]
+  domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "swarm-node1" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.swarm-node1.vm.hostname
+  source = module.swarm-node1.vm.name
   type = "A"
   ttl = 300
   target = module.swarm-node1.vm.ip
@@ -57,13 +59,14 @@ module "swarm-node2" {
       iothread = true
     }
   ]
+  domain_name = infomaniak_zone.twop.fqdn
 
   depends_on = [time_sleep.wait_30_seconds1]
 }
 
 resource "infomaniak_record" "swarm-node2" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.swarm-node2.vm.hostname
+  source = module.swarm-node2.vm.name
   type = "A"
   ttl = 300
   target = module.swarm-node2.vm.ip
@@ -96,12 +99,14 @@ module "swarm-node3" {
       iothread = true
     }
   ]
+  domain_name = infomaniak_zone.twop.fqdn
+
   depends_on = [time_sleep.wait_30_seconds2]
 }
 
 resource "infomaniak_record" "swarm-node3" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.swarm-node3.vm.hostname
+  source = module.swarm-node3.vm.name
   type = "A"
   ttl = 300
   target = module.swarm-node3.vm.ip
@@ -130,7 +135,7 @@ resource "infomaniak_record" "swarm-node3" {
 #
 # resource "infomaniak_record" "swarm-node11" {
 #   zone_fqdn = infomaniak_zone.twop.fqdn
-#   source = module.swarm-node11.vm.hostname
+#   source = module.swarm-node11.vm.name
 #   type = "A"
 #   ttl = 300
 #   target = module.swarm-node11.vm.ip

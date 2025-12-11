@@ -23,11 +23,13 @@ module "nlb01" {
   gateway = "192.168.0.254"
   ip      = "192.168.1.241/16"
   volume_name = "local-lvm"
+  domain_name = infomaniak_zone.twop.fqdn
+
 }
 
 resource "infomaniak_record" "nlb01" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.nlb01.container.hostname
+  source = module.nlb01.container.name
   type = "A"
   ttl = 300
   target = module.nlb01.container.ip
@@ -58,11 +60,13 @@ module "nlb02" {
   gateway = "192.168.0.254"
   ip      = "192.168.1.242/16"
   volume_name = "local-lvm"
+  domain_name = infomaniak_zone.twop.fqdn
+
 }
 
 resource "infomaniak_record" "nlb02" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.nlb02.container.hostname
+  source = module.nlb02.container.name
   type = "A"
   ttl = 300
   target = module.nlb02.container.ip

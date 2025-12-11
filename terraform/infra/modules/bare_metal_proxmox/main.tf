@@ -14,7 +14,8 @@ output "proxmox" {
   value = {
     "ip": var.ip,
     "username": var.username
-    "hostname": var.hostname
+    "name": var.hostname
+    "hostname" = "${var.hostname}${var.domain_name != "" ? ".${var.domain_name}" : ""}"
     "port": var.port
   }
 }

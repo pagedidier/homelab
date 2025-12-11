@@ -91,7 +91,7 @@ output "vm" {
   value = {
     "id": proxmox_virtual_environment_vm.vm.id
     "ip": split("/",proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username": proxmox_virtual_environment_vm.vm.initialization[0].user_account[0].username
-    "hostname": proxmox_virtual_environment_vm.vm.name
-  }
+    "username": proxmox_virtual_environment_vm.vm.initialization[0].user_account[0].username,
+    "name": proxmox_virtual_environment_vm.vm.name,
+    "hostname" = "${proxmox_virtual_environment_vm.vm.name}${var.domain_name != "" ? ".${var.domain_name}" : ""}"  }
 }

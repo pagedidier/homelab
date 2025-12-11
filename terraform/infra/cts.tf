@@ -23,6 +23,8 @@ module "test-ha" {
   gateway = "192.168.0.254"
   ip      = "192.168.100.10/16"
   volume_name = "vm-disks"
+  domain_name = infomaniak_zone.twop.fqdn
+
 }
 
 resource "proxmox_virtual_environment_haresource" "test-ha-main" {

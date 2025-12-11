@@ -80,3 +80,7 @@ variable "attached_disk" {
 
 variable "user_data_file_id" {
 }
+variable "domain_name" {
+  type = string
+  default = ""
+}
