@@ -125,3 +125,11 @@ resource "infomaniak_record" "twop_traefik_k3s_prod" {
   ttl = "300"
   target = "k3s-server01.prod.twop.ch"
 }
+
+resource "infomaniak_record" "autodel" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "autodel"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
