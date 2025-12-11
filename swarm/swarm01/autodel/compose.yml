@@ -7,8 +7,8 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.autodel.rule=Host(`autodel.twop.ch`)"
-        - "traefik.http.routers.autodel.entrypoints=web"
-        - "traefik.http.services.autodel.loadbalancer.server.port=80"
+        - "traefik.http.routers.autodel.entrypoints=web-private"
+        - "traefik.http.services.autodel.loadbalancer.server.port=3000"
     env_file:
       - .autodel.env
     networks:
