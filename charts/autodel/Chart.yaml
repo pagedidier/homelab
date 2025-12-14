@@ -1,0 +1,5 @@
+apiVersion: v2
+name: autodel
+description: A Helm chart for autodel
+type: application
+version: 0.0.1

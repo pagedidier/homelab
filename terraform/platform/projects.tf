@@ -38,3 +38,11 @@ module "auth" {
   domain_name      = var.domain_name
   project_name = "auth"
 }
+
+module "autodel" {
+  source = "./modules/project"
+  gitlab_project_id = 77042100
+  registry_server = var.registry_server
+  domain_name      = var.domain_name
+  project_name = "autodel"
+}
