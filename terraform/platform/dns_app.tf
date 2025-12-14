@@ -131,5 +131,5 @@ resource "infomaniak_record" "autodel" {
   source = "autodel"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.private.twop.ch"
+  target = "proxy01.public.twop.ch"
 }
