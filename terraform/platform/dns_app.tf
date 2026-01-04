@@ -133,3 +133,11 @@ resource "infomaniak_record" "autodel" {
   ttl = "300"
   target = "proxy01.public.twop.ch"
 }
+
+resource "infomaniak_record" "audiobookshelf" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "audio-new"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.public.twop.ch"
+}
