@@ -28,7 +28,7 @@ scrape_configs:
           - "_ceph-exporter._tcp.twop.ch"
         type: SRV
         refresh_interval: 30s
-  - job_name: 'cadvisor'
+  - job_name: 'cadvisor-lxc'
     metrics_path: "/metrics"
     metric_relabel_configs:
       - source_labels: [ "id" ]
@@ -41,10 +41,16 @@ scrape_configs:
         replacement: "$1"
     dns_sd_configs:
       - names:
-          - "_cadvisor._tcp.twop.ch"
+          - "_cadvisor-lxc._tcp.twop.ch"
         type: SRV
         refresh_interval: 30s
-
+  - job_name: 'cadvisor-docker'
+    metrics_path: "/metrics"
+    dns_sd_configs:
+      - names:
+          - "_cadvisor-docker._tcp.twop.ch"
+        type: SRV
+        refresh_interval: 30s
   - job_name: 'blackbox_http_srv'
     metrics_path: /probe
     params:

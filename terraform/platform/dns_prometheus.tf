@@ -30,13 +30,22 @@ module "dns_twop_ceph_exporter" {
 }
 
 
-module "dns_twop_cadvisor" {
-  for_each   = toset(concat(local.inventory["roles"]["cadvisor/lxc"],local.inventory["roles"]["cadvisor/docker"]))
+module "dns_twop_cadvisor_lxc" {
+  for_each   = toset(local.inventory["roles"]["cadvisor/lxc"])
   source = "./modules/dns/srv"
   zone_fqdn = infomaniak_zone._tcp_twop.fqdn
-  dns_source = "_cadvisor"
+  dns_source = "_cadvisor-lxc"
   target = each.key
-  port = 8080
+  port = 9163
+}
+
+module "dns_twop_cadvisor_docker" {
+  for_each   = toset(local.inventory["roles"]["cadvisor/docker"])
+  source = "./modules/dns/srv"
+  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  dns_source = "_cadvisor-docker"
+  target = each.key
+  port = 9192
 }
 
 module "dns_twop_blackbox_exporter" {
