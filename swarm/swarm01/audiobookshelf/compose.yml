@@ -20,18 +20,31 @@ services:
     restart: unless-stopped
     volumes:
       - media:/audiobooks:ro
-      - /mnt/cephfs/audiobookshelf/config/:/config
-      - /mnt/cephfs/audiobookshelf/metadata/:/metadata
+      - config:/config
+      - metadata:/metadata
     environment:
       - TZ=Europe/Zurich
     networks:
       - traefik_proxy
+
 volumes:
   media:
     driver_opts:
       type: "nfs"
       o: "addr=192.168.0.29,rw,nfsvers=4"
       device: ":/volume1/dpage"
+
+  config:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.29,rw,nfsvers=4"
+      device: ":/volume1/swarm01/audiobookshelf/config"
+
+  metadata:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.29,rw,nfsvers=4"
+      device: ":/volume1/swarm01/audiobookshelf/metadata"
 
 networks:
   traefik_proxy:
