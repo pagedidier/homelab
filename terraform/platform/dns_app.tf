@@ -94,6 +94,14 @@ resource "infomaniak_record" "twop_k3s_prod" {
   target = "proxy01.private.twop.ch"
 }
 
+resource "infomaniak_record" "twop_k3s_dev" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "k3s.dev"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.private.twop.ch"
+}
+
 resource "infomaniak_record" "twop_k3s" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source = "k3s"
