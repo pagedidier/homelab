@@ -37,11 +37,18 @@ defaults
   errorfile 503 /etc/haproxy/errors/503.http
   errorfile 504 /etc/haproxy/errors/504.http
   log-format "%ci:%cp [%tr] %ft %b/%s %TR/%Tw/%Tc/%Tr/%Ta %ST %B %CC %CS %tsc %ac/%fc/%bc/%sc/%rc %sq/%bq %hr %hs %{+Q}r"
+
 frontend k3s_api
   mode tcp
-  bind 192.168.1.253:6443 name kube_apiserver_bind
-  option tcplog
-  default_backend k3s_prod_api
+  bind 192.168.1.253:6443
+
+  tcp-request inspect-delay 5s
+  tcp-request content accept if { req.ssl_hello_type 1 }
+
+  use_backend k3s_dev_api if { req.ssl_sni -i k3s.dev.twop.ch }
+  use_backend k3s_prod_api if { req.ssl_sni -i k3s.prod.twop.ch }
+
+  default_backend k3s_dev_api
 
 frontend stats
   mode http
@@ -100,6 +107,13 @@ backend k3s_prod_api
   server k3s-02.prod 192.168.1.52:6443 check
   server k3s-03.prod 192.168.1.53:6443 check
 
+backend k3s_dev_api
+  mode tcp
+  balance roundrobin
+  option tcp-check
+  server k3s-01.dev 192.168.2.51:6443 check
+  server k3s-02.dev 192.168.2.52:6443 check
+  server k3s-03.dev 192.168.2.53:6443 check
 backend transmission
   mode http
   balance roundrobin
