@@ -64,6 +64,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
       interface    = disk.value.interface
       size         = disk.value.disk_size
       iothread     = disk.value.iothread
+      backup = disk.value.backup
 
     }
   }

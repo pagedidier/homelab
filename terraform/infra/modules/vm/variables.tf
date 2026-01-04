@@ -74,6 +74,7 @@ variable "attached_disk" {
     interface    = string
     disk_size    = number
     iothread = bool
+    backup = bool
   }))
   default = []
 }
