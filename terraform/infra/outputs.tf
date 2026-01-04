@@ -14,10 +14,18 @@ output "inventory" {
       }
     ],
     "swarm_prod" : [
-      module.swarm-node1.vm,
-      module.swarm-node2.vm,
-      module.swarm-node3.vm
-    ],
+      {
+        "managers" : [
+          module.swarm-node1.vm,
+        ]
+      },
+      {
+        "workers" : [
+          module.swarm-node2.vm,
+          module.swarm-node3.vm
+        ]
+      }
+    ]
     "k3s_dev" : [
       {
         "init_dev" : [
@@ -31,9 +39,6 @@ output "inventory" {
         ]
       }
     ]
-    # "swarm02": [
-    #   module.swarm-node11.vm
-    #],
     "nlb" : [
       module.nlb01.container,
       module.nlb02.container
@@ -45,16 +50,11 @@ output "inventory" {
       module.proxmox11.proxmox,
       module.proxmox12.proxmox,
       module.proxmox13.proxmox,
-      # module.proxmox21.proxmox,
     ]
     "proxmox_backup_server" : [
       module.pbs01.server
     ]
-    "haproxy_servers" : [
-      module.proxy01.server
-    ],
     "wireguards" : [
-      #module.proxy01.server
       module.vpn.container
     ]
     "glrunners" : [
