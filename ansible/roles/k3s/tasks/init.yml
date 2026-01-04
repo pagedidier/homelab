@@ -16,7 +16,10 @@
     K3S_TOKEN={{ k3s_token }} \
     sh -s - server \
       --cluster-init \
-      --tls-san {{ k3s_tls_san }}
+      --tls-san {{ k3s_tls_san }} \
+      {% if k3s_disable_servicelb | default(false) %}--disable servicelb{% endif %} \
+      {% if k3s_disable_traefik | default(false) %}--disable traefik{% endif %}
+
   args:
     creates: /usr/local/bin/k3s
 
@@ -25,6 +28,12 @@
     src: /etc/rancher/k3s/k3s.yaml
   delegate_to: "{{ groups[k3s_init_group][0] }}"
   register: k3s_kubeconfig_raw
+  run_once: true
+
+- name: Replace kubeconfig server address
+  set_fact:
+    k3s_kubeconfig_raw:
+      content: "{{ k3s_kubeconfig_raw.content | b64decode | replace('https://127.0.0.1:6443', 'https://' + k3s_tls_san + ':6443') | b64encode }}"
   run_once: true
 
 - name: Upload kubeconfig to Vault using HTTP API (KV v2)
@@ -37,7 +46,7 @@
     body_format: json
     body:
       data:
-        kubeconfig: "{{ k3s_kubeconfig_raw }}"
+        kubeconfig: "{{ k3s_kubeconfig_raw.content }}"
     status_code:
       - 200
       - 204

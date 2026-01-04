@@ -9,6 +9,9 @@
     K3S_TOKEN={{ k3s_token }} \
     sh -s - server \
       --server https://{{ hostvars[groups[k3s_init_group][0]].ansible_default_ipv4.address }}:6443 \
-      --tls-san {{ k3s_tls_san }}
+      --tls-san {{ k3s_tls_san }} \
+      {% if k3s_disable_servicelb | default(false) %}--disable servicelb{% endif %} \
+      {% if k3s_disable_traefik | default(false) %}--disable traefik{% endif %}
+
   args:
     creates: /usr/local/bin/k3s
