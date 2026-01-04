@@ -4,7 +4,7 @@ services:
     container_name: cadvisor-lxc
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "9163:8080"
     volumes:
       # Host system info
       - /:/rootfs:ro
