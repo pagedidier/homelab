@@ -1,4 +1,9 @@
 ---
+- name: Install nfs-common package
+  ansible.builtin.package:
+    name: nfs-common
+    state: present
+
 - name: Initialize k3s cluster
   include_tasks: init.yml
   when: inventory_hostname in groups[k3s_init_group]
@@ -6,3 +11,6 @@
 - name: Join workers to the k3s cluster
   include_tasks: join.yml
   when: inventory_hostname in groups[k3s_join_group]
+
+
+    
