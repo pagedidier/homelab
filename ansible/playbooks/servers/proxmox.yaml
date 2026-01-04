@@ -7,9 +7,9 @@
     - role: graphite_exporter
       tags:
         - monitoring
-    - role: ceph_exporter
-      tags:
-        - monitoring
+#    - role: ceph_exporter
+#      tags:
+#        - monitoring
     - role: node_exporter
       tags:
         - monitoring
