@@ -16,12 +16,18 @@ services:
         - "homepage.href=https://grafana.twop.ch"
         - "homepage.description=Grafana"
     volumes:
-      - /mnt/cephfs/grafana/data:/var/lib/grafana
+      - grafana:/var/lib/grafana
     environment:
       - GF_SERVER_ROOT_URL=https://grafana.twop.ch/
     restart: unless-stopped
     networks:
       - traefik_proxy
+volumes:
+  grafana:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.92,rw,nfsvers=3"
+      device: ":/mnt/main/swarm01/grafana"
 
 networks:
   traefik_proxy:
