@@ -3,6 +3,6 @@ dependencies:
   - role: ufw
     vars:
       ufw_ports:
-        - '8080'
+        - '9192'
   - role: geerlingguy.docker
   - role: docker_post_setup
