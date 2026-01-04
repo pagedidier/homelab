@@ -31,7 +31,7 @@ services:
       - VERSION=docker
       - TZ=Europe/Zurich
     volumes:
-      - /mnt/cephfs/plex/:/config
+      - config:/config
       - media:/media
     restart: unless-stopped
     networks:
@@ -43,6 +43,11 @@ volumes:
       type: "nfs"
       o: "addr=192.168.0.29,rw,nfsvers=4"
       device: ":/volume1/dpage"
+  config:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.29,rw,nfsvers=4"
+      device: ":/volume1/swarm01/plex/config"
 networks:
   traefik_proxy:
     external: true

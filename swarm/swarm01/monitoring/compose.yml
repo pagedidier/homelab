@@ -15,7 +15,7 @@ services:
       - source: prometheus_config
         target: /etc/prometheus/prometheus.yml
     volumes:
-      - /mnt/cephfs/prometheus/:/prometheus
+      - prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - "--storage.tsdb.path=/prometheus"
@@ -43,6 +43,13 @@ configs:
     file: ./prometheus.yml
   blackbox_config:
     file: ./blackbox.yml
+
+volumes:
+  prometheus:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.92,rw,nfsvers=3"
+      device: ":/mnt/main/swarm01/prometheus"
 
 networks:
   monitoring:
