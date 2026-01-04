@@ -11,13 +11,14 @@ module "swarm-node1" {
   ip="192.168.0.111/16"
   gateway = "192.168.0.254"
   agent_enable = true
-  disk_size = 30
+  disk_size = 50
   attached_disk = [
     {
       datastore_id = "local-lvm"
       interface    = "virtio1"
       disk_size    = 60
       iothread = true
+      backup = true
     }
   ]
   domain_name = infomaniak_zone.twop.fqdn
@@ -57,6 +58,7 @@ module "swarm-node2" {
       interface    = "virtio1"
       disk_size    = 40
       iothread = true
+      backup = true
     }
   ]
   domain_name = infomaniak_zone.twop.fqdn
@@ -97,6 +99,7 @@ module "swarm-node3" {
       interface    = "virtio1"
       disk_size    = 40
       iothread = true
+      backup = true
     }
   ]
   domain_name = infomaniak_zone.twop.fqdn
