@@ -1,6 +1,7 @@
-- import_playbook: servers/k3s_dev.yaml
-- import_playbook: servers/haproxy_servers.yaml
+- import_playbook: servers/k3s.yaml
+- import_playbook: servers/proxies.yaml
 - import_playbook: servers/proxmox.yaml
-- import_playbook: servers/swarms.yaml
+- import_playbook: servers/swarm.yaml
 - import_playbook: servers/glrunner.yaml
-- import_playbook: servers/nlb.yaml
+- import_playbook: servers/wireguards.yaml
+- import_playbook: servers/vps.yaml
