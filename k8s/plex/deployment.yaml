@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+  labels:
+    app: plex
+  namespace: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      containers:
+        - name: plex
+          image: lscr.io/linuxserver/plex:latest
+          ports:
+            - containerPort: 32400
+          env:
+            - name: TZ
+              value: Europe/Zurich
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: VERSION
+              value: docker
+          volumeMounts:
+            - name: media-volume
+              mountPath: /media
+              readOnly: true
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: media-volume
+          persistentVolumeClaim:
+            claimName: plex-media-pvc
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: plex-config-pvc
