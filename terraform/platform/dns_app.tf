@@ -144,7 +144,15 @@ resource "infomaniak_record" "autodel" {
 
 resource "infomaniak_record" "audiobookshelf" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = "audio-new"
+  source = "audio"
+  type = "CNAME"
+  ttl = "300"
+  target = "proxy01.public.twop.ch"
+}
+
+resource "infomaniak_record" "plex" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source = "plex"
   type = "CNAME"
   ttl = "300"
   target = "proxy01.public.twop.ch"
