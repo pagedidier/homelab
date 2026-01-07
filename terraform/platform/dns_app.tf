@@ -35,7 +35,7 @@ resource "infomaniak_record" "twop_uptimekuma" {
   source = "uptimekuma"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.private.twop.ch"
+  target = "proxy01.public.twop.ch"
 }
 
 resource "infomaniak_record" "twop_checkmk" {
