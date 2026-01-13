@@ -4,8 +4,9 @@ version: ""
 
 projectName: "navan-api"
 domain: ""
+entrypoint: "web-private"
 
-apu:
+api:
   replicas: 1
   resources:
     memory:
