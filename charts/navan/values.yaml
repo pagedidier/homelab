@@ -4,6 +4,7 @@ version: ""
 
 projectName: "navan"
 domain: ""
+entrypoint: "web-private"
 
 webapp:
   replicas: 1

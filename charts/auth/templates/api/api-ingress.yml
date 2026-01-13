@@ -5,6 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Chart.Name }}-stripprefixapi@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ .Values.entrypoint }}
+
 spec:
   rules:
     - host: "{{ .Values.domain }}"
