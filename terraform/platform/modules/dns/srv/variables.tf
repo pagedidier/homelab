@@ -11,14 +11,14 @@ variable "port" {
   type = number
 }
 variable "ttl" {
-  type = number
+  type    = number
   default = 300
 }
 variable "priority" {
-  type = number
+  type    = number
   default = 10
 }
 variable "weight" {
-  type = number
+  type    = number
   default = 0
 }

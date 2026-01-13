@@ -1,17 +1,17 @@
 terraform {
   required_providers {
     vault = {
-      source = "hashicorp/vault"
+      source  = "hashicorp/vault"
       version = "4.4.0"
     }
     gitlab = {
-      source = "gitlabhq/gitlab"
+      source  = "gitlabhq/gitlab"
       version = "17.0.1"
     }
   }
 }
 
-data "vault_policy_document" "repo-policy-document"{
+data "vault_policy_document" "repo-policy-document" {
   rule {
     capabilities = ["read"]
     path         = "repos/data/${var.repo_name}/*"
@@ -34,8 +34,8 @@ resource "vault_policy" "repo-policy" {
 
 
 resource "vault_approle_auth_backend_role" "repo_role" {
-  backend        = var.auth_path
-  role_name      = "${var.repo_name}-role"
+  backend   = var.auth_path
+  role_name = "${var.repo_name}-role"
 
   token_policies = [vault_policy.repo-policy.name]
 }

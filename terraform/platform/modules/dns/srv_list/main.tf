@@ -8,15 +8,15 @@ terraform {
 }
 
 resource "infomaniak_record" "srv_record" {
-  for_each = toset(var.targets)
+  for_each  = toset(var.targets)
   zone_fqdn = var.zone_fqdn
-  source = var.dns_source
-  type = "SRV"
-  ttl = var.ttl
+  source    = var.dns_source
+  type      = "SRV"
+  ttl       = var.ttl
   data = {
-    target = each.key
+    target   = each.key
     priority = var.priority
-    weight = var.weight
-    port = var.port
+    weight   = var.weight
+    port     = var.port
   }
 }

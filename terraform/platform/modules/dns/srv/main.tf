@@ -9,13 +9,13 @@ terraform {
 
 resource "infomaniak_record" "srv_record" {
   zone_fqdn = var.zone_fqdn
-  source = var.dns_source
-  type = "SRV"
-  ttl = var.ttl
+  source    = var.dns_source
+  type      = "SRV"
+  ttl       = var.ttl
   data = {
-    target = var.target
+    target   = var.target
     priority = var.priority
-    weight = var.weight
-    port = var.port
+    weight   = var.weight
+    port     = var.port
   }
 }

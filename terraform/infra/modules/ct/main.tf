@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     proxmox = {
-      source = "bpg/proxmox"
+      source  = "bpg/proxmox"
       version = "0.85.1"
     }
   }
@@ -19,7 +19,7 @@ resource "proxmox_virtual_environment_container" "ct" {
     hostname = var.name
     user_account {
       password = var.init_user_password
-      keys = var.init_ssh_keys
+      keys     = var.init_ssh_keys
     }
 
     ip_config {
@@ -41,7 +41,7 @@ resource "proxmox_virtual_environment_container" "ct" {
 
   memory {
     dedicated = var.memory
-    swap = var.swap
+    swap      = var.swap
   }
 
   operating_system {
@@ -50,7 +50,7 @@ resource "proxmox_virtual_environment_container" "ct" {
   }
 
   network_interface {
-    name = var.network_interface_name
+    name   = var.network_interface_name
     bridge = var.network_interface_bridge
   }
 
@@ -69,9 +69,9 @@ data "external" "container_ip" {
 output "container" {
   value = {
     "id" : proxmox_virtual_environment_container.ct.id
-    "ip": var.use_dhcp ? data.external.container_ip[0].result.ip : split("/",proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username": "root"
-    "name": var.name
+    "ip" : var.use_dhcp ? data.external.container_ip[0].result.ip : split("/", proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
+    "username" : "root"
+    "name" : var.name
     "hostname" = "${var.name}${var.domain_name != "" ? ".${var.domain_name}" : ""}"
   }
 }

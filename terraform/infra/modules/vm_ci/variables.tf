@@ -36,7 +36,7 @@ variable "agent_enable" {
 }
 
 variable "formated_prometheus_extra_labels" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
@@ -45,7 +45,7 @@ variable "image_storage_name" {
 }
 
 variable "enable_usb" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "usb_host" {
@@ -60,7 +60,7 @@ variable "iso_filename" {
 }
 
 variable "cpu_architecture" {
-  type = string
+  type    = string
   default = "x86_64"
 }
 
@@ -73,7 +73,7 @@ variable "attached_disk" {
     datastore_id = string
     interface    = string
     disk_size    = number
-    iothread = bool
+    iothread     = bool
   }))
   default = []
 }
@@ -81,6 +81,6 @@ variable "attached_disk" {
 variable "user_data_file_id" {
 }
 variable "domain_name" {
-  type = string
+  type    = string
   default = ""
 }
