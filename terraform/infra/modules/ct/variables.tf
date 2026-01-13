@@ -28,19 +28,19 @@ variable "network_interface_bridge" {}
 
 
 variable "use_dhcp" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "ip" {
-  type      = string
-  default   = null
-  nullable  = true
+  type     = string
+  default  = null
+  nullable = true
 
 }
 variable "gateway" {
-  type      = string
-  default   = null
-  nullable  = true
+  type     = string
+  default  = null
+  nullable = true
 }
 variable "volume_name" {
   default = "local-lvm"
@@ -49,6 +49,6 @@ variable "volume_name" {
 # }
 
 variable "domain_name" {
-  type = string
+  type    = string
   default = ""
 }

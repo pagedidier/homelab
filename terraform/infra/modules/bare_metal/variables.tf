@@ -8,6 +8,6 @@ variable "port" {
   default = 22
 }
 variable "domain_name" {
-  type = string
+  type    = string
   default = ""
 }

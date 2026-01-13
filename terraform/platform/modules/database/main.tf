@@ -7,7 +7,7 @@ resource "random_password" "password" {
   special = true
   upper   = true
   lower   = true
-  numeric  = true
+  numeric = true
 }
 
 resource "mysql_user" "user" {

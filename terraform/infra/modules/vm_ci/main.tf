@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     proxmox = {
-      source = "bpg/proxmox"
+      source  = "bpg/proxmox"
       version = "0.85.1"
     }
   }
@@ -9,7 +9,7 @@ terraform {
 
 locals {
   formated_prometheus_extra_labels = join(",", [for k, v in var.formated_prometheus_extra_labels : "${k}:${v}"])
-  description = <<-EOT
+  description                      = <<-EOT
     formated_prometheus_extra_labels: ${local.formated_prometheus_extra_labels}
   EOT
 }
@@ -50,7 +50,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   cpu {
     cores = var.nb_cpus
-    type = "host"
+    type  = "host"
     #architecture = var.cpu_architecture
   }
 
@@ -62,8 +62,8 @@ resource "proxmox_virtual_environment_vm" "vm" {
     type = "l26"
   }
 
-  reboot_after_update= false
-  migrate = true
+  reboot_after_update = false
+  migrate             = true
 
   disk {
     datastore_id = var.volume_name
@@ -106,10 +106,10 @@ resource "proxmox_virtual_environment_vm" "vm" {
 }
 output "vm" {
   value = {
-    "id": proxmox_virtual_environment_vm.vm.id
-    "ip": split("/",proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username": var.init_user_username
-    "name": proxmox_virtual_environment_vm.vm.name,
+    "id" : proxmox_virtual_environment_vm.vm.id
+    "ip" : split("/", proxmox_virtual_environment_vm.vm.initialization[0].ip_config[0].ipv4[0].address)[0],
+    "username" : var.init_user_username
+    "name" : proxmox_virtual_environment_vm.vm.name,
     "hostname" = "${proxmox_virtual_environment_vm.vm.name}${var.domain_name != "" ? ".${var.domain_name}" : ""}"
   }
 }
