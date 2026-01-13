@@ -57,6 +57,22 @@ The focus in this repository is to split the infrastructure in layers where each
  - Local CI/CD execution with gitlabrunners
  - Ansible configuration of k8s and docker runtime
 
+## Usage
+Installing pre-commit
+
+macOS (using Homebrew)
+```bash
+brew install pre-commit
+```
+Linux
+```bash
+pip install --user pre-commit
+```
+Set up pre-commit in your repository
+```bash
+pre-commit install
+```
+
 
 ## Todo
  - Checkout the current open [issues](https://gitlab.com/two-p/homelab/-/issues)
