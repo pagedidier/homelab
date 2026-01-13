@@ -19,7 +19,8 @@ spec:
         - name: plex
           image: lscr.io/linuxserver/plex:latest
           ports:
-            - containerPort: 32400
+            - name: app-port
+              containerPort: 32400
           env:
             - name: TZ
               value: Europe/Zurich
