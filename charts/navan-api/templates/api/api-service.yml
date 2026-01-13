@@ -7,6 +7,6 @@ spec:
     app:  {{ .Chart.Name }}-api-{{ .Values.environment }}
   type:  ClusterIP
   ports:
-    - name:  http
+    - name:  service-api-port
       port:  80
       targetPort: api-port

@@ -17,4 +17,4 @@ spec:
               service:
                 name: {{ .Chart.Name }}-api-service-{{ .Values.environment }}
                 port:
-                  number: 80
+                  name: service-api-port
