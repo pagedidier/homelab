@@ -5,7 +5,9 @@ version: ""
 projectName: "autodel"
 domain: ""
 
-apu:
+entrypoint: "web-private"
+
+api:
   replicas: 1
   resources:
     memory:
