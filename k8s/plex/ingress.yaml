@@ -5,6 +5,7 @@ metadata:
   namespace: plex
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: web-private
 spec:
   rules:
     - host: plex.twop.ch
@@ -16,4 +17,4 @@ spec:
               service:
                 name: plex
                 port:
-                  number: 80
+                  name: service-port

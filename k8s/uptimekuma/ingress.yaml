@@ -5,6 +5,7 @@ metadata:
   namespace: uptimekuma
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: web-private
 spec:
   rules:
     - host: uptimekuma.twop.ch
@@ -16,4 +17,4 @@ spec:
               service:
                 name: uptimekuma
                 port:
-                  number: 80
+                  name: service-port
