@@ -35,7 +35,7 @@ resource "infomaniak_record" "twop_uptimekuma" {
   source = "uptimekuma"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.public.twop.ch"
+  target = "proxy01.private.twop.ch"
 }
 
 resource "infomaniak_record" "twop_checkmk" {
@@ -139,7 +139,7 @@ resource "infomaniak_record" "autodel" {
   source = "autodel"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.public.twop.ch"
+  target = "proxy01.private.twop.ch"
 }
 
 resource "infomaniak_record" "audiobookshelf" {
@@ -147,7 +147,7 @@ resource "infomaniak_record" "audiobookshelf" {
   source = "audio"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.public.twop.ch"
+  target = "proxy01.private.twop.ch"
 }
 
 resource "infomaniak_record" "plex" {
@@ -155,5 +155,5 @@ resource "infomaniak_record" "plex" {
   source = "plex"
   type = "CNAME"
   ttl = "300"
-  target = "proxy01.public.twop.ch"
+  target = "proxy01.private.twop.ch"
 }
