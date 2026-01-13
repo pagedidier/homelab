@@ -48,6 +48,9 @@ resource "proxmox_virtual_environment_vm" "vm" {
     type = "l26"
   }
 
+  reboot_after_update= false
+  migrate = true
+
   disk {
     datastore_id = var.volume_name
     file_id      = "${var.image_storage_name}:iso/${var.iso_filename}"
