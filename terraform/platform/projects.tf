@@ -1,48 +1,48 @@
 module "timer" {
-  source = "./modules/project"
+  source            = "./modules/project"
   gitlab_project_id = 57345278
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "timer"
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "timer"
 }
 
 module "navan" {
-  source = "./modules/project"
+  source            = "./modules/project"
   gitlab_project_id = 61487434
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "navan"
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "navan"
 }
 
 module "navan-api" {
-  source = "./modules/project"
+  source            = "./modules/project"
   gitlab_project_id = 71696511
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "navan-api"
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "navan-api"
 }
 
 
 module "todo" {
-  source = "./modules/project"
+  source            = "./modules/project"
   gitlab_project_id = 40519341
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "todo"
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "todo"
 }
 
 module "auth" {
-  source = "./modules/project"
+  source            = "./modules/project"
   gitlab_project_id = 40847160
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "auth"
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "auth"
 }
 
 module "autodel" {
-  source = "./modules/project"
+  source            = "./modules/project"
   gitlab_project_id = 77042100
-  registry_server = var.registry_server
-  domain_name      = var.domain_name
-  project_name = "autodel"
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "autodel"
 }

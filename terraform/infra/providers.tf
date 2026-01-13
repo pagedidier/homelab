@@ -2,7 +2,7 @@ terraform {
   backend "http" {}
   required_providers {
     proxmox = {
-      source = "bpg/proxmox"
+      source  = "bpg/proxmox"
       version = "0.85.1"
     }
     null = {
@@ -14,7 +14,7 @@ terraform {
       version = "1.3.1"
     }
     time = {
-      source = "hashicorp/time"
+      source  = "hashicorp/time"
       version = "0.13.1"
     }
   }
@@ -48,7 +48,7 @@ provider "proxmox" {
   password = var.pvc["pvc01"].proxmox_password
   insecure = true
   ssh {
-    agent = true
+    agent       = true
     username    = var.pvc["pvc01"].proxmox_ssh_user
     private_key = file(var.pvc["pvc01"].proxmox_ssh_key_path)
   }

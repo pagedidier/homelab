@@ -3,7 +3,7 @@ resource "helm_release" "kubernetes_dashboard" {
   repository = "https://kubernetes.github.io/dashboard/"
   chart      = "kubernetes-dashboard"
 
-  namespace  = "kubernetes-dashboard"
+  namespace        = "kubernetes-dashboard"
   create_namespace = true
 }
 
@@ -33,10 +33,10 @@ resource "kubernetes_cluster_role_binding" "admin_user" {
 }
 
 resource "helm_release" "vault" {
-  name       = "vault"
-  repository = "https://helm.releases.hashicorp.com"
-  chart      = "vault"
-  namespace  = "vault"
+  name             = "vault"
+  repository       = "https://helm.releases.hashicorp.com"
+  chart            = "vault"
+  namespace        = "vault"
   create_namespace = true
 
   set {
@@ -47,8 +47,8 @@ resource "helm_release" "vault" {
 
 resource "kubernetes_secret" "vault_token" {
   metadata {
-    name = "vault-token-g955r"
-    namespace  = "vault"
+    name      = "vault-token-g955r"
+    namespace = "vault"
     annotations = {
       "kubernetes.io/service-account.name" = "vault"
     }

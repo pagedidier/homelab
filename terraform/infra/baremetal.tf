@@ -1,19 +1,19 @@
 module "proxmox11" {
   source = "./modules/bare_metal_proxmox"
 
-  hostname = "proxmox11"
-  ip       = "192.168.0.211"
-  username = "root"
+  hostname    = "proxmox11"
+  ip          = "192.168.0.211"
+  username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "proxmox11" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.proxmox11.proxmox.name
-  type = "A"
-  ttl = 300
-  target = module.proxmox11.proxmox.ip
+  source    = module.proxmox11.proxmox.name
+  type      = "A"
+  ttl       = 300
+  target    = module.proxmox11.proxmox.ip
 }
 
 # module "proxmox21" {
@@ -39,125 +39,125 @@ resource "infomaniak_record" "proxmox11" {
 module "proxmox12" {
   source = "./modules/bare_metal_proxmox"
 
-  hostname = "proxmox12"
-  ip       = "192.168.0.212"
-  username = "root"
+  hostname    = "proxmox12"
+  ip          = "192.168.0.212"
+  username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "proxmox12" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.proxmox12.proxmox.name
-  type = "A"
-  ttl = 300
-  target = module.proxmox12.proxmox.ip
+  source    = module.proxmox12.proxmox.name
+  type      = "A"
+  ttl       = 300
+  target    = module.proxmox12.proxmox.ip
 }
 
 module "proxmox13" {
   source = "./modules/bare_metal_proxmox"
 
-  hostname = "proxmox13"
-  ip       = "192.168.0.213"
-  username = "root"
+  hostname    = "proxmox13"
+  ip          = "192.168.0.213"
+  username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "proxmox13" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.proxmox13.proxmox.name
-  type = "A"
-  ttl = 300
-  target = module.proxmox13.proxmox.ip
+  source    = module.proxmox13.proxmox.name
+  type      = "A"
+  ttl       = 300
+  target    = module.proxmox13.proxmox.ip
 }
 
 module "pbs01" {
   source = "./modules/bare_metal"
 
-  hostname = "pbs01"
-  ip       = "192.168.0.214"
-  username = "root"
+  hostname    = "pbs01"
+  ip          = "192.168.0.214"
+  username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "pbs01" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.pbs01.server.name
-  type = "A"
-  ttl = 300
-  target = module.pbs01.server.ip
+  source    = module.pbs01.server.name
+  type      = "A"
+  ttl       = 300
+  target    = module.pbs01.server.ip
 }
 
 module "proxy01" {
-  source = "./modules/bare_metal"
-  hostname = "proxy01"
-  ip       = "192.168.0.20"
-  username = "dpage"
-  port = 5789
+  source      = "./modules/bare_metal"
+  hostname    = "proxy01"
+  ip          = "192.168.0.20"
+  username    = "dpage"
+  port        = 5789
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "proxy01" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.proxy01.server.name
-  type = "A"
-  ttl = 300
-  target = module.proxy01.server.ip
+  source    = module.proxy01.server.name
+  type      = "A"
+  ttl       = 300
+  target    = module.proxy01.server.ip
 }
 
 module "nas01" {
-  source = "./modules/bare_metal"
-  hostname = "nas01"
-  ip       = "192.168.0.29"
-  username = "root"
-  port = 22
+  source      = "./modules/bare_metal"
+  hostname    = "nas01"
+  ip          = "192.168.0.29"
+  username    = "root"
+  port        = 22
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "nas01" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.nas01.server.name
-  type = "A"
-  ttl = 300
-  target = module.nas01.server.ip
+  source    = module.nas01.server.name
+  type      = "A"
+  ttl       = 300
+  target    = module.nas01.server.ip
 }
 
 module "vps01" {
   source = "./modules/bare_metal"
 
-  hostname = "vps01"
-  ip       = "83.228.212.138"
-  username = "ansible"
+  hostname    = "vps01"
+  ip          = "83.228.212.138"
+  username    = "ansible"
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "vps01" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.vps01.server.name
-  type = "A"
-  ttl = 300
-  target = module.vps01.server.ip
+  source    = module.vps01.server.name
+  type      = "A"
+  ttl       = 300
+  target    = module.vps01.server.ip
 }
 
 module "vps01-ovh" {
   source = "./modules/bare_metal"
 
-  hostname = "vps01.ovh"
-  ip       = "91.134.132.21"
-  username = "ubuntu"
+  hostname    = "vps01.ovh"
+  ip          = "91.134.132.21"
+  username    = "ubuntu"
   domain_name = infomaniak_zone.twop.fqdn
 
 }
 
 resource "infomaniak_record" "vps01-ovh" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source = module.vps01-ovh.server.name
-  type = "A"
-  ttl = 300
-  target = module.vps01-ovh.server.ip
+  source    = module.vps01-ovh.server.name
+  type      = "A"
+  ttl       = 300
+  target    = module.vps01-ovh.server.ip
 }

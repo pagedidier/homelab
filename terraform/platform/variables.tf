@@ -12,9 +12,9 @@ variable "vault_addr" {}
 
 variable "database" {
   type = map(object({
-    endpoint     = string
-    username     = string
-    password     = string
+    endpoint = string
+    username = string
+    password = string
   }))
 }
 variable "infomaniak_token" {
