@@ -4,53 +4,53 @@ locals {
 
 module "dns_twop_node_exporter" {
   for_each   = toset(local.inventory["roles"]["node_exporter"])
-  source = "./modules/dns/srv"
-  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  source     = "./modules/dns/srv"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
   dns_source = "_node-exporter"
-  target = each.key
-  port = 9100
+  target     = each.key
+  port       = 9100
 }
 
 module "dns_twop_graphite_exporter" {
   for_each   = toset(local.inventory["roles"]["graphite_exporter"])
-  source = "./modules/dns/srv"
-  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  source     = "./modules/dns/srv"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
   dns_source = "_graphite-exporter"
-  target = each.key
-  port = 9108
+  target     = each.key
+  port       = 9108
 }
 
 module "dns_twop_ceph_exporter" {
-  for_each   = toset(concat(local.inventory["roles"]["ceph_exporter"],local.inventory["roles"]["microceph_exporter"]))
-  source = "./modules/dns/srv"
-  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  for_each   = toset(concat(local.inventory["roles"]["ceph_exporter"], local.inventory["roles"]["microceph_exporter"]))
+  source     = "./modules/dns/srv"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
   dns_source = "_ceph-exporter"
-  target = each.key
-  port = 9128
+  target     = each.key
+  port       = 9128
 }
 
 
 module "dns_twop_cadvisor_lxc" {
   for_each   = toset(local.inventory["roles"]["cadvisor/lxc"])
-  source = "./modules/dns/srv"
-  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  source     = "./modules/dns/srv"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
   dns_source = "_cadvisor-lxc"
-  target = each.key
-  port = 9163
+  target     = each.key
+  port       = 9163
 }
 
 module "dns_twop_cadvisor_docker" {
   for_each   = toset(local.inventory["roles"]["cadvisor/docker"])
-  source = "./modules/dns/srv"
-  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  source     = "./modules/dns/srv"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
   dns_source = "_cadvisor-docker"
-  target = each.key
-  port = 9192
+  target     = each.key
+  port       = 9192
 }
 
 module "dns_twop_blackbox_exporter" {
-  source = "./modules/dns/srv_list"
-  zone_fqdn = infomaniak_zone._tcp_twop.fqdn
+  source     = "./modules/dns/srv_list"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
   dns_source = "_blackbox-exporter"
   targets = [
     "grafana.twop.ch",

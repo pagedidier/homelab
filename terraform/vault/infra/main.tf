@@ -4,14 +4,14 @@ resource "vault_auth_backend" "gitlab_repository" {
 }
 
 module "gameserverrental" {
-  source = "./modules/vault/role/repos"
-  repo_name = "gameserverrental"
-  auth_path = vault_auth_backend.gitlab_repository.path
-  vault_addr = var.vault_addr
+  source       = "./modules/vault/role/repos"
+  repo_name    = "gameserverrental"
+  auth_path    = vault_auth_backend.gitlab_repository.path
+  vault_addr   = var.vault_addr
   gitlab_group = "two-p"
   extra_policies = [
     {
-      path= "/kubernetes/*"
+      path        = "/kubernetes/*"
       capabilites = ["read"]
     }
   ]

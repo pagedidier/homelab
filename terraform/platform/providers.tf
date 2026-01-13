@@ -2,11 +2,11 @@ terraform {
   backend "http" {}
   required_providers {
     gitlab = {
-      source = "gitlabhq/gitlab"
+      source  = "gitlabhq/gitlab"
       version = "17.0.1"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "2.38.0"
     }
     docker = {
@@ -14,11 +14,11 @@ terraform {
       version = "3.6.2"
     }
     mysql = {
-      source = "petoju/mysql"
+      source  = "petoju/mysql"
       version = "~> 3.0.72"
     }
     vault = {
-      source = "hashicorp/vault"
+      source  = "hashicorp/vault"
       version = "5.3.0"
     }
     infomaniak = {
@@ -52,12 +52,12 @@ provider "docker" {
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
+  config_path = "~/.kube/config"
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/k3s_dev"
-  alias    = "k3s_dev"
+  config_path = "~/.kube/k3s_dev"
+  alias       = "k3s_dev"
 }
 provider "helm" {
   kubernetes {
@@ -69,10 +69,10 @@ provider "helm" {
   kubernetes {
     config_path = "~/.kube/k3s_dev"
   }
-  alias    = "k3s_dev"
+  alias = "k3s_dev"
 }
 
 provider "vault" {
   address = var.vault_addr
-  token = var.vault_token
+  token   = var.vault_token
 }

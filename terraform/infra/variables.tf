@@ -1,10 +1,10 @@
 variable "init_user_password" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "init_user_username" {
-  type = string
+  type    = string
   default = ""
 }
 

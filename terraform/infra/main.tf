@@ -1,4 +1,4 @@
 locals {
-  environments = ["dev","staging","prod"]
+  environments = ["dev", "staging", "prod"]
 }
 
