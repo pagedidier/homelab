@@ -4,6 +4,7 @@ version: ""
 
 projectName: "timer"
 domain: ""
+entrypoint: "web-private"
 
 webapp:
   replicas: 1

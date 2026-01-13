@@ -4,6 +4,7 @@ version: ""
 
 projectName: "todo"
 domain: ""
+entrypoint: "web-private"
 
 api:
   replicas: 1

@@ -4,6 +4,7 @@ metadata:
   name: {{ .Chart.Name }}-api-ingress-{{ .Values.environment }}
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ .Values.entrypoint }}
 spec:
   rules:
     - host: "{{ .Values.domain }}"
@@ -15,4 +16,4 @@ spec:
               service:
                 name: {{ .Chart.Name }}-api-service-{{ .Values.environment }}
                 port:
-                  number: 80
+                  name: service-api-port
