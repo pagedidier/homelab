@@ -71,10 +71,8 @@ frontend web_public
 
   http-request redirect scheme https unless { ssl_fc }
 
-  acl host_transmission.twop.ch hdr_dom(host) transmission.twop.ch
-
-  use_backend transmission if host_transmission.twop.ch
-  use_backend %[req.hdr(host),map(virt@web.map,swarm_prod_traefik-web)]
+  use_backend %[req.hdr(host),map(virt@web.map)]
+  default_backend default_404
 
 frontend web_private
   mode http
@@ -87,17 +85,16 @@ frontend web_private
   acl host_pvc01.twop.ch hdr_dom(host) pvc01.twop.ch
   acl host_pvc02.twop.ch hdr_dom(host) pvc02.twop.ch
   acl host_pbc01.twop.ch hdr_dom(host) pbc01.twop.ch
-
-  acl host_k3s.prod.twop.ch hdr_dom(host) k3s.prod.twop.ch
-  acl host_timer.dev.twop.ch hdr_dom(host) timer.dev.twop.ch
-
+  acl host_transmission.twop.ch hdr_dom(host) transmission.twop.ch
 
   use_backend pvc01 if host_pvc01.twop.ch
   use_backend pvc02 if host_pvc02.twop.ch
   use_backend pbc01 if host_pbc01.twop.ch
-  use_backend k3s_prod_traefik-web if host_timer.dev.twop.ch
-  use_backend k3s_prod_traefik-web if host_k3s.prod.twop.ch
-  use_backend %[req.hdr(host),map(virt@web-private.map,swarm_prod_traefik-web-private)]
+  use_backend transmission if host_transmission.twop.ch
+
+  use_backend %[req.hdr(host),map(virt@web-private.map)]
+
+  default_backend default_404
 
 backend k3s_prod_api
   mode tcp
@@ -180,3 +177,6 @@ backend pbc01
   cookie SERVER indirect nocache insert
   server pbs01 192.168.0.214:8007 ssl verify none check port 8007 inter 5s rise 2 fall 2 cookie proxmox_backup_servers
 
+backend default_404
+  mode http
+  http-request return status 404 content-type text/plain lf-string "404 Not Found (nlb)"
