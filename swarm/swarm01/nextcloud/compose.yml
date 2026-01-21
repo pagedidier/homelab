@@ -8,7 +8,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.nextcloud.rule=Host(`nxtcld.twop.ch`)"
-        - "traefik.http.routers.nextcloud.entrypoints=web"
+        - "traefik.http.routers.nextcloud.entrypoints=web-private"
         - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
         - "homepage.group=Media"
         - "homepage.name=NextCloud"
