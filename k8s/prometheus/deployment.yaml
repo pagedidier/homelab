@@ -2,17 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus-deployment
+  namespace: prometheus
   labels:
-    app: prometheus-server
+    app: prometheus
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus-server
+      app: prometheus
   template:
     metadata:
       labels:
-        app: prometheus-server
+        app: prometheus
     spec:
       containers:
         - name: prometheus
@@ -22,7 +23,8 @@ spec:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus/"
           ports:
-            - containerPort: 9090
+            - name: app-port
+              containerPort: 9090
           resources:
             requests:
               cpu: 500m
@@ -39,7 +41,7 @@ spec:
         - name: prometheus-config-volume
           configMap:
             defaultMode: 420
-            name: prometheus-server-conf
+            name: prometheus-conf
   
         - name: prometheus-storage-volume
           emptyDir: {}
