@@ -157,3 +157,35 @@ resource "infomaniak_record" "plex" {
   ttl       = "300"
   target    = "proxy01.private.twop.ch"
 }
+
+resource "infomaniak_record" "twop_prometheus_k3s_prod" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "prometheus.k3s.prod"
+  type      = "CNAME"
+  ttl       = "300"
+  target    = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_prometheus_prod" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "prometheus.prod"
+  type      = "CNAME"
+  ttl       = "300"
+  target    = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_nextcloud" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "nxtcld"
+  type      = "CNAME"
+  ttl       = "300"
+  target    = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_transmission" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "transmission"
+  type      = "CNAME"
+  ttl       = "300"
+  target    = "proxy01.private.twop.ch"
+}
