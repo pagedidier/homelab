@@ -71,3 +71,16 @@ scrape_configs:
         regex: (.*)
         replacement: https://$1
         target_label: __param_target
+
+  - job_name: 'federation'
+    metrics_path: "/federate"
+    honor_labels: true
+    scrape_interval: 30s
+    scrape_timeout: 30s
+    scheme: https
+    params:
+      'match[]':
+        - '{job=~".+"}'
+    static_configs:
+      - targets:
+          - "prometheus.k3s.prod.twop.ch"
