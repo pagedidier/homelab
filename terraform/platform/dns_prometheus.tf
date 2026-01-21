@@ -65,3 +65,13 @@ module "dns_twop_blackbox_exporter" {
   ]
   port = 443
 }
+
+module "dns_twop_prometheus_federation" {
+  source     = "./modules/dns/srv_list"
+  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
+  dns_source = "_prometheus-federation"
+  targets = [
+    "prometheus.k3s.prod.twop.ch",
+  ]
+  port = 443
+}
