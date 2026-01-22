@@ -25,7 +25,7 @@ stages:
   - terraform init -backend-config=backend-config.json
   - apk add --no-cache openssh
   - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - echo "$SSH_PRIVATE_KEY" | base64 -d | tr -d '\r' | ssh-add -
 
 .default_terraform_setup_plateform: &terraform_setup_plateform
   - cd terraform/platform
