@@ -16,3 +16,17 @@ module "gameserverrental" {
     }
   ]
 }
+
+module "homelab" {
+  source       = "./modules/vault/role/repos"
+  repo_name    = "homelab"
+  auth_path    = vault_auth_backend.gitlab_repository.path
+  vault_addr   = var.vault_addr
+  gitlab_group = "two-p"
+  extra_policies = [
+    {
+      path        = "/kubernetes/*"
+      capabilites = ["read"]
+    }
+  ]
+}
