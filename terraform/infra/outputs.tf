@@ -62,7 +62,6 @@ output "inventory" {
     ]
     "vps" : [
       module.vps01.server,
-      module.vps01-ovh.server
     ]
   }
 }
