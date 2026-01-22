@@ -20,6 +20,7 @@ terraform {
   }
 }
 
+
 provider "infomaniak" {
   token = var.infomaniak_token
 }
