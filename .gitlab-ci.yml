@@ -10,9 +10,9 @@ stages:
 .default_terraform_setup_infra: &terraform_setup_infra
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
   - cd terraform/infra
-  - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
+  - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend-config.json
   - export TF_CLI_CONFIG_FILE=".terraform.rc"
-  - terraform init -backend-config=backend.hcl
+  - terraform init -backend-config=backend-config.json
   - mkdir -p ~/.ssh
   - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
   - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
@@ -20,8 +20,8 @@ stages:
 .default_terraform_setup_plateform: &terraform_setup_plateform
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
   - cd terraform/platform
-  - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend.hcl
-  - terraform init -backend-config=backend.hcl
+  - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend-config.json
+  - terraform init -backend-config=backend-config.json
   - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
   - mkdir -p ~/.kube
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
@@ -136,8 +136,8 @@ deploy-ansible:
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" > ~/.ssh/config
     - cd terraform/infra
-    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend.hcl
-    - terraform init -backend-config=backend.hcl
+    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend-config.json
+    - terraform init -backend-config=backend-config.json
     - cd ../../ansible
     - sh generate_inventory.sh
     - chmod o-w .
