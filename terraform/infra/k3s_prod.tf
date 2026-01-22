@@ -16,6 +16,8 @@ module "k3s-server01-prod" {
 
 }
 
+
+
 resource "infomaniak_record" "k3s-server01-prod" {
   zone_fqdn = infomaniak_zone.twop.fqdn
   source    = module.k3s-server01-prod.vm.name

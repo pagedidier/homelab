@@ -18,7 +18,7 @@ stages:
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform curl unzip jq
 
 .get_vault_secrets: &get_vault_secrets
-  - ./ci/retrieve_secrets.sh $CI_PROJECT_NAME
+  - ./.ci/retrieve_secrets.sh homelab
 
 .default_terraform_setup_infra: &terraform_setup_infra
   - cd terraform/infra

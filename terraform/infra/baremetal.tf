@@ -16,26 +16,6 @@ resource "infomaniak_record" "proxmox11" {
   target    = module.proxmox11.proxmox.ip
 }
 
-# module "proxmox21" {
-#   source = "./modules/bare_metal_proxmox"
-#
-#   hostname = "proxmox21"
-#   ip       = "51.154.10.38"
-#   username = "dpage"
-#   port = 5789
-#   providers = {
-#     proxmox = proxmox.pvc02,
-#   }
-# }
-
-# resource "infomaniak_record" "proxmox21" {
-#   zone_fqdn = infomaniak_zone.twop.fqdn
-#   source = module.proxmox21.proxmox.name
-#   type = "A"
-#   ttl = 300
-#   target = module.proxmox21.proxmox.ip
-# }
-
 module "proxmox12" {
   source = "./modules/bare_metal_proxmox"
 
@@ -142,22 +122,4 @@ resource "infomaniak_record" "vps01" {
   type      = "A"
   ttl       = 300
   target    = module.vps01.server.ip
-}
-
-module "vps01-ovh" {
-  source = "./modules/bare_metal"
-
-  hostname    = "vps01.ovh"
-  ip          = "91.134.132.21"
-  username    = "ubuntu"
-  domain_name = infomaniak_zone.twop.fqdn
-
-}
-
-resource "infomaniak_record" "vps01-ovh" {
-  zone_fqdn = infomaniak_zone.twop.fqdn
-  source    = module.vps01-ovh.server.name
-  type      = "A"
-  ttl       = 300
-  target    = module.vps01-ovh.server.ip
 }
