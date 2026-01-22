@@ -7,28 +7,37 @@ stages:
   - deploy
   - ansible
 
+.install_vault: &install_vault
+  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform curl unzip jq
+  - curl -fsSL https://releases.hashicorp.com/vault/1.21.1/vault_1.21.1_linux_amd64.zip -o vault.zip
+  - unzip vault.zip
+  - mv vault /usr/local/bin/
+  - vault login -no-print $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
+
+.install_terraform: &install_terraform
+  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform curl unzip jq
+
+.get_vault_secrets: &get_vault_secrets
+  - ./ci/retrieve_secrets.sh $CI_PROJECT_NAME
+
 .default_terraform_setup_infra: &terraform_setup_infra
-  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
   - cd terraform/infra
-  - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend-config.json
-  - export TF_CLI_CONFIG_FILE=".terraform.rc"
   - terraform init -backend-config=backend-config.json
   - mkdir -p ~/.ssh
   - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
-  - echo "$TF_VARIABLES_INFRA" | base64 -d > variables.auto.tfvars.json
 
 .default_terraform_setup_plateform: &terraform_setup_plateform
-  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
   - cd terraform/platform
-  - echo "$TF_BACKEND_HCL_platform" | base64 -d > backend-config.json
   - terraform init -backend-config=backend-config.json
-  - echo "$TF_VARIABLES_PLATEFORM" | base64 -d > variables.auto.tfvars.json
   - mkdir -p ~/.kube
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
 
 validate_infra:
   stage: validate
   before_script:
+    - *install_vault
+    - *install_terraform
+    - *get_vault_secrets
     - *terraform_setup_infra
   script:
     - terraform validate
@@ -41,6 +50,9 @@ plan_infra:
   stage: plan
   needs: [validate_infra]
   before_script:
+    - *install_vault
+    - *install_terraform
+    - *get_vault_secrets
     - *terraform_setup_infra
   script:
     - terraform plan -out=tfplan
@@ -58,6 +70,9 @@ apply_infra:
   when: manual
   needs: [plan_infra]
   before_script:
+    - *install_vault
+    - *install_terraform
+    - *get_vault_secrets
     - *terraform_setup_infra
   script:
     - terraform apply -auto-approve tfplan
@@ -69,6 +84,9 @@ apply_infra:
 validate_platform:
   stage: validate
   before_script:
+    - *install_vault
+    - *install_terraform
+    - *get_vault_secrets
     - *terraform_setup_plateform
   script:
     - terraform validate
@@ -81,6 +99,9 @@ plan_platform:
   stage: plan
   needs: [validate_platform]
   before_script:
+    - *install_vault
+    - *install_terraform
+    - *get_vault_secrets
     - *terraform_setup_plateform
   script:
     - terraform plan -out=tfplan
@@ -98,6 +119,9 @@ apply_platform:
   when: manual
   needs: [plan_platform]
   before_script:
+    - *install_vault
+    - *install_terraform
+    - *get_vault_secrets
     - *terraform_setup_plateform
   script:
     - terraform apply -auto-approve tfplan
