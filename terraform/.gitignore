@@ -41,3 +41,4 @@ terraform.rc
 
 bkp
 backend.hcl
+backend-config.json
