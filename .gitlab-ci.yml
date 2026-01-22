@@ -23,8 +23,9 @@ stages:
 .default_terraform_setup_infra: &terraform_setup_infra
   - cd terraform/infra
   - terraform init -backend-config=backend-config.json
-  - mkdir -p ~/.ssh
-  - echo "$SSH_KEY" | base64 -d > ~/.ssh/private
+  - apk add --no-cache openssh
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
 .default_terraform_setup_plateform: &terraform_setup_plateform
   - cd terraform/platform

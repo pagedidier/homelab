@@ -48,8 +48,7 @@ provider "proxmox" {
   password = var.pvc["pvc01"].proxmox_password
   insecure = true
   ssh {
-    agent       = true
-    username    = var.pvc["pvc01"].proxmox_ssh_user
-    private_key = file(var.pvc["pvc01"].proxmox_ssh_key_path)
+    agent    = true
+    username = var.pvc["pvc01"].proxmox_ssh_user
   }
 }
