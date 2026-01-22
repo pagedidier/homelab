@@ -62,7 +62,7 @@ apply_infra:
   script:
     - terraform apply -auto-approve tfplan
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/infra/**
 
@@ -102,7 +102,7 @@ apply_platform:
   script:
     - terraform apply -auto-approve tfplan
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/platform/**
 
@@ -143,3 +143,14 @@ deploy-ansible:
     - chmod o-w .
   script:
     - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
+  needs:
+    - job: apply_infra
+      optional: true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - ansible/**/*
+    - if: '$CI_JOB_STATUS == "success"'
+      needs:
+        - apply_infra
+    - when: never
