@@ -22,7 +22,7 @@ stages:
   - vault login -no-print $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
 
 .install_terraform: &install_terraform
-  - curl -fsSL https://releases.hashicorp.com/terraform/1.14.3/vault_1.14.3_linux_amd64.zip -o terraform.zip
+  - curl -fsSL https://releases.hashicorp.com/terraform/1.14.3/terraform_1.14.3_linux_amd64.zip -o terraform.zip
   - unzip terraform.zip
   - mv terraform /usr/local/bin/
 
