@@ -26,6 +26,7 @@ module "test-ha" {
   domain_name = infomaniak_zone.twop.fqdn
 }
 
+
 resource "proxmox_virtual_environment_haresource" "test-ha-main" {
   depends_on = [
     proxmox_virtual_environment_hagroup.main

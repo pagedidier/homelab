@@ -1,11 +1,19 @@
 image: alpine:3.18
 
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
 stages:
   - validate
   - plan
-  - apply  
+  - apply
   - deploy
   - ansible
+
 
 .install_vault: &install_vault
   - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform curl unzip jq
@@ -43,13 +51,19 @@ validate_infra:
   script:
     - terraform validate
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - terraform/infra/**
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
         - terraform/infra/**
+    - when: never
+
+
 
 plan_infra:
   stage: plan
-  needs: [validate_infra]
+  needs: [ validate_infra ]
   before_script:
     - *install_vault
     - *install_terraform
@@ -62,14 +76,19 @@ plan_infra:
       - terraform/infra/tfplan
     expire_in: 1 hour
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/infra/**
+
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - terraform/infra/**
+    - when: never
 
 apply_infra:
   stage: apply
   when: manual
-  needs: [plan_infra]
+  needs: [ plan_infra ]
   before_script:
     - *install_vault
     - *install_terraform
@@ -78,9 +97,10 @@ apply_infra:
   script:
     - terraform apply -auto-approve tfplan
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/infra/**
+    - when: never
 
 validate_platform:
   stage: validate
@@ -92,13 +112,17 @@ validate_platform:
   script:
     - terraform validate
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - terraform/platform/**
     - if: '$CI_PIPELINE_SOURCE == "push"'
       changes:
         - terraform/platform/**
+    - when: never
 
 plan_platform:
   stage: plan
-  needs: [validate_platform]
+  needs: [ validate_platform ]
   before_script:
     - *install_vault
     - *install_terraform
@@ -111,14 +135,19 @@ plan_platform:
       - terraform/platform/tfplan
     expire_in: 1 hour
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/platform/**
+
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - terraform/platform/**
+    - when: never
 
 apply_platform:
   stage: apply
   when: manual
-  needs: [plan_platform]
+  needs: [ plan_platform ]
   before_script:
     - *install_vault
     - *install_terraform
@@ -127,9 +156,10 @@ apply_platform:
   script:
     - terraform apply -auto-approve tfplan
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/platform/**
+    - when: never
 
 deploy-chart:
   stage: deploy
