@@ -13,7 +13,6 @@ module "k3s-node1-dev" {
   disk_size          = 30
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
   domain_name        = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "k3s-node1-dev" {
@@ -23,7 +22,6 @@ resource "infomaniak_record" "k3s-node1-dev" {
   ttl       = 300
   target    = module.k3s-node1-dev.vm.ip
 }
-
 
 module "k3s-node2-dev" {
   source    = "./modules/vm_ci"
@@ -40,8 +38,6 @@ module "k3s-node2-dev" {
   disk_size          = 30
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
   domain_name        = infomaniak_zone.twop.fqdn
-
-
 }
 
 resource "infomaniak_record" "k3s-node2-dev" {
@@ -51,7 +47,6 @@ resource "infomaniak_record" "k3s-node2-dev" {
   ttl       = 300
   target    = module.k3s-node2-dev.vm.ip
 }
-
 
 module "k3s-node3-dev" {
   source    = "./modules/vm_ci"
@@ -68,8 +63,6 @@ module "k3s-node3-dev" {
   disk_size          = 30
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
   domain_name        = infomaniak_zone.twop.fqdn
-
-
 }
 
 resource "infomaniak_record" "k3s-node3-dev" {

@@ -8,11 +8,11 @@ module "test-ha" {
   node_name = module.proxmox12.proxmox_data.node_name
   node_ip   = module.proxmox12.proxmox.ip
 
-
   cpu_cores = 2
   disk_size = 20
   memory    = 2048
   swap      = 512
+  started   = false
 
   file_template_id      = "isos-templates:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst"
   operating_system_type = "ubuntu"
@@ -24,7 +24,6 @@ module "test-ha" {
   ip          = "192.168.100.10/16"
   volume_name = "vm-disks"
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "proxmox_virtual_environment_haresource" "test-ha-main" {
@@ -32,8 +31,7 @@ resource "proxmox_virtual_environment_haresource" "test-ha-main" {
     proxmox_virtual_environment_hagroup.main
   ]
   resource_id = "ct:${module.test-ha.container.id}"
-  state       = "started"
+  state       = "stopped"
   group       = proxmox_virtual_environment_hagroup.main.id
   comment     = "Managed by Terraform"
 }
-

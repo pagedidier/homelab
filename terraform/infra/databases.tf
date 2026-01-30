@@ -8,7 +8,6 @@ module "database-prod" {
   node_name = module.proxmox12.proxmox_data.node_name
   node_ip   = module.proxmox12.proxmox.ip
 
-
   cpu_cores = 2
   disk_size = 20
   memory    = 2048
@@ -24,7 +23,6 @@ module "database-prod" {
   ip          = "192.168.1.110/16"
   volume_name = "vm-disks"
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "database-prod" {

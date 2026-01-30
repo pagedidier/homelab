@@ -2,7 +2,6 @@ resource "proxmox_virtual_environment_hagroup" "main" {
   group   = "main"
   comment = "This is a comment."
 
-  # Member nodes, with or without priority.
   nodes = {
     (module.proxmox11.proxmox_data.node_name) = null
     (module.proxmox12.proxmox_data.node_name) = null

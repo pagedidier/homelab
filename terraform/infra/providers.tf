@@ -25,24 +25,6 @@ provider "infomaniak" {
   token = var.infomaniak_token
 }
 
-# provider "proxmox" {
-#   alias    = "pvc02"
-#   endpoint = var.pvc["pvc02"].proxmox_endpoint
-#   username = var.pvc["pvc02"].proxmox_username
-#   password = var.pvc["pvc02"].proxmox_password
-#   insecure = true
-#   ssh {
-#     agent = true
-#     username    = var.pvc["pvc02"].proxmox_ssh_user
-#     private_key = file(var.pvc["pvc02"].proxmox_ssh_key_path)
-#     node {
-#       name    = "proxmox21"
-#       address = "proxmox21.twop.ch"
-#       port = 5789
-#     }
-#   }
-# }
-
 provider "proxmox" {
   endpoint = var.pvc["pvc01"].proxmox_endpoint
   username = var.pvc["pvc01"].proxmox_username
