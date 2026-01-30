@@ -2,6 +2,8 @@
 - hosts: nlb
   become: yes
   vars:
+    geoblocking_ports: [ 80, 443 ]
+    geoblocking_trusted_network: 192.168.0.1/16
     keepalived_state: BACKUP
     keepalived_interface: eth0
     keepalived_virtual_router_id: 10
@@ -26,6 +28,10 @@
   roles:
     - common/package
     - users
+    - geoblocking
+    - role: node_exporter
+      tags:
+        - monitoring
     - role: keepalived
       tags:
         - main
