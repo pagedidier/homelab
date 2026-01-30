@@ -15,6 +15,8 @@ resource "proxmox_virtual_environment_container" "ct" {
     nesting = true
   }
 
+  started = var.started
+
   initialization {
     hostname = var.name
     user_account {

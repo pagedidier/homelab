@@ -7,6 +7,10 @@ variable "init_ssh_keys" {
 variable "node_name" {
 
 }
+variable "started" {
+  type    = bool
+  default = true
+}
 variable "node_ip" {}
 variable "name" {}
 

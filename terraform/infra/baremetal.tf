@@ -23,7 +23,6 @@ module "proxmox12" {
   ip          = "192.168.0.212"
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "proxmox12" {
@@ -41,7 +40,6 @@ module "proxmox13" {
   ip          = "192.168.0.213"
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "proxmox13" {
@@ -59,7 +57,6 @@ module "pbs01" {
   ip          = "192.168.0.214"
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "pbs01" {
@@ -77,7 +74,6 @@ module "proxy01" {
   username    = "dpage"
   port        = 5789
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "proxy01" {
@@ -95,7 +91,6 @@ module "nas01" {
   username    = "root"
   port        = 22
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "nas01" {
@@ -113,7 +108,6 @@ module "vps01" {
   ip          = "83.228.212.138"
   username    = "ansible"
   domain_name = infomaniak_zone.twop.fqdn
-
 }
 
 resource "infomaniak_record" "vps01" {

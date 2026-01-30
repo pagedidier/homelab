@@ -82,3 +82,8 @@ variable "domain_name" {
   type    = string
   default = ""
 }
+
+variable "main_disk_backup" {
+  type    = bool
+  default = true
+}

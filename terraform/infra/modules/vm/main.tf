@@ -58,6 +58,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
     iothread     = true
     discard      = "on"
     size         = var.disk_size
+    backup       = var.main_disk_backup
   }
 
   dynamic "disk" {

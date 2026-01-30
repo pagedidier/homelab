@@ -59,9 +59,6 @@ output "inventory" {
     "glrunners" : [
       module.glrunner.vm
     ]
-    # "geoblocking" : [
-    #   module.geoblocking.vm
-    # ]
     "vps" : [
       module.vps01.server,
     ]
