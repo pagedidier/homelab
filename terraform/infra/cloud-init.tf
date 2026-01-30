@@ -1,8 +1,3 @@
-data "local_file" "ssh_public_key" {
-  filename = var.pvc["pvc01"].proxmox_ssh_key_path
-}
-
-
 resource "proxmox_virtual_environment_file" "user_data_cloud_config" {
   content_type = "snippets"
   datastore_id = "isos-templates"
@@ -18,9 +13,9 @@ resource "proxmox_virtual_environment_file" "user_data_cloud_config" {
         groups:
           - sudo
         shell: /bin/bash
-        ssh_authorized_keys:
-          - ${trimspace(data.local_file.ssh_public_key.content)}
         sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          ${yamlencode(var.init_ssh_keys)}
     package_update: true
     packages:
       - qemu-guest-agent
