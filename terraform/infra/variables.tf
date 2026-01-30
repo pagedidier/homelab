@@ -14,13 +14,11 @@ variable "init_ssh_keys" {
 
 variable "infomaniak_token" {}
 
-
 variable "pvc" {
   type = map(object({
-    proxmox_endpoint     = string
-    proxmox_username     = string
-    proxmox_password     = string
-    proxmox_ssh_user     = string
-    proxmox_ssh_key_path = string
+    proxmox_endpoint = string
+    proxmox_username = string
+    proxmox_password = string
+    proxmox_ssh_user = string
   }))
 }
