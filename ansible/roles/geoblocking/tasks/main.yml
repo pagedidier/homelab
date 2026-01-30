@@ -52,8 +52,8 @@
       -A ufw-before-input -s {{ geoblocking_trusted_network }} -j ACCEPT
 
       # Log HTTP/HTTPS from non-CH IPs
-      -A ufw-before-input -p tcp -m multiport --dports {{ geoblocking_ports | join(',') }} -m geoip ! --src-cc CH -j LOG --log-prefix "GEOIP_DROP: " --log-level 4
+      -A ufw-before-input -p tcp -m multiport --dports {{ geoblocking_ports | join(',') }} -m geoip ! --src-cc {{ geoblocking_countries | join(' ') }} -j LOG --log-prefix "GEOIP_DROP: " --log-level 4
 
       # Drop HTTP/HTTPS from non-CH IPs
-      -A ufw-before-input -p tcp -m multiport --dports {{ geoblocking_ports | join(',') }} -m geoip ! --src-cc CH -j DROP
+      -A ufw-before-input -p tcp -m multiport --dports {{ geoblocking_ports | join(',') }} -m geoip ! --src-cc {{ geoblocking_countries | join(' ') }} -j DROP
   notify: Reload UFW
