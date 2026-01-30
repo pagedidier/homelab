@@ -1,0 +1,59 @@
+- name: Ensure xtables-addons-common is installed
+  ansible.builtin.package:
+    name: xtables-addons-common
+    state: present
+- name: Ensure geoip kernel module is loaded
+  ansible.builtin.modprobe:
+    name: xt_geoip
+    state: present
+
+- name: Ensure xt_geoip directory exists
+  ansible.builtin.file:
+    path: /usr/share/xt_geoip
+    state: directory
+    mode: '0755'
+
+- name: Download DB-IP GeoIP database
+  ansible.builtin.get_url:
+    url: https://download.db-ip.com/free/dbip-country-lite-2026-01.csv.gz
+    dest: /tmp/dbip-country-lite-2026-01.csv.gz
+    mode: '0644'
+
+- name: Uncompress GeoIP database
+  ansible.builtin.command:
+    cmd: gunzip -f /tmp/dbip-country-lite-2026-01.csv.gz
+    creates: /tmp/dbip-country-lite-2026-01.csv
+
+- name: Rename GeoIP database to expected filename
+  ansible.builtin.command:
+    cmd: mv /tmp/dbip-country-lite-2026-01.csv /tmp/dbip-country-lite.csv
+    creates: /tmp/dbip-country-lite.csv
+
+- name: Build xt_geoip database
+  ansible.builtin.command:
+    chdir: /tmp
+    cmd: /usr/libexec/xtables-addons/xt_geoip_build -D /usr/share/xt_geoip
+  notify: Reload UFW
+
+- name: Remove temporary GeoIP CSV file
+  ansible.builtin.file:
+    path: /tmp/dbip-country-lite.csv
+    state: absent
+
+- name: Add ordered GEOIP rules to ufw before.rules
+  ansible.builtin.blockinfile:
+    path: /etc/ufw/before.rules
+    marker: "# {mark} ANSIBLE GEOIP RULES"
+    insertbefore: '^COMMIT'
+    block: |
+      # Allow localhost
+      -A ufw-before-input -s 127.0.0.1/32 -j ACCEPT
+      
+      -A ufw-before-input -s {{ geoblocking_trusted_network }} -j ACCEPT
+
+      # Log HTTP/HTTPS from non-CH IPs
+      -A ufw-before-input -p tcp -m multiport --dports {{ geoblocking_ports | join(',') }} -m geoip ! --src-cc CH -j LOG --log-prefix "GEOIP_DROP: " --log-level 4
+
+      # Drop HTTP/HTTPS from non-CH IPs
+      -A ufw-before-input -p tcp -m multiport --dports {{ geoblocking_ports | join(',') }} -m geoip ! --src-cc CH -j DROP
+  notify: Reload UFW

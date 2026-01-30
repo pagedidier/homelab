@@ -1,7 +1,7 @@
 ---
 - name: reload haproxy
   service:
-    name: "{{ haproxy_service_name }}"
+    name: "haproxy"
     state: reloaded
   become: true
 
