@@ -14,16 +14,17 @@ stages:
   - deploy
   - ansible
 
-
 .install_vault: &install_vault
-  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform curl unzip jq
+  - apk add --no-cache curl unzip
   - curl -fsSL https://releases.hashicorp.com/vault/1.21.1/vault_1.21.1_linux_amd64.zip -o vault.zip
   - unzip vault.zip
   - mv vault /usr/local/bin/
   - vault login -no-print $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
 
 .install_terraform: &install_terraform
-  - apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform curl unzip jq
+  - curl -fsSL https://releases.hashicorp.com/terraform/1.14.3/vault_1.14.3_linux_amd64.zip -o terraform.zip
+  - unzip terraform.zip
+  - mv terraform /usr/local/bin/
 
 .get_vault_secrets: &get_vault_secrets
   - ./.ci/retrieve_secrets.sh homelab
