@@ -30,12 +30,12 @@
     state: present
   loop: "{{ users_list }}"
 
-- name: Set authorized SSH key if defined
+- name: Set authorized SSH keys if defined
   ansible.builtin.authorized_key:
-    user: "{{ item.name }}"
-    key: "{{ item.ssh_key }}"
-  when: item.ssh_key is defined
-  loop: "{{ users_list }}"
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+  loop: "{{ query('subelements', users_list, 'ssh_keys') }}"
+
 
 - name: Grant sudo privileges if requested
   ansible.builtin.copy:
