@@ -40,8 +40,7 @@ output "inventory" {
       }
     ]
     "nlb" : [
-      module.nlb01.container,
-      module.nlb02.container
+      module.nlb01_vm.vm,
     ]
     "databases" : [
       module.database-prod.container
@@ -60,6 +59,9 @@ output "inventory" {
     "glrunners" : [
       module.glrunner.vm
     ]
+    # "geoblocking" : [
+    #   module.geoblocking.vm
+    # ]
     "vps" : [
       module.vps01.server,
     ]
