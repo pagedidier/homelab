@@ -73,7 +73,6 @@
 
 - name: Build combined PEM for HAProxy (fullchain + privkey)
   shell: |
-    set -o pipefail
     cat "/etc/letsencrypt/live/{{ certbot_domains[0] }}/fullchain.pem" \
         "/etc/letsencrypt/live/{{ certbot_domains[0] }}/privkey.pem" \
         > "/etc/ssl/twop.ch.pem"
