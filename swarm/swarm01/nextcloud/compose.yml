@@ -17,11 +17,17 @@ services:
         - "homepage.description=NextCloud"
     restart: unless-stopped
     volumes:
-      - /mnt/cephfs/nextcloud:/var/www/html
+      - nextcloud:/var/www/html
 
     networks:
       - traefik_proxy
 
+volumes:
+  nextcloud:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.0.92,rw,nfsvers=3"
+      device: ":/mnt/main/swarm01/nextcloud"
 networks:
   traefik_proxy:
     external: true
