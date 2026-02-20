@@ -1,11 +1,11 @@
 services:
   traefik:
-    image: traefik:v3.5.1
+    image: traefik:v3.6.8
     command:
       - "--api.insecure=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.swarm.watch=true"
-#      - "--providers.kubernetesingress=true"
+      #      - "--providers.kubernetesingress=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web-private.address=:81"
       - "--entrypoints.websecure.address=:443"
