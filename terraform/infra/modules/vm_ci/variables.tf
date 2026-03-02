@@ -84,3 +84,13 @@ variable "domain_name" {
   type    = string
   default = ""
 }
+
+variable "tags" {
+  type        = list(string)
+  description = "List of tags/groups for Ansible inventory"
+}
+
+variable "port" {
+  default = 22
+  type    = number
+}

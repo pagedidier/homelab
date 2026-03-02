@@ -12,6 +12,8 @@ module "glrunner" {
   volume_name        = "vm-disks"
   domain_name        = infomaniak_zone.twop.fqdn
   main_disk_backup   = false
+  tags               = ["glrunners"]
+
 }
 
 resource "proxmox_virtual_environment_haresource" "glrunner-main" {

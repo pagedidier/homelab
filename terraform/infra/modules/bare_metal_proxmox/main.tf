@@ -17,6 +17,7 @@ output "proxmox" {
     "name" : var.hostname
     "hostname" = "${var.hostname}${var.domain_name != "" ? ".${var.domain_name}" : ""}"
     "port" : var.port
+    "tags" = var.tags
   }
 }
 

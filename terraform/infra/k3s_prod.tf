@@ -13,6 +13,7 @@ module "k3s-server01-prod" {
   disk_size          = 30
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
   domain_name        = infomaniak_zone.twop.fqdn
+  tags               = ["k3s_prod/init_dev"]
 
 }
 
@@ -41,6 +42,7 @@ module "k3s-server02-prod" {
   disk_size          = 30
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
   domain_name        = infomaniak_zone.twop.fqdn
+  tags               = ["k3s_prod/join_dev"]
 
 }
 
@@ -69,6 +71,7 @@ module "k3s-server03-prod" {
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
 
   domain_name = infomaniak_zone.twop.fqdn
+  tags        = ["k3s_prod/join_dev"]
 
 }
 
