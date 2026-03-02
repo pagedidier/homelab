@@ -117,5 +117,7 @@ output "vm" {
     "username" : var.init_user_username
     "name" : proxmox_virtual_environment_vm.vm.name,
     "hostname" = "${proxmox_virtual_environment_vm.vm.name}${var.domain_name != "" ? ".${var.domain_name}" : ""}"
+    "tags"     = var.tags
+    "port" : var.port
   }
 }

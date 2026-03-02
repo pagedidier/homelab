@@ -72,9 +72,11 @@ output "container" {
   value = {
     "id" : proxmox_virtual_environment_container.ct.id
     "ip" : var.use_dhcp ? data.external.container_ip[0].result.ip : split("/", proxmox_virtual_environment_container.ct.initialization[0].ip_config[0].ipv4[0].address)[0],
-    "username" : "root"
+    "username" : var.username
+    "port" : var.port
     "name" : var.name
     "hostname" = "${var.name}${var.domain_name != "" ? ".${var.domain_name}" : ""}"
+    "tags"     = var.tags
   }
 }
 

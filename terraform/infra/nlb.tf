@@ -14,6 +14,7 @@ module "nlb01_vm" {
   user_data_file_id  = proxmox_virtual_environment_file.user_data_cloud_config.id
   domain_name        = infomaniak_zone.twop.fqdn
   volume_name        = "vm-disks"
+  tags               = ["nlb"]
 
 }
 

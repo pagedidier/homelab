@@ -1,0 +1,39 @@
+all:
+  hosts:
+%{ for node in nodes ~}
+    ${node.name}:
+      ansible_host: ${node.ip}
+      server_name: ${node.name}
+      hostname: ${node.hostname}
+      ansible_user: ${node.username}
+      ansible_port: ${node.port}
+%{ endfor ~}
+%{ if length(distinct(flatten([for n in nodes : n.tags]))) > 0 }
+  children:
+%{ for tag in distinct(flatten([for n in nodes : n.tags])) ~}
+%{ if !strcontains(tag, "/") ~}
+    ${tag}:
+      hosts:
+%{ for node in nodes ~}
+%{ if contains(node.tags, tag) ~}
+        ${node.name}:
+%{ endif ~}
+%{ endfor ~}
+%{ endif ~}
+%{ endfor ~}
+%{ for parent in distinct([for tag in distinct(flatten([for n in nodes : n.tags])) : split("/", tag)[0] if strcontains(tag, "/")]) ~}
+    ${parent}:
+      children:
+%{ for tag in distinct(flatten([for n in nodes : n.tags])) ~}
+%{ if strcontains(tag, "/") && split("/", tag)[0] == parent ~}
+        ${split("/", tag)[1]}:
+          hosts:
+%{ for node in nodes ~}
+%{ if contains(node.tags, tag) ~}
+            ${node.name}:
+%{ endif ~}
+%{ endfor ~}
+%{ endif ~}
+%{ endfor ~}
+%{ endfor ~}
+%{ endif }

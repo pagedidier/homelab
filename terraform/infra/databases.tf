@@ -23,6 +23,9 @@ module "database-prod" {
   ip          = "192.168.1.110/16"
   volume_name = "vm-disks"
   domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["databases"]
+
 }
 
 resource "infomaniak_record" "database-prod" {
