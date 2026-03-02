@@ -22,6 +22,7 @@ module "swarm-node1" {
     }
   ]
   domain_name = infomaniak_zone.twop.fqdn
+  tags        = ["swarm_prod/managers"]
 
 }
 
@@ -62,6 +63,7 @@ module "swarm-node2" {
     }
   ]
   domain_name = infomaniak_zone.twop.fqdn
+  tags        = ["swarm_prod/workers"]
 
   depends_on = [time_sleep.wait_30_seconds1]
 }
@@ -105,6 +107,8 @@ module "swarm-node3" {
   domain_name = infomaniak_zone.twop.fqdn
 
   depends_on = [time_sleep.wait_30_seconds2]
+  tags       = ["swarm_prod/workers"]
+
 }
 
 resource "infomaniak_record" "swarm-node3" {

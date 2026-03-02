@@ -6,6 +6,8 @@ module "proxmox11" {
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
 
+  tags = ["baremetal", "proxmox", "pve"]
+
 }
 
 resource "infomaniak_record" "proxmox11" {
@@ -23,6 +25,9 @@ module "proxmox12" {
   ip          = "192.168.0.212"
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["baremetal", "proxmox", "pve"]
+
 }
 
 resource "infomaniak_record" "proxmox12" {
@@ -40,6 +45,9 @@ module "proxmox13" {
   ip          = "192.168.0.213"
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["baremetal", "proxmox", "pve"]
+
 }
 
 resource "infomaniak_record" "proxmox13" {
@@ -48,6 +56,7 @@ resource "infomaniak_record" "proxmox13" {
   type      = "A"
   ttl       = 300
   target    = module.proxmox13.proxmox.ip
+
 }
 
 module "pbs01" {
@@ -57,6 +66,9 @@ module "pbs01" {
   ip          = "192.168.0.214"
   username    = "root"
   domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["baremetal", "pbs"]
+
 }
 
 resource "infomaniak_record" "pbs01" {
@@ -74,6 +86,9 @@ module "proxy01" {
   username    = "dpage"
   port        = 5789
   domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["baremetal", "proxmox", "pve"]
+
 }
 
 resource "infomaniak_record" "proxy01" {
@@ -91,6 +106,9 @@ module "nas01" {
   username    = "root"
   port        = 22
   domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["baremetal", "nas"]
+
 }
 
 resource "infomaniak_record" "nas01" {
@@ -99,21 +117,4 @@ resource "infomaniak_record" "nas01" {
   type      = "A"
   ttl       = 300
   target    = module.nas01.server.ip
-}
-
-module "vps01" {
-  source = "./modules/bare_metal"
-
-  hostname    = "vps01"
-  ip          = "83.228.212.138"
-  username    = "ansible"
-  domain_name = infomaniak_zone.twop.fqdn
-}
-
-resource "infomaniak_record" "vps01" {
-  zone_fqdn = infomaniak_zone.twop.fqdn
-  source    = module.vps01.server.name
-  type      = "A"
-  ttl       = 300
-  target    = module.vps01.server.ip
 }
