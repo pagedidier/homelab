@@ -3,7 +3,7 @@ resource "kubernetes_manifest" "application" {
     "apiVersion" = "argoproj.io/v1alpha1"
     "kind"       = "Application"
     "metadata" = {
-      "name"      = "${var.application_name}-${var.environment}"
+      "name"      = "${var.application_name}"
       "namespace" = "argocd"
     }
     "spec" = {
@@ -11,18 +11,12 @@ resource "kubernetes_manifest" "application" {
       "source" = {
         "repoURL"        = var.repo_url
         "targetRevision" = "HEAD"
-        "path"           = "charts/${var.application_name}"
-        "helm" = {
-          "valueFiles" = [
-            "../../k8s/k3s_prod/${var.application_name}/${var.application_name}.${var.environment}.values.yaml"
-          ]
-        }
+        "path"           = "k8s/k3s_prod/${var.application_name}"
       }
       "destination" = {
         "server"    = "https://kubernetes.default.svc"
         "namespace" = var.application_name
       }
-      # Recommended: Add an automated sync policy
       "syncPolicy" = {
         "automated" = {
           "prune"    = true
