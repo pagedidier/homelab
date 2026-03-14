@@ -7,7 +7,7 @@ module "timer" {
 }
 
 module "timer-dev-argocd" {
-  source = "./modules/argocd/application"
+  source = "modules/argocd/application-helm"
 
   application_name = "timer"
   environment      = "dev"
@@ -55,7 +55,7 @@ module "autodel" {
 }
 
 module "autodel-argocd" {
-  source = "./modules/argocd/application"
+  source = "modules/argocd/application-helm"
 
   application_name = "autodel"
   environment      = "prod"
