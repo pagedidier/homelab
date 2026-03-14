@@ -1,7 +1,6 @@
 domain: autodel.twop.ch
 environment: prod
-# Will be replaced in the ci
-#version: <short hash>
+version: 7301ec31
 api:
   replicas: 1
   resources:

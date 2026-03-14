@@ -53,3 +53,10 @@ module "autodel" {
   domain_name       = var.domain_name
   project_name      = "autodel"
 }
+
+module "autodel-argocd" {
+  source = "./modules/argocd/application"
+
+  application_name = "autodel"
+  environment      = "prod"
+}
