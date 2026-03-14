@@ -16,4 +16,4 @@ spec:
               service:
                 name: {{ .Chart.Name }}-webapp-service-{{ .Values.environment }}
                 port:
-                  name: service-webapp-port
+                  name: svc-webapp-port
