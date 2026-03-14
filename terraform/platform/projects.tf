@@ -6,6 +6,13 @@ module "timer" {
   project_name      = "timer"
 }
 
+module "timer-dev-argocd" {
+  source = "./modules/argocd/application"
+
+  application_name = "timer"
+  environment      = "dev"
+}
+
 module "navan" {
   source            = "./modules/project"
   gitlab_project_id = 61487434
