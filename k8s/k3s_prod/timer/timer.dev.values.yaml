@@ -1,7 +1,7 @@
 domain: timer.dev.twop.ch
 environment: dev
 # Will be replaced in the ci
-#version: <short hash>-dev
+version: ad19286c-dev
 
 webapp:
   replicas: 1
