@@ -56,7 +56,7 @@ provider "kubernetes" {
 }
 
 provider "kubernetes" {
-  config_path = "~/.kube/k3s_dev"
+  config_path = "~/.kube/k3s.dev.twop.ch"
   alias       = "k3s_dev"
 }
 provider "helm" {
@@ -67,7 +67,7 @@ provider "helm" {
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/k3s_dev"
+    config_path = "~/.kube/k3s.dev.twop.ch"
   }
   alias = "k3s_dev"
 }
