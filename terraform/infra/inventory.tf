@@ -1,6 +1,5 @@
-resource "local_file" "inventory" {
-  filename = "${path.module}/../../ansible/inventory/inventory.yaml"
-  content = templatefile("${path.module}/templates/inventory.yaml.tftpl", {
+locals {
+  inventory_templated = templatefile("${path.module}/templates/inventory.yaml.tftpl", {
     nodes = [
       module.k3s-server01-prod.vm,
       module.k3s-server02-prod.vm,

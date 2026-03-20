@@ -1,3 +1,3 @@
-output "inventory_file" {
-  value = local_file.inventory.content
+output "inventory" {
+  value = local.inventory_templated
 }
