@@ -1,0 +1,32 @@
+# Hardware Inventory Report
+
+
+{% for host in ansible_play_hosts %}
+{% set hvars = hostvars[host] %}
+## System: {{ host }}
+
+| Field        | Value                              |
+|--------------|------------------------------------|
+| **Product** | {{ hvars.hw_product }}             |
+| **Vendor** | {{ hvars.hw_vendor }}              |
+| **Serial** | {{ hvars.hw_serial }}              |
+| **OS** | {{ hvars.ansible_distribution }} {{ hvars.ansible_distribution_version }} |
+| **RAM** | {{ hvars.ansible_memtotal_mb }} MB |
+| **CPU Cores**| {{ hvars.ansible_processor_vcpus }} |
+
+### Storage
+{% for device in ansible_devices %}
+{% if 'sd' in device or 'nvme' in device or 'vd' in device or 'hd' in device %}
+- **{{ device }}** — {{ ansible_devices[device].size | default('N/A') }} ({{ ansible_devices[device].model | default('N/A') }})
+{% endif %}
+{% endfor %}
+
+### Network Interfaces
+{% for iface in ansible_interfaces %}
+{% if not iface.startswith(('veth', 'tap', 'br-', 'docker')) and iface != 'lo' %}
+{% set iface_detail = hostvars[inventory_hostname]['ansible_' + iface] | default({}) %}
+- **{{ iface }}** — {{ iface_detail.ipv4.address | default('No IPv4') }} / {{ iface_detail.macaddress | default('N/A') }}
+{% endif %}
+{% endfor %}
+
+{% endfor %}
