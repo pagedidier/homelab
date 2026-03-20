@@ -19,7 +19,9 @@ resource "local_file" "inventory" {
       module.pbs01.server,
       module.vpn.container,
       module.glrunner.vm,
-      module.vps01.server
+      module.vps01.server,
+      module.nas01.server,
+      module.truenas.server
     ]
   })
 }
