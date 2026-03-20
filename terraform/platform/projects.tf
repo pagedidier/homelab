@@ -7,7 +7,7 @@ module "timer" {
 }
 
 module "timer-dev-argocd" {
-  source = "modules/argocd/application-helm"
+  source = "./modules/argocd/application-helm"
 
   application_name = "timer"
   environment      = "dev"
@@ -55,8 +55,26 @@ module "autodel" {
 }
 
 module "autodel-argocd" {
-  source = "modules/argocd/application-helm"
+  source = "./modules/argocd/application-helm"
 
   application_name = "autodel"
   environment      = "prod"
+}
+
+module "uptimekuma-argocd" {
+  source = "./modules/argocd/application-manifests"
+
+  application_name = "uptimekuma"
+}
+
+module "plex-argocd" {
+  source = "./modules/argocd/application-manifests"
+
+  application_name = "plex"
+}
+
+module "audiobookshelf-argocd" {
+  source = "./modules/argocd/application-manifests"
+
+  application_name = "audiobookshelf"
 }
