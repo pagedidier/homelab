@@ -1,0 +1,44 @@
+---
+- name: Generate Consolidated Hardware Summary Documentation
+  hosts: baremetal
+  become: true
+  gather_facts: true
+
+  vars:
+    output_dir: ./hw_reports
+    report_file: "{{ output_dir }}/consolidated_hw_summary.md"
+
+  tasks:
+    - name: Ensure lshw is installed (Debian/Ubuntu)
+      ansible.builtin.apt:
+        name: lshw
+        state: present
+
+    - name: Gather hardware info (JSON)
+      ansible.builtin.command: lshw -json
+      register: lshw_json
+      changed_when: false
+
+    - name: Parse lshw JSON and set facts per host
+      ansible.builtin.set_fact:
+        hw_product: "{{ (lshw_json.stdout | from_json).product | default('Unknown') }}"
+        hw_vendor: "{{ (lshw_json.stdout | from_json).vendor | default('Unknown') }}"
+        hw_serial: "{{ (lshw_json.stdout | from_json).serial | default('N/A') }}"
+
+    - name: Ensure local output directory exists
+      ansible.builtin.file:
+        path: "{{ output_dir }}"
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
+      become: false
+      run_once: true
+
+    - name: Generate Consolidated Markdown report
+      ansible.builtin.template:
+        src: templates/hw_summary.j2
+        dest: "{{ report_file }}"
+        mode: "0644"
+      delegate_to: localhost
+      become: false
+      run_once: true
