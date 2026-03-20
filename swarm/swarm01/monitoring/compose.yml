@@ -14,6 +14,8 @@ services:
     configs:
       - source: prometheus_config
         target: /etc/prometheus/prometheus.yml
+      - source: alert_rules
+        target: /etc/prometheus/alert_rules.yml
     volumes:
       - prometheus:/prometheus
     command:
@@ -38,12 +40,37 @@ services:
         target: /etc/blackbox/blackbox.yml
     networks:
       - monitoring
+
+#  alertmanager:
+#    image: prom/alertmanager:v0.31.0
+#    deploy:
+#      replicas: 1
+#      restart_policy:
+#        condition: on-failure
+#      labels:
+#        - "traefik.enable=true"
+#        - "traefik.http.routers.alertmanager.rule=Host(`alertmanager.twop.ch`)"
+#        - "traefik.http.routers.alertmanager.entrypoints=web-private"
+#        - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
+#    configs:
+#      - source: alertmanager_config
+#        target: /etc/alertmanager/alertmanager.yml
+#    ports:
+#      - "9093:9093"
+#    networks:
+#      - traefik_proxy
+#      - monitoring
+
+
 configs:
   prometheus_config:
     file: ./prometheus.yml
   blackbox_config:
     file: ./blackbox.yml
-
+  alertmanager_config:
+    file: ./alertmanager.yml
+  alert_rules:
+    file: ./alert_rules.yml
 volumes:
   prometheus:
     driver_opts:

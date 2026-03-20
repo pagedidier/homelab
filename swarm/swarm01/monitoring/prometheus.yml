@@ -1,10 +1,18 @@
 global:
   scrape_interval: 15s
 
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [ 'alertmanager:9093' ]
+
+rule_files:
+  - "alert_rules.yml"
+
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: [ 'localhost:9090' ]
 
   - job_name: 'proxmox_graphite_exporter'
     metrics_path: "/metrics"
@@ -17,10 +25,10 @@ scrape_configs:
   - job_name: 'proxmox_node_exporter'
     metrics_path: "/metrics"
     dns_sd_configs:
-    - names:
-        - "_node-exporter._tcp.twop.ch"
-      type: SRV
-      refresh_interval: 30s
+      - names:
+          - "_node-exporter._tcp.twop.ch"
+        type: SRV
+        refresh_interval: 30s
   - job_name: 'ceph_exporter'
     metrics_path: "/metrics"
     dns_sd_configs:
@@ -54,20 +62,20 @@ scrape_configs:
   - job_name: 'blackbox_http_srv'
     metrics_path: /probe
     params:
-      module: [http_2xx]
+      module: [ http_2xx ]
     dns_sd_configs:
       - names:
           - "_blackbox-exporter._tcp.twop.ch"
         type: SRV
         refresh_interval: 30s
     relabel_configs:
-      - source_labels: [__address__]
+      - source_labels: [ __address__ ]
         target_label: __param_target
-      - source_labels: [__param_target]
+      - source_labels: [ __param_target ]
         target_label: instance
       - target_label: __address__
         replacement: blackbox:9115
-      - source_labels: [__param_target]
+      - source_labels: [ __param_target ]
         regex: (.*)
         replacement: https://$1
         target_label: __param_target
