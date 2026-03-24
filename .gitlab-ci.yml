@@ -8,7 +8,6 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
-  - test
   - validate
   - plan
   - apply
@@ -50,8 +49,8 @@ stages:
   - mkdir -p ~/.kube
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
 
-test:
-  stage: test
+generate_inventory_infra:
+  stage: generate_inventory_infra
   before_script:
     - *install_just
     - *install_terraform
@@ -61,6 +60,16 @@ test:
   script:
     - just generate_inventory_infra
 
+generate_inventory_platform:
+  stage: generate_inventory_platform
+  before_script:
+    - *install_just
+    - *install_terraform
+    - *install_vault
+    - *get_vault_secrets
+    - *terraform_setup_infra
+  script:
+    - just generate_inventory_platform
 
 validate_infra:
   stage: validate
@@ -79,8 +88,6 @@ validate_infra:
       changes:
         - terraform/infra/**
     - when: never
-
-
 
 plan_infra:
   stage: plan
@@ -143,7 +150,7 @@ validate_platform:
 
 plan_platform:
   stage: plan
-  needs: [ validate_platform ]
+  needs: [ validate_platform, generate_inventory_platform ]
   before_script:
     - *install_vault
     - *install_terraform
@@ -222,6 +229,7 @@ deploy-ansible:
   needs:
     - job: apply_infra
       optional: true
+    - job: generate_inventory_infra
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
