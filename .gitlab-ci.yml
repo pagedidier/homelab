@@ -8,13 +8,16 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
-  - validate
-  - plan
-  - apply
+  - validate_infra
+  - plan_infra
+  - apply_infra
   - generate_inventory_infra
-  - deploy
   - ansible
   - generate_inventory_platform
+  - validate_platform
+  - plan_platform
+  - apply_platform
+  - deploy
 
 .install_just: &install_just
   - apk add --no-cache just bash
@@ -59,6 +62,9 @@ generate_inventory_infra:
     - *terraform_setup_infra
   script:
     - just generate_inventory_infra
+  artifacts:
+    paths:
+      - ansible/inventory/inventory.yaml
 
 generate_inventory_platform:
   stage: generate_inventory_platform
@@ -70,9 +76,11 @@ generate_inventory_platform:
     - *terraform_setup_infra
   script:
     - just generate_inventory_platform
-
+  artifacts:
+    paths:
+      - terraform/platform/inventory.yaml
 validate_infra:
-  stage: validate
+  stage: validate_infra
   before_script:
     - *install_vault
     - *install_terraform
@@ -90,7 +98,7 @@ validate_infra:
     - when: never
 
 plan_infra:
-  stage: plan
+  stage: plan_infra
   needs: [ validate_infra ]
   before_script:
     - *install_vault
@@ -114,7 +122,7 @@ plan_infra:
     - when: never
 
 apply_infra:
-  stage: apply
+  stage: apply_infra
   when: manual
   needs: [ plan_infra ]
   before_script:
@@ -131,7 +139,7 @@ apply_infra:
     - when: never
 
 validate_platform:
-  stage: validate
+  stage: validate_platform
   before_script:
     - *install_vault
     - *install_terraform
@@ -149,7 +157,7 @@ validate_platform:
     - when: never
 
 plan_platform:
-  stage: plan
+  stage: plan_platform
   needs: [ validate_platform, generate_inventory_platform ]
   before_script:
     - *install_vault
@@ -173,7 +181,7 @@ plan_platform:
     - when: never
 
 apply_platform:
-  stage: apply
+  stage: apply_platform
   when: manual
   needs: [ plan_platform ]
   before_script:
@@ -188,9 +196,6 @@ apply_platform:
       changes:
         - terraform/platform/**
     - when: never
-
-
-
 
 deploy-chart:
   stage: deploy
