@@ -18,7 +18,7 @@ stages:
   - generate_inventory_platform
 
 .install_just: &install_just
-  - apk add -no-cache just bash
+  - apk add --no-cache just bash
 
 .install_vault: &install_vault
   - apk add --no-cache curl unzip
