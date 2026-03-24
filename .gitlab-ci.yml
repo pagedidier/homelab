@@ -18,7 +18,7 @@ stages:
   - generate_inventory_platform
 
 .install_just: &install_just
-  - apk add just bash
+  - apk add -no-cache just bash
 
 .install_vault: &install_vault
   - apk add --no-cache curl unzip
@@ -28,6 +28,7 @@ stages:
   - vault login -no-print $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
 
 .install_terraform: &install_terraform
+  - apk add --no-cache curl unzip
   - curl -fsSL https://releases.hashicorp.com/terraform/1.14.3/terraform_1.14.3_linux_amd64.zip -o terraform.zip
   - unzip terraform.zip -d terraform
   - mv terraform/terraform /usr/local/bin/
