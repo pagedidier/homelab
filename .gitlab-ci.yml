@@ -53,6 +53,9 @@ test:
   stage: test
   before_script:
     - *install_just
+    - *install_terraform
+    - *get_vault_secrets
+    - *terraform_setup_infra
   script:
     - just generate_inventory_infra
 
