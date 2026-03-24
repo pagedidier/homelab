@@ -55,6 +55,7 @@ test:
   before_script:
     - *install_just
     - *install_terraform
+    - *install_vault
     - *get_vault_secrets
     - *terraform_setup_infra
   script:
