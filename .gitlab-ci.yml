@@ -8,11 +8,19 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
-  - validate
-  - plan
-  - apply
-  - deploy
+  - validate_infra
+  - plan_infra
+  - apply_infra
+  - generate_inventory_infra
   - ansible
+  - generate_inventory_platform
+  - validate_platform
+  - plan_platform
+  - apply_platform
+  - deploy
+
+.install_just: &install_just
+  - apk add --no-cache just bash python3 py3-pip
 
 .install_vault: &install_vault
   - apk add --no-cache curl unzip
@@ -22,6 +30,7 @@ stages:
   - vault login -no-print $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
 
 .install_terraform: &install_terraform
+  - apk add --no-cache curl unzip
   - curl -fsSL https://releases.hashicorp.com/terraform/1.14.3/terraform_1.14.3_linux_amd64.zip -o terraform.zip
   - unzip terraform.zip -d terraform
   - mv terraform/terraform /usr/local/bin/
@@ -43,8 +52,51 @@ stages:
   - mkdir -p ~/.kube
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
 
+generate_inventory_infra:
+  stage: generate_inventory_infra
+  before_script:
+    - *install_just
+    - *install_terraform
+    - *install_vault
+    - *get_vault_secrets
+    - *terraform_setup_infra
+  script:
+    - just generate_inventory_infra
+  artifacts:
+    paths:
+      - ansible/inventory/inventory.yaml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - terraform/infra/**
+    - when: never
+
+generate_inventory_platform:
+  stage: generate_inventory_platform
+  before_script:
+    - *install_just
+    - *install_terraform
+    - *install_vault
+    - *get_vault_secrets
+    - *terraform_setup_infra
+  script:
+    - just generate_inventory_platform
+  artifacts:
+    paths:
+      - terraform/platform/inventory.yaml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - terraform/infra/**
+
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - terraform/infra/**
+        - ansible/playbooks/servers/**
+    - when: never
+
 validate_infra:
-  stage: validate
+  stage: validate_infra
   before_script:
     - *install_vault
     - *install_terraform
@@ -61,10 +113,8 @@ validate_infra:
         - terraform/infra/**
     - when: never
 
-
-
 plan_infra:
-  stage: plan
+  stage: plan_infra
   needs: [ validate_infra ]
   before_script:
     - *install_vault
@@ -88,7 +138,7 @@ plan_infra:
     - when: never
 
 apply_infra:
-  stage: apply
+  stage: apply_infra
   when: manual
   needs: [ plan_infra ]
   before_script:
@@ -105,7 +155,7 @@ apply_infra:
     - when: never
 
 validate_platform:
-  stage: validate
+  stage: validate_platform
   before_script:
     - *install_vault
     - *install_terraform
@@ -123,8 +173,8 @@ validate_platform:
     - when: never
 
 plan_platform:
-  stage: plan
-  needs: [ validate_platform ]
+  stage: plan_platform
+  needs: [ validate_platform, generate_inventory_platform ]
   before_script:
     - *install_vault
     - *install_terraform
@@ -140,14 +190,13 @@ plan_platform:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/platform/**
-
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/platform/**
     - when: never
 
 apply_platform:
-  stage: apply
+  stage: apply_platform
   when: manual
   needs: [ plan_platform ]
   before_script:
@@ -200,6 +249,7 @@ deploy-ansible:
   needs:
     - job: apply_infra
       optional: true
+    - job: generate_inventory_infra
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       changes:
