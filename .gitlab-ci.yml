@@ -8,11 +8,15 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
+  - just
   - validate
   - plan
   - apply
   - deploy
   - ansible
+
+.install_just: &install_just
+  - apk add just
 
 .install_vault: &install_vault
   - apk add --no-cache curl unzip
@@ -42,6 +46,13 @@ stages:
   - terraform init -backend-config=backend-config.json
   - mkdir -p ~/.kube
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+
+test:
+  stage: just
+  before_script:
+    - *install_just
+  script:
+    - just --help
 
 validate_infra:
   stage: validate
