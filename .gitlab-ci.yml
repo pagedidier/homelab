@@ -8,12 +8,14 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
-  - just
+  - test
   - validate
   - plan
   - apply
+  - generate_inventory_infra
   - deploy
   - ansible
+  - generate_inventory_platform
 
 .install_just: &install_just
   - apk add just
@@ -48,11 +50,12 @@ stages:
   - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
 
 test:
-  stage: just
+  stage: test
   before_script:
     - *install_just
   script:
-    - just --help
+    - just generate_inventory_infra
+
 
 validate_infra:
   stage: validate
@@ -173,6 +176,9 @@ apply_platform:
       changes:
         - terraform/platform/**
     - when: never
+
+
+
 
 deploy-chart:
   stage: deploy
