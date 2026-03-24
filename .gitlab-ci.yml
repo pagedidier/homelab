@@ -65,6 +65,11 @@ generate_inventory_infra:
   artifacts:
     paths:
       - ansible/inventory/inventory.yaml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - terraform/infra/**
+    - when: never
 
 generate_inventory_platform:
   stage: generate_inventory_platform
@@ -79,6 +84,15 @@ generate_inventory_platform:
   artifacts:
     paths:
       - terraform/platform/inventory.yaml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - terraform/infra/**
+
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - terraform/infra/**
+    - when: never
 validate_infra:
   stage: validate_infra
   before_script:
@@ -174,7 +188,6 @@ plan_platform:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/platform/**
-
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/platform/**
