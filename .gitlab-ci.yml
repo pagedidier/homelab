@@ -20,7 +20,7 @@ stages:
   - deploy
 
 .install_just: &install_just
-  - apk add --no-cache just bash
+  - apk add --no-cache just bash python3 py3-pip
 
 .install_vault: &install_vault
   - apk add --no-cache curl unzip
