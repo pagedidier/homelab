@@ -78,3 +78,10 @@ module "audiobookshelf-argocd" {
 
   application_name = "audiobookshelf"
 }
+
+module "nextcloud-argocd" {
+  source = "./modules/argocd/application-manifests"
+
+  application_name = "nextcloud"
+}
+
