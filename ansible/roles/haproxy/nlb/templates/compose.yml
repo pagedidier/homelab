@@ -1,6 +1,7 @@
 services:
   haproxy-sidecar:
     image: registry.gitlab.com/two-p/haproxy-traefik-sidecar:0.0.4
+    restart: unless-stopped
     environment:
       - "HAPROXY_SOCKET_TCP_ADDRESS=localhost:9999"
       - TRAEFIK_API_JSON={"http://192.168.0.111:8080/api/http/routers":"swarm_prod_traefik","http://traefik.k3s.prod.twop.ch:81/api/http/routers":"k3s_prod_traefik"}
