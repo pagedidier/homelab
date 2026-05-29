@@ -5,6 +5,7 @@ users_list:
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL57+7cJOQBhC0enJxLrR6eWYLOwIkngvrlNmMhO/Ahn"
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA0vsJhmUIkcjeaU5JAlTLepHdSZiivjoZtnCxVhQTEJ page.didier@gmail.com"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF0ZQc6yLrTAelb7wcMYxVreTaiiDmwZ27Gyp4n2eo5Q"
     dotfiles_repo: "https://gitlab.com/two-p/dotfiles.git"
 
 vault_addr: "https://vault.infra.twop.ch"
