@@ -1,0 +1,25 @@
+image:
+  repository: grafana/grafana
+  tag: "12.2"
+
+replicas: 1
+env:
+  GF_SERVER_ROOT_URL: "https://grafana.twop.ch/"
+
+persistence:
+  enabled: true
+  type: pvc
+  storageClassName: "grafana-static-nfs"
+  accessModes:
+    - ReadWriteMany
+  size: 10Gi
+  existingClaim: ""
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "web-private"
+  hosts:
+    - grafana.twop.ch
+  path: /
