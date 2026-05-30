@@ -1,0 +1,134 @@
+server:
+  image:
+    repository: prom/prometheus
+    tag: v3.9.1
+
+  replicaCount: 1
+  retention: 60d
+  securityContext:
+    runAsNonRoot: true
+    fsGroup: 65534
+
+  extraFlags:
+    - web.enable-lifecycle
+
+  persistentVolume:
+    enabled: true
+    storageClass: "prometheus-static-nfs"
+    size: 100Gi
+    accessModes:
+      - ReadWriteMany
+
+  statefulSet:
+    enabled: true
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web-private
+    hosts:
+      - prometheus.twop.ch
+
+serverFiles:
+  prometheus.yml:
+    scrape_configs:
+      - job_name: proxmox_graphite_exporter
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - "_graphite-exporter._tcp.twop.ch"
+            type: SRV
+            refresh_interval: 30s
+
+      - job_name: proxmox_node_exporter
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - "_node-exporter._tcp.twop.ch"
+            type: SRV
+            refresh_interval: 30s
+
+      - job_name: ceph_exporter
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - "_ceph-exporter._tcp.twop.ch"
+            type: SRV
+            refresh_interval: 30s
+
+      - job_name: cadvisor-lxc
+        metrics_path: /metrics
+
+        metric_relabel_configs:
+          - source_labels: [ "id" ]
+            regex: ".*lxc/([0-9]+).*"
+            target_label: lxc_id
+            replacement: "$1"
+
+          - source_labels: [ "id" ]
+            regex: ".*/system.slice/([^/]+)"
+            target_label: systemd_service
+            replacement: "$1"
+
+        dns_sd_configs:
+          - names:
+              - "_cadvisor-lxc._tcp.twop.ch"
+            type: SRV
+            refresh_interval: 30s
+
+      - job_name: cadvisor-docker
+        metrics_path: /metrics
+        dns_sd_configs:
+          - names:
+              - "_cadvisor-docker._tcp.twop.ch"
+            type: SRV
+            refresh_interval: 30s
+
+      - job_name: blackbox_http_srv
+        metrics_path: /probe
+        params:
+          module: [ http_2xx ]
+
+        dns_sd_configs:
+          - names:
+              - "_blackbox-exporter._tcp.twop.ch"
+            type: SRV
+            refresh_interval: 30s
+
+        relabel_configs:
+          - source_labels: [ __address__ ]
+            target_label: __param_target
+
+          - source_labels: [ __param_target ]
+            target_label: instance
+
+          - target_label: __address__
+            replacement: blackbox:9115
+
+      - job_name: federation
+        metrics_path: /federate
+        honor_labels: true
+        scrape_interval: 30s
+        scrape_timeout: 30s
+        scheme: https
+
+        params:
+          match[]:
+            - '{job=~".+"}'
+
+        static_configs:
+          - targets:
+              - prometheus.k3s.prod.twop.ch
+
+alertmanager:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
