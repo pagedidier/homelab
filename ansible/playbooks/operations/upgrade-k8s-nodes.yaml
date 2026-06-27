@@ -2,7 +2,7 @@
 - name: Rolling upgrade - k3s servers
   serial: 1
   become: true
-  hosts: init_prod, join_prod
+  hosts: init, join
   gather_facts: true
   tasks:
 
