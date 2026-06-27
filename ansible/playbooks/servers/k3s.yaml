@@ -7,10 +7,12 @@
     k3s_tls_san: "k3s.prod.twop.ch"
   roles:
     - common/package
-    - users
     - role: k3s
       tags:
         - main
+    - role: users
+      tags:
+        - users
     - role: node_exporter
       tags:
         - monitoring
@@ -22,7 +24,9 @@
     k3s_tls_san: "k3s.dev.twop.ch"
   roles:
     - common/package
-    - users
+    - role: users
+      tags:
+        - users
     - role: k3s
       tags:
         - main
