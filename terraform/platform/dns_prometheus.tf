@@ -20,16 +20,6 @@ module "dns_twop_graphite_exporter" {
   port       = 9108
 }
 
-module "dns_twop_ceph_exporter" {
-  for_each   = toset(concat(local.inventory["roles"]["ceph_exporter"], local.inventory["roles"]["microceph_exporter"]))
-  source     = "./modules/dns/srv"
-  zone_fqdn  = infomaniak_zone._tcp_twop.fqdn
-  dns_source = "_ceph-exporter"
-  target     = each.key
-  port       = 9128
-}
-
-
 module "dns_twop_cadvisor_lxc" {
   for_each   = toset(local.inventory["roles"]["cadvisor/lxc"])
   source     = "./modules/dns/srv"
