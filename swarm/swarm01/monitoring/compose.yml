@@ -29,17 +29,17 @@ services:
       - traefik_proxy
       - monitoring
 
-  blackbox:
-    image: prom/blackbox-exporter:v0.27.0
-    command:
-      - "--config.file=/etc/blackbox/blackbox.yml"
-    ports:
-      - "9115:9115"
-    configs:
-      - source: blackbox_config
-        target: /etc/blackbox/blackbox.yml
-    networks:
-      - monitoring
+#  blackbox:
+#    image: prom/blackbox-exporter:v0.27.0
+#    command:
+#      - "--config.file=/etc/blackbox/blackbox.yml"
+#    ports:
+#      - "9115:9115"
+#    configs:
+#      - source: blackbox_config
+#        target: /etc/blackbox/blackbox.yml
+#    networks:
+#      - monitoring
 
 #  alertmanager:
 #    image: prom/alertmanager:v0.31.0
