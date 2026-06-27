@@ -3,13 +3,15 @@
   become: yes
   roles:
     - common/package
-    - users
+    - role: users
+      tags:
+        - users
     - role: graphite_exporter
       tags:
         - monitoring
-#    - role: ceph_exporter
-#      tags:
-#        - monitoring
+    #    - role: ceph_exporter
+    #      tags:
+    #        - monitoring
     - role: node_exporter
       tags:
         - monitoring
@@ -23,7 +25,9 @@
   become: yes
   roles:
     - common/package
-    - users
+    - role: users
+      tags:
+        - users
     - role: node_exporter
       tags:
         - monitoring

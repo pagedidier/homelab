@@ -13,7 +13,9 @@
   become: yes
   roles:
     - common/package
-    - users
+    - role: users
+      tags:
+        - users
     - geerlingguy.docker
     - docker_post_setup
     - role: cadvisor/docker

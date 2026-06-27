@@ -28,7 +28,9 @@
       - "*.k3s.staging.twop.ch"
   roles:
     - common/package
-    - users
+    - role: users
+      tags:
+        - users
     - geoblocking
     - role: node_exporter
       tags:
