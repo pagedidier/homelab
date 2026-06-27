@@ -1,6 +1,6 @@
 services:
   haproxy-sidecar:
-    image: registry.gitlab.com/two-p/haproxy-traefik-sidecar:0.0.4
+    image: registry.gitlab.com/two-p/haproxy-traefik-sidecar:0.0.5
     restart: unless-stopped
     environment:
       - "HAPROXY_SOCKET_TCP_ADDRESS=localhost:9999"
