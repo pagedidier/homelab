@@ -35,13 +35,3 @@ resource "infomaniak_record" "vpn" {
   ttl       = 300
   target    = module.vpn.container.ip
 }
-
-resource "proxmox_virtual_environment_haresource" "vpn-main" {
-  depends_on = [
-    proxmox_virtual_environment_hagroup.main
-  ]
-  resource_id = "ct:${module.vpn.container.id}"
-  state       = "started"
-  group       = proxmox_virtual_environment_hagroup.main.id
-  comment     = "Managed by Terraform"
-}
