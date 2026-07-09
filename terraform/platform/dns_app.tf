@@ -189,3 +189,19 @@ resource "infomaniak_record" "twop_transmission" {
   ttl       = "300"
   target    = "proxy01.private.twop.ch"
 }
+
+resource "infomaniak_record" "twop_cheap" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "cheap"
+  type      = "CNAME"
+  ttl       = "300"
+  target    = "proxy01.private.twop.ch"
+}
+
+resource "infomaniak_record" "twop_api_cheap" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "api.cheap"
+  type      = "CNAME"
+  ttl       = "300"
+  target    = "proxy01.private.twop.ch"
+}
