@@ -41,7 +41,7 @@ resource "helm_release" "vault" {
 
   set {
     name  = "global.externalVaultAddr"
-    value = "http://192.168.0.111:8300"
+    value = "https://vault.twop.ch"
   }
 }
 
