@@ -1,0 +1,21 @@
+environment: ""
+
+version: ""
+
+projectName: "cheap"
+domain: ""
+entrypoint: "web-private"
+
+api:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
+
+webapp:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
