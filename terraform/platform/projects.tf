@@ -54,6 +54,14 @@ module "autodel" {
   project_name      = "autodel"
 }
 
+module "cheap" {
+  source            = "./modules/project"
+  gitlab_project_id = 84247629
+  registry_server   = var.registry_server
+  domain_name       = var.domain_name
+  project_name      = "cheap"
+}
+
 module "autodel-argocd" {
   source = "./modules/argocd/application-helm"
 
@@ -83,5 +91,12 @@ module "nextcloud-argocd" {
   source = "./modules/argocd/application-manifests"
 
   application_name = "nextcloud"
+}
+
+module "cheap-argocd" {
+  source = "./modules/argocd/application-helm"
+
+  application_name = "cheap"
+  environment      = "prod"
 }
 
