@@ -30,7 +30,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
           imagePullPolicy: Always
-          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/api: {{ .Values.version }}""
+          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/api: {{ .Values.version }}"
           env:
             - name: PRE_RUN_COMMAND
               value: '. /vault/secrets/config'
