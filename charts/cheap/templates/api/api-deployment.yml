@@ -30,8 +30,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
           imagePullPolicy: Always
-          image:
-            registry.gitlab.com/two-p/{{ .Chart.Name }}/api: {{ .Values.version }}
+          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/api: {{ .Values.version }}""
           env:
             - name: PRE_RUN_COMMAND
               value: '. /vault/secrets/config'
@@ -43,15 +42,15 @@ spec:
               memory: {{ .Values.api.resources.memory.limit}}
             requests:
               memory: {{ .Values.api.resources.memory.request }}
-#          livenessProbe:
-#            httpGet:
-#              path: /
-#              port: api-port
-#            initialDelaySeconds: 5
-#            periodSeconds: 3
-#          readinessProbe:
-#            httpGet:
-#              path: /
-#              port: api-port
-#            initialDelaySeconds: 5
+  #          livenessProbe:
+  #            httpGet:
+  #              path: /
+  #              port: api-port
+  #            initialDelaySeconds: 5
+  #            periodSeconds: 3
+  #          readinessProbe:
+  #            httpGet:
+  #              path: /
+  #              port: api-port
+  #            initialDelaySeconds: 5
   #            periodSeconds: 3
