@@ -4,7 +4,7 @@ resource "mysql_database" "database" {
 
 resource "random_password" "password" {
   length  = 16
-  special = true
+  special = false
   upper   = true
   lower   = true
   numeric = true
