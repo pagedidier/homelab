@@ -31,12 +31,13 @@ spec:
         - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
           imagePullPolicy: Always
           image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/api:{{ .Values.version }}"
-          env:
-            - name: PRE_RUN_COMMAND
-              value: '. /vault/secrets/config'
+          command:
+            [ "/bin/sh", "-c" ]
+          args:
+            [ ". /vault/secrets/config && npm run generate && npx prisma migrate deploy && npm run start" ]
           ports:
             - name: api-port
-              containerPort: 8080
+              containerPort: 3000
           resources:
             limits:
               memory: {{ .Values.api.resources.memory.limit}}
