@@ -30,7 +30,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}-webapp-{{ .Values.environment }}
           imagePullPolicy: Always
-          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/webapp: {{ .Values.version }}"
+          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/webapp:{{ .Values.version }}"
           command:
             [ 'bash', '-c' ]
           args:
