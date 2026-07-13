@@ -56,3 +56,17 @@ resource "kubernetes_secret" "vault_token" {
 
   type = "kubernetes.io/service-account-token"
 }
+
+resource "helm_release" "argocd" {
+  name             = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  create_namespace = true
+
+  force_update = true
+
+  values = [
+    file("${path.module}/values/argocd-values.yaml")
+  ]
+}
