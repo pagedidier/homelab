@@ -1,0 +1,21 @@
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web-private
+
+    hostname: argocd.twop.ch
+
+    paths:
+      - /
+
+    pathType: Prefix
+
+  extraArgs:
+    - --insecure
+
+configs:
+  params:
+    server.insecure: true
