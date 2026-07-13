@@ -8,6 +8,11 @@ resource "random_password" "password" {
   upper   = true
   lower   = true
   numeric = true
+  lifecycle {
+    ignore_changes = [
+      special
+    ]
+  }
 }
 
 resource "mysql_user" "user" {
