@@ -116,3 +116,13 @@ module "k8s-cheap-webapp-role" {
   backend                   = vault_auth_backend.k3s_prod.path
 }
 
+module "k8s-cheap-worker-role" {
+  source = "./modules/vault/role"
+
+  environment_name          = "prod"
+  project_name              = "cheap"
+  service_name              = "worker"
+  vault_k8s_service_account = module.cheap.vault_k8s_service_account
+  backend                   = vault_auth_backend.k3s_prod.path
+}
+
