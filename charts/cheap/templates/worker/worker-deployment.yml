@@ -39,6 +39,9 @@ spec:
           ports:
             - name: worker-port
               containerPort: 3000
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Release.Name }}-valkey"
           resources:
             limits:
               memory: {{ .Values.worker.resources.memory.limit}}
