@@ -59,6 +59,6 @@ valkey:
         cpu: 100m
 
   metrics:
-    enabled: true
+    enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
