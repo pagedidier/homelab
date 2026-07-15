@@ -13,6 +13,13 @@ api:
       limit: 1G
       request: 1G
 
+worker:
+  replicas: 1
+  resources:
+    memory:
+      limit: 1G
+      request: 1G
+
 webapp:
   replicas: 1
   resources:
