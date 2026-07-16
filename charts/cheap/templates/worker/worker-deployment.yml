@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}-api-{{ .Values.environment }}
+  name: {{ .Chart.Name }}-worker-{{ .Values.environment }}
   labels:
     app: {{ .Chart.Name }}
 spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}-api-{{ .Values.environment }}
-  replicas: {{ .Values.api.replicas }}
+      app: {{ .Chart.Name }}-worker-{{ .Values.environment }}
+  replicas: {{ .Values.worker.replicas }}
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}-api-{{ .Values.environment }}
+        app: {{ .Chart.Name }}-worker-{{ .Values.environment }}
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: {{ .Chart.Name }}-api-{{ .Values.environment }}
+        vault.hashicorp.com/role: {{ .Chart.Name }}-worker-{{ .Values.environment }}
         vault.hashicorp.com/auth-path: "auth/kubernetes/k3s_prod"
         vault.hashicorp.com/agent-inject-template-config: |-
-          {{`{{ with secret "projects/data/`}}{{ .Chart.Name }}{{`/`}}{{ .Values.environment }}{{`/api" }}
+          {{`{{ with secret "projects/data/`}}{{ .Chart.Name }}{{`/`}}{{ .Values.environment }}{{`/worker" }}
               {{ range $k, $v := .Data.data }}
                   export {{ $k }}="{{ $v }}"
               {{ end }}
@@ -29,33 +29,33 @@ spec:
       imagePullSecrets:
         - name: regcred-{{ .Chart.Name }}
       containers:
-        - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
+        - name: {{ .Chart.Name }}-worker-{{ .Values.environment }}
           imagePullPolicy: Always
-          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/api:{{ .Values.version }}"
+          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/worker:{{ .Values.version }}"
           command:
             [ "/bin/sh", "-c" ]
           args:
             [ ". /vault/secrets/config && npm run generate && npx prisma migrate deploy && npm run start" ]
           ports:
-            - name: api-port
+            - name: worker-port
               containerPort: 3000
           env:
             - name: REDIS_HOST
               value: "{{ .Release.Name }}-valkey"
           resources:
             limits:
-              memory: {{ .Values.api.resources.memory.limit}}
+              memory: {{ .Values.worker.resources.memory.limit}}
             requests:
-              memory: {{ .Values.api.resources.memory.request }}
+              memory: {{ .Values.worker.resources.memory.request }}
   #          livenessProbe:
   #            httpGet:
   #              path: /
-  #              port: api-port
+  #              port: worker-port
   #            initialDelaySeconds: 5
   #            periodSeconds: 3
   #          readinessProbe:
   #            httpGet:
   #              path: /
-  #              port: api-port
+  #              port: worker-port
   #            initialDelaySeconds: 5
   #            periodSeconds: 3
