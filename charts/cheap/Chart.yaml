@@ -3,3 +3,8 @@ name: cheap
 description: A Helm chart for cheap app
 type: application
 version: 0.0.1
+
+dependencies:
+  - name: valkey
+    version: "0.10.0"
+    repository: "https://valkey.io/valkey-helm"

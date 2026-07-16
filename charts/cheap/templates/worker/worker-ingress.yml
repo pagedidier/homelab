@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}-worker-ingress-{{ .Values.environment }}
+  annotations:
+    kubernetes.io/ingress.ingressClassName: "traefik"
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ .Values.entrypoint }}
+spec:
+  rules:
+    - host: "worker.{{ .Values.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Chart.Name }}-worker-service-{{ .Values.environment }}
+                port:
+                  name: svc-worker-port

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-worker-service-{{ .Values.environment }}
+spec:
+  selector:
+    app: {{ .Chart.Name }}-worker-{{ .Values.environment }}
+  type: ClusterIP
+  ports:
+    - name: svc-worker-port
+      port: 80
+      targetPort: worker-port
