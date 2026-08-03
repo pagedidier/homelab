@@ -253,4 +253,4 @@ update-version:
     - git config --global user.name "GitLab CI"
     - git add ./k8s/k3s_prod/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml
     - git commit -m "update version to $VERSION for $PROJECT $ENVIRONMENT"
-    - git push origin main
+    - git push
