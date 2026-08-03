@@ -17,6 +17,7 @@ stages:
   - validate_platform
   - plan_platform
   - apply_platform
+  - update
   - deploy
 
 .install_just: &install_just
@@ -231,6 +232,22 @@ deploy-chart:
     - yq '. *= load("cicd-values.yaml")' ./k8s/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml > values.yaml
     - yq -i ".appVersion = \"$VERSION\"" ./charts/$PROJECT/Chart.yaml
     - helm upgrade --install $PROJECT-$ENVIRONMENT ./charts/$PROJECT/ --values=values.yaml -n $PROJECT
+
+update-version:
+  stage: update
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "pipeline"'
+      when: always
+    - when: never
+  before_script:
+    - apk add --no-cache yq git
+  script:
+    - yq -i ".version = \"$VERSION\"" ./k8s/k3s_prod/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml
+    - git config --global user.email "gitlab-ci@twop.ch"
+    - git config --global user.name "GitLab CI"
+    - git add ./k8s/k3s_prod/$PROJECT/$PROJECT.$ENVIRONMENT.values.yaml
+    - git commit -m "update version to $VERSION for $PROJECT $ENVIRONMENT"
+    - git push origin HEAD:$CI_COMMIT_REF_NAME
 
 deploy-ansible:
   stage: ansible
