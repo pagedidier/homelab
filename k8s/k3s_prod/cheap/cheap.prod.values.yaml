@@ -1,22 +1,18 @@
 domain: cheap.twop.ch
 environment: prod
-
-version: 0c94521b
-
+version: 17c58404
 api:
   replicas: 1
   resources:
     memory:
       limit: 1G
       request: 1G
-
 worker:
   replicas: 1
   resources:
     memory:
       limit: 1G
       request: 1G
-
 webapp:
   replicas: 1
   resources:
