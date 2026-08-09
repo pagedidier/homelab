@@ -1,6 +1,6 @@
 domain: cheap.twop.ch
 environment: prod
-version: a4a8bfcb
+version: f11db192
 api:
   replicas: 1
   resources:
