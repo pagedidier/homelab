@@ -11,6 +11,8 @@
         allowed_ips: 10.10.0.4/32
       - public_key: G6zoIJ97l6pKz2AHtc+6XQsPydQe/oz6n+QIcsA1PkQ=
         allowed_ips: 10.10.0.5/32
+      - public_key: 0GWND9A18Xk4Q2dqgTOebju2p6QK+ZTVpHfYjc4e/T8=
+        allowed_ips: 10.10.0.6/32
   roles:
     - common/package
     - users
