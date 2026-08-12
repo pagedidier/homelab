@@ -42,6 +42,10 @@ spec:
           env:
             - name: REDIS_HOST
               value: "{{ .Release.Name }}-valkey"
+            {{- if .Values.mysql.enabled }}
+            - name: DATABASE_URL
+              value: "mysql://{{ .Values.mysql.auth.username }}:{{ .Values.mysql.auth.password }}@{{ .Release.Name }}-mysql:3306/{{ .Values.mysql.auth.database }}"
+            {{- end }}
           resources:
             limits:
               memory: {{ .Values.worker.resources.memory.limit}}
