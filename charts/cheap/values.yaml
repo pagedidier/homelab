@@ -62,3 +62,22 @@ valkey:
     enabled: false
     serviceMonitor:
       enabled: false
+      
+mysql:
+  enabled: false
+  auth:
+    rootPassword: "rootpassword"
+    database: "cheap"
+    username: "cheap"
+    password: "cheappassword"
+  primary:
+    persistence:
+      enabled: true
+      size: 8Gi
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 500m
+      requests:
+        memory: 256Mi
+        cpu: 250m
