@@ -65,6 +65,9 @@ valkey:
       
 mysql:
   enabled: false
+  image:
+    repository: bitnamilegacy/mysql
+    tag: 9.4.0-debian-12-r1
   auth:
     rootPassword: "rootpassword"
     database: "cheap"
