@@ -5,6 +5,7 @@ version: ""
 projectName: "cheap"
 domain: ""
 entrypoint: "web-private"
+previewPrefix: ""
 
 api:
   replicas: 1
