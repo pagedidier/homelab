@@ -7,7 +7,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: {{ .Values.entrypoint }}
 spec:
   rules:
-    - host: "worker.{{ .Values.domain }}"
+    - host: "{{ if .Values.previewPrefix }}{{ .Values.previewPrefix }}.{{ end }}worker.{{ .Values.domain }}"
       http:
         paths:
           - path: /
