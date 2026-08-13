@@ -38,7 +38,7 @@ spec:
             [ 'source /vault/secrets/config && /scripts/env.sh && nginx -g "daemon off;"' ]
           env:
             - name: VUE_APP_API_URL
-              value: "https://api.{{ .Values.domain }}"
+              value: "{{ if .Values.previewPrefix }}{{ .Values.previewPrefix }}.{{ end }}api.{{ .Values.domain }}"
           ports:
             - name: webapp-port
               containerPort: 80
