@@ -1,7 +1,8 @@
 services:
   gitlab-runner-register:
-    image: gitlab/gitlab-runner
+    image: gitlab/gitlab-runner:latest
     container_name: gitlab-runner-register
+    privileged: true
     volumes:
       - /srv/gitlab-runner/config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
