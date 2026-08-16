@@ -126,3 +126,33 @@ module "k8s-cheap-worker-role" {
   backend                   = vault_auth_backend.k3s_prod.path
 }
 
+module "k8s-cheap-api-role-preview" {
+  source = "./modules/vault/role"
+
+  environment_name          = "preview"
+  project_name              = "cheap"
+  service_name              = "api"
+  vault_k8s_service_account = module.cheap.vault_k8s_service_account
+  backend                   = vault_auth_backend.k3s_prod.path
+}
+
+module "k8s-cheap-webapp-role-preview" {
+  source = "./modules/vault/role"
+
+  environment_name          = "preview"
+  project_name              = "cheap"
+  service_name              = "webapp"
+  vault_k8s_service_account = module.cheap.vault_k8s_service_account
+  backend                   = vault_auth_backend.k3s_prod.path
+}
+
+module "k8s-cheap-worker-role-preview" {
+  source = "./modules/vault/role"
+
+  environment_name          = "preview"
+  project_name              = "cheap"
+  service_name              = "worker"
+  vault_k8s_service_account = module.cheap.vault_k8s_service_account
+  backend                   = vault_auth_backend.k3s_prod.path
+}
+
