@@ -27,6 +27,7 @@
       - "*.k3s.test.twop.ch"
       - "*.k3s.staging.twop.ch"
       - "*.cheap.twop.ch"
+      - "*.api.cheap.twop.ch"
   roles:
     - common/package
     - role: users
