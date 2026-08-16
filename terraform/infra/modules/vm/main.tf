@@ -80,6 +80,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
     enabled = var.agent_enable
     timeout = "30s"
   }
+  bios = var.bios
 
   dynamic "usb" {
     for_each = var.enable_usb ? [1] : []

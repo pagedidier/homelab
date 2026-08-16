@@ -14,7 +14,8 @@ locals {
       module.glrunner.vm,
       module.vps01.server,
       module.nas01.server,
-      module.truenas.server
+      module.truenas.server,
+      module.ai-worker.vm
     ]
   })
 }

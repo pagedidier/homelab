@@ -1,0 +1,16 @@
+---
+- hosts: ai-worker
+  become: yes
+  roles:
+    - common/package
+    - role: users
+      tags:
+        - users
+    - geerlingguy.docker
+    - docker_post_setup
+    - role: node_exporter
+      tags:
+        - monitoring
+    - role: cadvisor/docker
+      tags:
+        - monitoring
