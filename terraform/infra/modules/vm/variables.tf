@@ -97,3 +97,6 @@ variable "port" {
   default = 22
   type    = number
 }
+variable "bios" {
+  default = "seabios"
+}
