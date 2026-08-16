@@ -6,7 +6,7 @@ module "k3s-server01-prod" {
   init_ssh_keys      = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
-  ram_in_bytes       = 8192
+  ram_in_bytes       = 16384
   ip                 = "192.168.1.51/16"
   gateway            = "192.168.0.254"
   agent_enable       = true
@@ -35,7 +35,7 @@ module "k3s-server02-prod" {
   init_ssh_keys      = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
-  ram_in_bytes       = 8192
+  ram_in_bytes       = 16384
   ip                 = "192.168.1.52/16"
   gateway            = "192.168.0.254"
   agent_enable       = true
@@ -63,7 +63,7 @@ module "k3s-server03-prod" {
   init_ssh_keys      = var.init_ssh_keys
   init_user_password = var.init_user_password
   init_user_username = var.init_user_username
-  ram_in_bytes       = 8192
+  ram_in_bytes       = 16384
   ip                 = "192.168.1.53/16"
   gateway            = "192.168.0.254"
   agent_enable       = true
