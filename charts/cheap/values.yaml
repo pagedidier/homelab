@@ -8,6 +8,7 @@ entrypoint: "web-private"
 previewPrefix: ""
 
 api:
+  revisionHistoryLimit: 3
   replicas: 1
   resources:
     memory:
@@ -15,6 +16,7 @@ api:
       request: 1G
 
 worker:
+  revisionHistoryLimit: 3
   replicas: 1
   resources:
     memory:
@@ -22,6 +24,7 @@ worker:
       request: 1G
 
 webapp:
+  revisionHistoryLimit: 3
   replicas: 1
   resources:
     memory:
