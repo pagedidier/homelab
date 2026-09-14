@@ -25,3 +25,20 @@ resource "infomaniak_record" "glrunner" {
   ttl       = 300
   target    = module.glrunner.vm.ip
 }
+
+module "anywhere" {
+  source    = "./modules/vm"
+  name      = "anywhere"
+  node_name = module.proxmox11.proxmox_data.node_name
+
+  init_ssh_keys      = var.init_ssh_keys
+  init_user_password = var.init_user_password
+  init_user_username = var.init_user_username
+  ram_in_bytes       = 8192
+  ip                 = "192.168.200.1/16"
+  gateway            = "192.168.0.254"
+  volume_name        = "vm-disks"
+  domain_name        = infomaniak_zone.twop.fqdn
+  main_disk_backup   = false
+  tags               = []
+}
