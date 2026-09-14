@@ -3,8 +3,8 @@ resource "kubernetes_manifest" "application" {
     "apiVersion" = "argoproj.io/v1alpha1"
     "kind"       = "Application"
     "metadata" = {
-      "name"      = "${var.application_name}"
-      "namespace" = "argocd"
+      "name"      = var.application_name
+      "namespace" = var.argocd_namespace
     }
     "spec" = {
       "project" = "default"

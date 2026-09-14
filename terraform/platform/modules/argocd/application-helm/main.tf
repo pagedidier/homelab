@@ -4,7 +4,7 @@ resource "kubernetes_manifest" "application" {
     "kind"       = "Application"
     "metadata" = {
       "name"      = "${var.application_name}-${var.environment}"
-      "namespace" = "argocd"
+      "namespace" = var.argocd_namespace
     }
     "spec" = {
       "project" = "default"

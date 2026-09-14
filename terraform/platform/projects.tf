@@ -100,3 +100,32 @@ module "cheap-argocd" {
   environment      = "prod"
 }
 
+module "cheap_previews" {
+  source = "./modules/argocd/applicationset-manifests"
+
+  application_name = "cheap-preview"
+  gitlab_project   = "two-p/cheap"
+
+  helm_config = {
+    releaseName = "cheap-mr-{{number}}"
+    valuesObject = {
+      api = {
+        revisionHistoryLimit = 0
+      }
+      worker = {
+        revisionHistoryLimit = 0
+      }
+      webapp = {
+        revisionHistoryLimit = 0
+      }
+      mysql = {
+        enabled = true
+      }
+      version       = "mr-{{number}}-{{head_short_sha}}"
+      domain        = "cheap.twop.ch"
+      previewPrefix = "mr-{{number}}"
+      environment   = "preview"
+      entrypoint    = "web-private"
+    }
+  }
+}
