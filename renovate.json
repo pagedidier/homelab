@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "helm-values": {
+    "fileMatch": ["(^|/)values\\.yaml$", "(^|/)values\\.yaml\\.tmpl$"]
+  },
+  "kubernetes": {
+    "fileMatch": ["k8s/.+\\.ya?ml$"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": [
+        "helmv3"
+      ],
+      "matchFileNames": [
+        "charts/**/Chart.yaml"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ]
+    }
+  ]
+}
