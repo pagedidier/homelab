@@ -3,7 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "platform": "gitlab",
   "dependencyDashboard": true,
   "rebaseConflictedPrs": true,
   "helm-values": {
@@ -22,7 +21,8 @@
       ],
       "matchUpdateTypes": [
         "major"
-      ]
+      ],
+      "enabled": false
     }
   ]
 }
