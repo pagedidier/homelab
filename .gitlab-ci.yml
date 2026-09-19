@@ -51,7 +51,7 @@ stages:
   - cd terraform/platform
   - terraform init -backend-config=backend-config.json
   - mkdir -p ~/.kube
-  - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+  - vault kv get -field=kubeconfig kubernetes/k3s.prod.twop.ch | base64 -d > ~/.kube/config
 
 generate_inventory_infra:
   stage: generate_inventory_infra
@@ -158,10 +158,12 @@ apply_infra:
 validate_platform:
   stage: validate_platform
   before_script:
+    - *install_just
     - *install_vault
     - *install_terraform
     - *get_vault_secrets
     - *terraform_setup_plateform
+    - just generate_inventory_platform
   script:
     - terraform validate
   rules:
@@ -175,12 +177,15 @@ validate_platform:
 
 plan_platform:
   stage: plan_platform
-  needs: [ validate_platform, generate_inventory_platform ]
+  needs:
+    - job: validate_platform
   before_script:
+    - *install_just
     - *install_vault
     - *install_terraform
     - *get_vault_secrets
     - *terraform_setup_plateform
+    - just generate_inventory_platform
   script:
     - terraform plan -out=tfplan
   artifacts:
