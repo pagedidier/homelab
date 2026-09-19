@@ -1,6 +1,6 @@
 services:
   vault:
-    image: hashicorp/vault:1.21.0
+    image: hashicorp/vault:1.21.4
     configs:
       - source: vault_config
         target: /vault/config/vault.hcl
