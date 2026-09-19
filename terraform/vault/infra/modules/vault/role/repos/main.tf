@@ -14,7 +14,22 @@ terraform {
 data "vault_policy_document" "repo-policy-document" {
   rule {
     capabilities = ["read"]
+    path         = "repos/data/${var.repo_name}"
+  }
+
+  rule {
+    capabilities = ["read", "list"]
     path         = "repos/data/${var.repo_name}/*"
+  }
+
+  rule {
+    capabilities = ["list"]
+    path         = "repos/metadata/${var.repo_name}"
+  }
+
+  rule {
+    capabilities = ["list"]
+    path         = "repos/metadata/${var.repo_name}/*"
   }
 
   dynamic "rule" {
