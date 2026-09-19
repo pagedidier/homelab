@@ -28,7 +28,7 @@ stages:
   - curl -fsSL https://releases.hashicorp.com/vault/1.21.1/vault_1.21.1_linux_amd64.zip -o vault.zip
   - unzip vault.zip -d vault
   - mv vault/vault /usr/local/bin/
-  - vault login -no-print $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
+  - vault login $(vault write -field=token auth/approle/gitlab_repo/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
 
 .install_terraform: &install_terraform
   - apk add --no-cache curl unzip
