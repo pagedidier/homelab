@@ -179,7 +179,6 @@ plan_platform:
   stage: plan_platform
   needs:
     - job: validate_platform
-    - job: generate_inventory_platform
   before_script:
     - *install_just
     - *install_vault
