@@ -23,7 +23,7 @@ terraform {
     }
     infomaniak = {
       source  = "Infomaniak/infomaniak"
-      version = "1.1.9"
+      version = "1.4.1"
     }
     helm = {
       source  = "hashicorp/helm"
