@@ -7,11 +7,11 @@ terraform {
     }
     null = {
       source  = "hashicorp/null"
-      version = "3.2.3"
+      version = "3.3.2"
     }
     infomaniak = {
       source  = "Infomaniak/infomaniak"
-      version = "1.3.1"
+      version = "1.4.1"
     }
     time = {
       source  = "hashicorp/time"
