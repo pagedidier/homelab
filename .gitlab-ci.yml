@@ -51,7 +51,7 @@ stages:
   - cd terraform/platform
   - terraform init -backend-config=backend-config.json
   - mkdir -p ~/.kube
-  - echo $KUBECONFIG_CONTENT | base64 -d > ~/.kube/config
+  - vault kv get -mount="kubernetes" "k3s.prod.twop.ch"| base64 -d > ~/.kube/config
 
 generate_inventory_infra:
   stage: generate_inventory_infra
