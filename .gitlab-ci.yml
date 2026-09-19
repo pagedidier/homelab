@@ -158,6 +158,7 @@ apply_infra:
 validate_platform:
   stage: validate_platform
   before_script:
+    - *install_just
     - *install_vault
     - *install_terraform
     - *get_vault_secrets
