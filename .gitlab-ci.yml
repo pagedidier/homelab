@@ -157,14 +157,12 @@ apply_infra:
 
 validate_platform:
   stage: validate_platform
-  needs:
-    - job: generate_inventory_platform
-      optional: true
   before_script:
     - *install_vault
     - *install_terraform
     - *get_vault_secrets
     - *terraform_setup_plateform
+    - just generate_inventory_platform
   script:
     - terraform validate
   rules:
