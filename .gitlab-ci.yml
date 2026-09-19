@@ -175,7 +175,10 @@ validate_platform:
 
 plan_platform:
   stage: plan_platform
-  needs: [ validate_platform, generate_inventory_platform ]
+  needs:
+    - job: validate_platform
+    - job: generate_inventory_platform
+      optional: true
   before_script:
     - *install_vault
     - *install_terraform
