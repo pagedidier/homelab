@@ -15,12 +15,6 @@ resource "kubernetes_service_account" "admin_user_headlamp" {
   depends_on = [helm_release.headlamp]
 }
 
-resource "kubernetes_service_account" "admin_user" {
-  metadata {
-    name      = "admin-user"
-    namespace = "kubernetes-dashboard"
-  }
-}
 
 resource "kubernetes_cluster_role_binding" "admin_user" {
   metadata {
@@ -35,8 +29,8 @@ resource "kubernetes_cluster_role_binding" "admin_user" {
 
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.admin_user.metadata[0].name
-    namespace = kubernetes_service_account.admin_user.metadata[0].namespace
+    name      = kubernetes_service_account.admin_user_headlamp.metadata[0].name
+    namespace = kubernetes_service_account.admin_user_headlamp.metadata[0].namespace
   }
 }
 
