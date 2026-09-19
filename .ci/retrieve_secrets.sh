@@ -9,6 +9,7 @@ mkdir -p "$OUTPUT_DIR"
 process_path() {
     local path="$1"
 
+    echo "$path"
     # Try to list items (directories)
     items=$(vault kv list -format=json "$path" 2>/dev/null | jq -r '.[]?' || true)
 
