@@ -268,6 +268,7 @@ renovate:
     RENOVATE_AUTODISCOVER: 'false'
     RENOVATE_TOKEN: $RENOVATE_TOKEN
     RENOVATE_GIT_AUTHOR: Renovate Bot <bot@renovateapp.com>
+    LOG_LEVEL: debug
   script:
     - renovate $CI_PROJECT_PATH
   rules:
