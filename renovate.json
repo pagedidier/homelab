@@ -13,6 +13,10 @@
   },
   "packageRules": [
     {
+      "matchDatasources": ["docker"],
+      "versioning": "semver"
+    },
+    {
       "matchManagers": [
         "helmv3"
       ],
