@@ -3,15 +3,15 @@ terraform {
   required_providers {
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "17.0.1"
+      version = "17.11.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.38.0"
+      version = "3.2.1"
     }
     docker = {
       source  = "kreuzwerker/docker"
-      version = "3.6.2"
+      version = "3.9.0"
     }
     mysql = {
       source  = "petoju/mysql"
@@ -23,7 +23,7 @@ terraform {
     }
     infomaniak = {
       source  = "Infomaniak/infomaniak"
-      version = "1.1.9"
+      version = "1.4.1"
     }
     helm = {
       source  = "hashicorp/helm"
