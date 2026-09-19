@@ -9,7 +9,7 @@
     "fileMatch": ["(^|/)values\\.yaml$", "(^|/)values\\.yaml\\.tmpl$"]
   },
   "kubernetes": {
-    "fileMatch": ["k8s/.+\\.ya?ml$"]
+    "fileMatch": ["(^|/)k8s/.+\\.ya?ml$"]
   },
   "packageRules": [
     {
