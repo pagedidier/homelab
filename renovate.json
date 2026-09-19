@@ -13,8 +13,7 @@
   },
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "versioning": "semver"
+      "matchDatasources": ["docker"]
     },
     {
       "matchManagers": [
