@@ -11,11 +11,14 @@ process_path() {
 
     echo "$path"
     # Try to list items (directories)
-    items=$(vault kv list -format=json "$path" 2>/dev/null | jq -r '.[]?' || true)
+    items=$(vault kv list -format=json "$path" | jq -r '.[]?' || true)
+
+    echo "$list"
+
 
     if [ -z "$items" ]; then
         # Not a directory → try to read as a secret
-        secret_json=$(vault kv get -format=json "$path" 2>/dev/null || true)
+        secret_json=$(vault kv get -format=json "$path"  || true)
 
         if [ -n "$secret_json" ]; then
             # Extract ONLY the secret data as JSON
