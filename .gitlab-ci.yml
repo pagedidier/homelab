@@ -180,12 +180,13 @@ plan_platform:
   needs:
     - job: validate_platform
     - job: generate_inventory_platform
-      optional: true
   before_script:
+    - *install_just
     - *install_vault
     - *install_terraform
     - *get_vault_secrets
     - *terraform_setup_plateform
+    - just generate_inventory_platform
   script:
     - terraform plan -out=tfplan
   artifacts:
