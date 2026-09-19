@@ -157,7 +157,9 @@ apply_infra:
 
 validate_platform:
   stage: validate_platform
-  needs: [ generate_inventory_platform ]
+  needs:
+    - job: generate_inventory_platform
+      optional: true
   before_script:
     - *install_vault
     - *install_terraform
