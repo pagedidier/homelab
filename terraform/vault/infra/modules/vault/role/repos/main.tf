@@ -2,11 +2,11 @@ terraform {
   required_providers {
     vault = {
       source  = "hashicorp/vault"
-      version = "4.8.0"
+      version = "5.12.0"
     }
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "17.0.1"
+      version = "17.11.0"
     }
   }
 }
@@ -14,7 +14,22 @@ terraform {
 data "vault_policy_document" "repo-policy-document" {
   rule {
     capabilities = ["read"]
+    path         = "repos/data/${var.repo_name}"
+  }
+
+  rule {
+    capabilities = ["read", "list"]
     path         = "repos/data/${var.repo_name}/*"
+  }
+
+  rule {
+    capabilities = ["list"]
+    path         = "repos/metadata/${var.repo_name}"
+  }
+
+  rule {
+    capabilities = ["list"]
+    path         = "repos/metadata/${var.repo_name}/*"
   }
 
   dynamic "rule" {
