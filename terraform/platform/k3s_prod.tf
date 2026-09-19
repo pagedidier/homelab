@@ -1,10 +1,18 @@
-resource "helm_release" "kubernetes_dashboard" {
-  name       = "kubernetes-dashboard"
-  repository = "https://kubernetes.github.io/dashboard/"
-  chart      = "kubernetes-dashboard"
+resource "helm_release" "headlamp" {
+  name       = "headlamp"
+  repository = "https://kubernetes-sigs.github.io/headlamp/"
+  chart      = "headlamp"
 
-  namespace        = "kubernetes-dashboard"
+  namespace        = "headlamp"
   create_namespace = true
+}
+
+resource "kubernetes_service_account" "admin_user_headlamp" {
+  metadata {
+    name      = "admin-user"
+    namespace = "headlamp"
+  }
+  depends_on = [helm_release.headlamp]
 }
 
 resource "kubernetes_service_account" "admin_user" {
@@ -39,10 +47,10 @@ resource "helm_release" "vault" {
   namespace        = "vault"
   create_namespace = true
 
-  set {
+  set = [{
     name  = "global.externalVaultAddr"
     value = "https://vault.twop.ch"
-  }
+  }]
 }
 
 resource "kubernetes_secret" "vault_token" {

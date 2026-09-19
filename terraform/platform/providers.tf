@@ -27,7 +27,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.13"
+      version = "3.3.0"
     }
   }
 }
@@ -60,13 +60,13 @@ provider "kubernetes" {
   alias       = "k3s_dev"
 }
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     config_path = "~/.kube/config"
   }
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     config_path = "~/.kube/k3s.dev.twop.ch"
   }
   alias = "k3s_dev"
