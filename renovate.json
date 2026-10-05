@@ -29,7 +29,12 @@
     {
       "description": "Restrict docker image tags to semver X.Y.Z only",
       "matchDatasources": ["docker"],
-      "allowedVersions": "/^\\d+\\.\\d+\\.+$/"
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
+    },
+    {
+      "description": "Only allow stepping to the next immediate major version (+1)",
+      "matchUpdateTypes": ["major"],
+      "level": "one"
     }
   ]
 }
