@@ -8,6 +8,7 @@
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "separateMajorMinor": false,
+  "separateMultipleMajor": true,
   "gitlabci": {
     "fileMatch": [
       "(^|/)\\.gitlab-ci\\.yml$",
@@ -30,11 +31,6 @@
       "description": "Restrict docker image tags to semver X.Y.Z only",
       "matchDatasources": ["docker"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
-    },
-    {
-      "description": "Only allow stepping to the next immediate major version (+1)",
-      "matchUpdateTypes": ["major"],
-      "level": "one"
     }
   ]
 }
