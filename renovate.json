@@ -7,6 +7,7 @@
   "rebaseConflictedPrs": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
+  "separateMajorMinor": false,
   "gitlabci": {
     "fileMatch": [
       "(^|/)\\.gitlab-ci\\.yml$",
@@ -28,12 +29,7 @@
     {
       "description": "Restrict docker image tags to semver X.Y.Z only",
       "matchDatasources": ["docker"],
-      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
-    },
-    {
-      "description": "Disable major updates globally across all managers",
-      "matchUpdateTypes": ["major"],
-      "enabled": false
+      "allowedVersions": "/^\\d+\\.\\d+\\.+$/"
     }
   ]
 }
