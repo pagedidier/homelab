@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  "maxMajorIncrement": 1,
   "dependencyDashboard": true,
   "rebaseConflictedPrs": true,
   "prConcurrentLimit": 0,
@@ -34,8 +35,7 @@
     {
       "description": "Limit concurrent PRs per package so major versions are applied one at a time",
       "matchUpdateTypes": ["major"],
-      "groupName": "{{depName}} major",
-      "maxMajorIncrement": 1
+      "groupName": "{{depName}} major"
     }
   ]
 }
