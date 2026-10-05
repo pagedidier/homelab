@@ -264,7 +264,7 @@ renovate:
   stage: renovate
   resource_group: renovate
   image:
-    name: renovate/renovate:38.80
+    name: renovate/renovate:44.135.0
     entrypoint: [""]
   variables:
     RENOVATE_BASE_DIR: $CI_PROJECT_DIR/renovate
