@@ -1,6 +1,6 @@
 services:
   ceph_exporter:
-    image: digitalocean/ceph_exporter:4.2.5
+    image: digitalocean/ceph_exporter:4.2.6
     restart: unless-stopped
     ports:
       - "9128:9128"
