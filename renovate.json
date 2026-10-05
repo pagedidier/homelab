@@ -7,27 +7,32 @@
   "rebaseConflictedPrs": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
+  "gitlabci": {
+    "fileMatch": [
+      "(^|/)\\.gitlab-ci\\.yml$",
+      "(^|/)\\.gitlab/ci/.+\\.ya?ml$"
+    ]
+  },
   "helm-values": {
-    "fileMatch": ["(^|/)values\\.yaml$", "(^|/)values\\.yaml\\.tmpl$"]
+    "fileMatch": [
+      "(^|/)values\\.yaml$",
+      "(^|/)values\\.yaml\\.tmpl$"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["(^|/)k8s/.+\\.ya?ml$"]
+    "fileMatch": [
+      "(^|/)k8s/.+\\.ya?ml$"
+    ]
   },
   "packageRules": [
     {
+      "description": "Restrict docker image tags to semver X.Y.Z only",
       "matchDatasources": ["docker"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     },
     {
-      "matchManagers": [
-        "helmv3"
-      ],
-      "matchFileNames": [
-        "charts/**/Chart.yaml"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
+      "description": "Disable major updates globally across all managers",
+      "matchUpdateTypes": ["major"],
       "enabled": false
     }
   ]
