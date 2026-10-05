@@ -2,7 +2,7 @@ terraform {
   required_providers {
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "17.11.0"
+      version = "19.4.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
