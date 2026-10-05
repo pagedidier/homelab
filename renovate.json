@@ -7,7 +7,6 @@
   "rebaseConflictedPrs": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
-  "separateMajorMinor": false,
   "separateMultipleMajor": true,
   "gitlabci": {
     "fileMatch": [
