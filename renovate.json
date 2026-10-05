@@ -34,7 +34,7 @@
     {
       "description": "Limit concurrent PRs per package so major versions are applied one at a time",
       "matchUpdateTypes": ["major"],
-      "prConcurrentLimit": 1
+      "groupName": "{{depName}} major"
     }
   ]
 }
