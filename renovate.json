@@ -8,6 +8,7 @@
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "separateMajorMinor": false,
+  "separateMultipleMajor": true,
   "gitlabci": {
     "fileMatch": [
       "(^|/)\\.gitlab-ci\\.yml$",
@@ -32,9 +33,9 @@
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     },
     {
-      "description": "Step major upgrades strictly one level at a time (e.g. 17 -> 18)",
+      "description": "Require manual approval on Dependency Dashboard for major updates",
       "matchUpdateTypes": ["major"],
-      "allowedVersions": "<={{add major 1}}"
+      "dependencyDashboardApproval": true
     }
   ]
 }
