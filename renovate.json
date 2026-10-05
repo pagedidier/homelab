@@ -33,9 +33,9 @@
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     },
     {
-      "description": "Require manual approval on Dependency Dashboard for major updates",
+      "description": "Limit concurrent PRs per package so major versions are applied one at a time",
       "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true
+      "prConcurrentLimit": 1
     }
   ]
 }
