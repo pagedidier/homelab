@@ -5,25 +5,24 @@
   ],
   "maxMajorIncrement": 1,
   "dependencyDashboard": true,
-  "rebaseConflictedPrs": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "separateMultipleMajor": true,
   "gitlabci": {
-    "fileMatch": [
-      "(^|/)\\.gitlab-ci\\.yml$",
-      "(^|/)\\.gitlab/ci/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)\\.gitlab-ci\\.yml$/",
+      "/(^|/)\\.gitlab/ci/.+\\.ya?ml$/"
     ]
   },
   "helm-values": {
-    "fileMatch": [
-      "(^|/)values\\.yaml$",
-      "(^|/)values\\.yaml\\.tmpl$"
+    "managerFilePatterns": [
+      "/(^|/)values\\.yaml$/",
+      "/(^|/)values\\.yaml\\.tmpl$/"
     ]
   },
   "kubernetes": {
-    "fileMatch": [
-      "(^|/)k8s/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)k8s/.+\\.ya?ml$/"
     ]
   },
   "packageRules": [
