@@ -43,7 +43,7 @@ services:
       - postgres
       - zabbix-server
   zabbix-dashboard:
-    image: zabbix/zabbix-web-nginx-pgsql:7.4.5-ubuntu
+    image: zabbix/zabbix-web-nginx-pgsql:7.4.15-ubuntu
     env_file:
       - .zabbix-dashboard.env
     networks:
