@@ -1,4 +1,6 @@
-image: alpine:3.18
+image:
+  name: alpine:3.18.12
+  pull_policy: if-not-present
 
 workflow:
   rules:
@@ -89,7 +91,6 @@ generate_inventory_platform:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/infra/**
-
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/infra/**
@@ -132,7 +133,6 @@ plan_infra:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/infra/**
-
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/infra/**
@@ -218,33 +218,6 @@ apply_platform:
         - terraform/platform/**
     - when: never
 
-#deploy-ansible:
-#  stage: ansible
-#  before_script:
-#    - apk add jq yq python3 py3-pip openssh --repository http://dl-3.alpinelinux.org/alpine/edge/community/ terraform
-#    - pip install ansible
-#    - mkdir -p ~/.ssh
-#    - echo "$SSH_KEY" | base64 -d > ~/.ssh/id_rsa
-#    - chmod 600 ~/.ssh/id_rsa
-#    - echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" > ~/.ssh/config
-#    - cd terraform/infra
-#    - echo "$TF_BACKEND_HCL_INFRA" | base64 -d > backend-config.json
-#    - terraform init -backend-config=backend-config.json
-#  script:
-#    - ansible-playbook playbooks/site-homelab.yaml -i inventory/inventory.yaml
-#  needs:
-#    - job: apply_infra
-#      optional: true
-#    - job: generate_inventory_infra
-#  rules:
-#    - if: '$CI_COMMIT_BRANCH == "main"'
-#      changes:
-#        - ansible/**/*
-#    - if: '$CI_JOB_STATUS == "success"'
-#      needs:
-#        - apply_infra
-#    - when: never
-
 update-version:
   stage: update
   rules:
@@ -266,6 +239,7 @@ renovate:
   image:
     name: renovate/renovate:44.142.1
     entrypoint: [""]
+    pull_policy: if-not-present
   variables:
     RENOVATE_BASE_DIR: $CI_PROJECT_DIR/renovate
     RENOVATE_ENDPOINT: $CI_API_V4_URL
