@@ -50,12 +50,6 @@
       "description": "Limit concurrent PRs per package so major versions are applied one at a time",
       "matchUpdateTypes": ["major"],
       "groupName": "{{depName}} major"
-    },
-    {
-      "description": "Group all minor and patch updates together to reduce PR noise",
-      "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch"
     }
   ]
 }
