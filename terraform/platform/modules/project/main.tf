@@ -2,7 +2,7 @@ terraform {
   required_providers {
     gitlab = {
       source  = "gitlabhq/gitlab"
-      version = "18.11.0"
+      version = "19.4.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -143,7 +143,7 @@ data "gitlab_project" "project" {
 }
 
 
-resource "gitlab_deploy_token" "k3s_deploy_token" {
+resource "gitlab_project_deploy_token" "k3s_deploy_token" {
   project  = data.gitlab_project.project.path_with_namespace
   name     = "k3s-${data.gitlab_project.project.name}-deploy-token"
   username = "k3s-${data.gitlab_project.project.name}"
@@ -163,10 +163,10 @@ resource "kubernetes_secret" "example" {
     ".dockerconfigjson" = jsonencode({
       auths = {
         (var.registry_server) = {
-          "username" = gitlab_deploy_token.k3s_deploy_token.username
-          "password" = gitlab_deploy_token.k3s_deploy_token.token
+          "username" = gitlab_project_deploy_token.k3s_deploy_token.username
+          "password" = gitlab_project_deploy_token.k3s_deploy_token.token
           "email"    = "d+gitlab.${var.domain_name}"
-          "auth"     = base64encode("${gitlab_deploy_token.k3s_deploy_token.username}:${gitlab_deploy_token.k3s_deploy_token.token}")
+          "auth"     = base64encode("${gitlab_project_deploy_token.k3s_deploy_token.username}:${gitlab_project_deploy_token.k3s_deploy_token.token}")
         }
       }
     })
