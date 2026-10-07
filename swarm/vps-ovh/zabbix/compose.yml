@@ -32,7 +32,7 @@ services:
     depends_on:
       - postgres
   zabbix-agent:
-    image: zabbix/zabbix-agent2:7.4.5-alpine
+    image: zabbix/zabbix-agent2:7.4.15-alpine
     environment:
       ZBX_HOSTNAME: Zabbix server
       ZBX_SERVER_HOST: zabbix-server
