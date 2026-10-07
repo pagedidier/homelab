@@ -1,31 +1,45 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "group:monorepos",
+    "workarounds:all"
   ],
-  "maxMajorIncrement": 1,
   "dependencyDashboard": true,
-  "rebaseConflictedPrs": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
+  "maxMajorIncrement": 1,
   "separateMultipleMajor": true,
+  
+  "semanticCommits": "auto",
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/examples/**",
+    "**/__tests__/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/__fixtures__/**"
+  ],
+
   "gitlabci": {
-    "fileMatch": [
-      "(^|/)\\.gitlab-ci\\.yml$",
-      "(^|/)\\.gitlab/ci/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)\\.gitlab-ci\\.yml$/",
+      "/(^|/)\\.gitlab/ci/.+\\.ya?ml$/"
     ]
   },
   "helm-values": {
-    "fileMatch": [
-      "(^|/)values\\.yaml$",
-      "(^|/)values\\.yaml\\.tmpl$"
+    "managerFilePatterns": [
+      "/(^|/)values\\.yaml$/",
+      "/(^|/)values\\.yaml\\.tmpl$/"
     ]
   },
   "kubernetes": {
-    "fileMatch": [
-      "(^|/)k8s/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)k8s/.+\\.ya?ml$/"
     ]
   },
+
   "packageRules": [
     {
       "description": "Restrict docker image tags to semver X.Y.Z only",

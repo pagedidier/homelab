@@ -152,7 +152,19 @@ provider "registry.terraform.io/petoju/mysql" {
   version     = "3.0.101"
   constraints = "~> 3.0.72"
   hashes = [
+    "h1:+qIuTVK3Jyc1RfI54hJNSNpO8xRabMM6lLSgwzgieL8=",
+    "h1:0DKPbGhfZznZBdwlD5PuklgMNaqIm9xza2/Q1WSTrZ0=",
+    "h1:A4kEFPqCfy1iZ0CNwO9p7MQUZM/7M3XrKYePy/OUdPo=",
+    "h1:B7NLregHXRZIB+muiQci2E/4jBkvCO1JCaO4mzV8UB0=",
+    "h1:Cr4/EQRknRXA2sy75j5YE02ny3UIVAySoQCWZMDDWI8=",
     "h1:DXvphS/TXi4TEC1hJ2iFcyBrWUnsU5LnkbwyRwdJVZY=",
+    "h1:EUxuq6R0v7ppsyAnp8EeVxtmrZ7lIfLdzDItgLebG3g=",
+    "h1:UOAzWM7KrAoi+t+VKHirCrHU9QJKXkIW1DPnXo8sn80=",
+    "h1:f5LoPmtzZ1ZKeJJMCn7uXh3khOx6m5f1m+lL/JZLgxs=",
+    "h1:iAWIdktlzBdaDT/HaMPyhocHN2SmmmXgzroclIyo3cY=",
+    "h1:tl8z2sPMR+KyMv6nxqa06SuowkvDRVYiSAEk358yLKA=",
+    "h1:wS6V1J837hERogWb4rIhypozCU2hFXQF/qoiEytqjD8=",
+    "h1:x/Wwif1wM0g7OkKyIkCvxRR6vwl2PkPMUJ3mpVUM5Yw=",
     "zh:01029c703903954a5a437d2600cc5e486f1891a75b65ec78feda42ee78e258fa",
     "zh:096a19e85ba8316f3e3b4a88ed35c91f1c0dc8e916b6ca86a6feb6b6ecb6714a",
     "zh:2c0201264f968bd635dc240935ef7e938a63b8dcc02ad64104947849109215b1",
