@@ -44,7 +44,7 @@
     {
       "description": "Restrict docker image tags to semver X.Y.Z only",
       "matchDatasources": ["docker"],
-      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(-.*)?$/"
     },
     {
       "description": "Limit concurrent PRs per package so major versions are applied one at a time",
