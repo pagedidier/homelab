@@ -1,6 +1,6 @@
 services:
   nextcloud:
-    image: nextcloud:31.0.14-apache
+    image: nextcloud:32.0.15-apache
     deploy:
       replicas: 1
       restart_policy:
