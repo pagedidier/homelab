@@ -19,7 +19,7 @@ resource "uptimekuma_monitor_http" "echoduchene" {
 
 resource "uptimekuma_monitor_http" "k3s_prod" {
   name        = "k3s prod"
-  url         = "https://k3s.prod.twop.ch"
+  url         = "https://k3s.prod.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -28,7 +28,7 @@ resource "uptimekuma_monitor_http" "k3s_prod" {
 
 resource "uptimekuma_monitor_http" "nxtcld" {
   name        = "Nextcloud"
-  url         = "https://nxtcld.twop.ch"
+  url         = "https://nxtcld.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -37,7 +37,7 @@ resource "uptimekuma_monitor_http" "nxtcld" {
 
 resource "uptimekuma_monitor_http" "cheap" {
   name        = "Cheap"
-  url         = "https://cheap.twop.ch"
+  url         = "https://cheap.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -46,7 +46,7 @@ resource "uptimekuma_monitor_http" "cheap" {
 
 resource "uptimekuma_monitor_http" "autodel" {
   name        = "Autodel"
-  url         = "https://autodel.twop.ch/healthcheck"
+  url         = "https://autodel.${var.domain_name}/healthcheck"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -55,7 +55,7 @@ resource "uptimekuma_monitor_http" "autodel" {
 
 resource "uptimekuma_monitor_http" "vault" {
   name        = "Vault"
-  url         = "https://vault.twop.ch/sys/health"
+  url         = "https://vault.${var.domain_name}/sys/health"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -64,7 +64,7 @@ resource "uptimekuma_monitor_http" "vault" {
 
 resource "uptimekuma_monitor_http" "vault_infra" {
   name        = "Vault infra"
-  url         = "https://vault.infra.twop.ch/sys/health"
+  url         = "https://vault.infra.${var.domain_name}/sys/health"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -73,7 +73,7 @@ resource "uptimekuma_monitor_http" "vault_infra" {
 
 resource "uptimekuma_monitor_http" "argocd" {
   name        = "Argocd"
-  url         = "https://argocd.twop.ch"
+  url         = "https://argocd.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -82,7 +82,7 @@ resource "uptimekuma_monitor_http" "argocd" {
 
 resource "uptimekuma_monitor_http" "grafana" {
   name        = "Grafana"
-  url         = "https://grafana.twop.ch"
+  url         = "https://grafana.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -91,7 +91,7 @@ resource "uptimekuma_monitor_http" "grafana" {
 
 resource "uptimekuma_monitor_http" "audiobookshelf" {
   name        = "Audiobookshelf"
-  url         = "https://audio.twop.ch"
+  url         = "https://audio.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -100,7 +100,7 @@ resource "uptimekuma_monitor_http" "audiobookshelf" {
 
 resource "uptimekuma_monitor_http" "plex" {
   name        = "Plex"
-  url         = "https://plex.twop.ch/web/"
+  url         = "https://plex.${var.domain_name}/web/"
   interval    = 60
   timeout     = 30
   max_retries = 3
@@ -109,7 +109,7 @@ resource "uptimekuma_monitor_http" "plex" {
 
 resource "uptimekuma_monitor_http" "prometheus" {
   name        = "Prometheus"
-  url         = "https://prometheus.twop.ch"
+  url         = "https://prometheus.${var.domain_name}"
   interval    = 60
   timeout     = 30
   max_retries = 3
