@@ -100,3 +100,8 @@ variable "port" {
 variable "bios" {
   default = "seabios"
 }
+
+variable "started" {
+  type = bool
+  default = true
+}

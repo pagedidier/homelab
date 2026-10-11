@@ -1,7 +1,7 @@
 module "glrunner" {
   source    = "./modules/vm"
   name      = "glrunner"
-  node_name = module.proxmox11.proxmox_data.node_name
+  node_name = module.proxmox12.proxmox_data.node_name
 
   init_ssh_keys      = var.init_ssh_keys
   init_user_password = var.init_user_password
@@ -40,5 +40,6 @@ module "anywhere" {
   volume_name        = "vm-disks"
   domain_name        = infomaniak_zone.twop.fqdn
   main_disk_backup   = false
+  started = false
   tags               = []
 }

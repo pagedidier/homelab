@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.85.1"
+      version = "0.113.1"
     }
   }
 }
@@ -47,7 +47,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   operating_system {
     type = "l26"
   }
-
+  started = var.started
   reboot_after_update = false
   migrate             = true
 

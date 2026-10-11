@@ -29,5 +29,6 @@ resource "proxmox_virtual_environment_download_file" "debian_nocloud_image" {
   node_name    = module.proxmox11.proxmox_data.node_name
   url          = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2"
   file_name    = "debian-12-nocloud-amd64.qcow2"
+  overwrite = false
 }
 
