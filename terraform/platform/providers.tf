@@ -29,6 +29,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "3.3.0"
     }
+    uptimekuma = {
+      source  = "breml/uptimekuma"
+      version = "0.4.0"
+    }
   }
 }
 
@@ -75,4 +79,10 @@ provider "helm" {
 provider "vault" {
   address = var.vault_addr
   token   = var.vault_token
+}
+
+provider "uptimekuma" {
+  endpoint = var.uptimekuma_addr
+  username = var.uptimekuma_username
+  password = var.uptimekuma_password
 }

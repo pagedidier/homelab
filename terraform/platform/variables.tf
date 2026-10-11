@@ -20,3 +20,17 @@ variable "database" {
 variable "infomaniak_token" {
   type = string
 }
+
+variable "uptimekuma_addr" {
+  type = string
+}
+
+variable "uptimekuma_username" {
+  type = string
+}
+
+variable "uptimekuma_password" {
+  type = string
+  sensitive = true
+}
+
