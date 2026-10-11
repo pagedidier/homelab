@@ -7,7 +7,7 @@ resource "helm_release" "headlamp" {
   create_namespace = true
 }
 
-resource "kubernetes_service_account" "admin_user_headlamp" {
+resource "kubernetes_service_account_v1" "admin_user_headlamp" {
   metadata {
     name      = "admin-user"
     namespace = "headlamp"
@@ -16,7 +16,7 @@ resource "kubernetes_service_account" "admin_user_headlamp" {
 }
 
 
-resource "kubernetes_cluster_role_binding" "admin_user" {
+resource "kubernetes_cluster_role_binding_v1" "admin_user" {
   metadata {
     name = "admin-user"
   }
@@ -29,8 +29,8 @@ resource "kubernetes_cluster_role_binding" "admin_user" {
 
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account.admin_user_headlamp.metadata[0].name
-    namespace = kubernetes_service_account.admin_user_headlamp.metadata[0].namespace
+    name      = kubernetes_service_account_v1.admin_user_headlamp.metadata[0].name
+    namespace = kubernetes_service_account_v1.admin_user_headlamp.metadata[0].namespace
   }
 }
 
@@ -47,7 +47,7 @@ resource "helm_release" "vault" {
   }]
 }
 
-resource "kubernetes_secret" "vault_token" {
+resource "kubernetes_secret_v1" "vault_token" {
   metadata {
     name      = "vault-token-g955r"
     namespace = "vault"
