@@ -110,7 +110,7 @@ validate_infra:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/infra/**
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/infra/**
     - when: never
@@ -170,7 +170,7 @@ validate_platform:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       changes:
         - terraform/platform/**
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/platform/**
     - when: never
