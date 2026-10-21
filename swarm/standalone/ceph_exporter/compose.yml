@@ -1,8 +1,0 @@
-services:
-  ceph_exporter:
-    image: digitalocean/ceph_exporter:4.2.7
-    restart: unless-stopped
-    ports:
-      - "9128:9128"
-    volumes:
-      - "/var/snap/microceph/current/conf:/etc/ceph"
