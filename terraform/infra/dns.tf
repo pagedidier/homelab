@@ -11,7 +11,15 @@ resource "infomaniak_record" "nbl_ff" {
   source    = "nlb.ff"
   type      = "A"
   ttl       = 300
-  target    = "144.2.101.99"
+  target    = "144.2.106.91"
+}
+
+resource "infomaniak_record" "home_vpn" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = "vpn.home"
+  type      = "A"
+  ttl       = 300
+  target    = "144.2.106.91"
 }
 
 resource "infomaniak_record" "proxy01_public" {
