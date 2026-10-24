@@ -34,3 +34,11 @@ variable "uptimekuma_password" {
   sensitive = true
 }
 
+variable "uptimekuma_telegram_bot_token" {
+  type = string
+}
+
+variable "uptimekuma_telegram_chat_id" {
+  type = string
+}
+

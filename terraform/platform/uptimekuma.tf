@@ -115,3 +115,11 @@ resource "uptimekuma_monitor_http" "prometheus" {
   max_retries = 3
   active      = true
 }
+
+resource "uptimekuma_notification_telegram" "example" {
+  name       = "Telegram Notifications"
+  bot_token  = var.uptimekuma_telegram_bot_token
+  chat_id    = var.uptimekuma_telegram_chat_id
+  is_active  = true
+  is_default = false
+}
