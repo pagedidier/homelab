@@ -1,9 +1,4 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "group:monorepos",
-    "workarounds:all"
-  ],
   "dependencyDashboard": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
@@ -11,17 +6,6 @@
   "separateMultipleMajor": true,
   
   "semanticCommits": "auto",
-  "ignorePaths": [
-    "**/node_modules/**",
-    "**/bower_components/**",
-    "**/vendor/**",
-    "**/examples/**",
-    "**/__tests__/**",
-    "**/test/**",
-    "**/tests/**",
-    "**/__fixtures__/**"
-  ],
-
   "gitlabci": {
     "managerFilePatterns": [
       "/(^|/)\\.gitlab-ci\\.yml$/",
