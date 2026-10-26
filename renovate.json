@@ -23,7 +23,9 @@
       "/(^|/)k8s/.+\\.ya?ml$/"
     ]
   },
-
+  "pre-commit": {
+    "enabled": true
+  },
   "packageRules": [
     {
       "description": "Restrict docker image tags to semver X.Y.Z only",
@@ -40,6 +42,11 @@
       "matchPackageNames": ["renovate/renovate"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
+    },
+    {
+      "description": "Group all pre-commit hook updates together",
+      "matchManagers": ["pre-commit"],
+      "groupName": "pre-commit hooks"
     }
   ]
 }
