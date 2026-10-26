@@ -24,7 +24,10 @@
     ]
   },
   "pre-commit": {
-    "enabled": true
+    "enabled": true,
+    "managerFilePatterns": [
+      "/(^|/)\\.pre-commit-config\\.ya?ml$/"
+    ]
   },
   "packageRules": [
     {
