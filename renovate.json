@@ -34,6 +34,12 @@
       "description": "Limit concurrent PRs per package so major versions are applied one at a time",
       "matchUpdateTypes": ["major"],
       "groupName": "{{depName}} major"
+    },
+    {
+      "description": "Automerge minor and patch updates for renovate/renovate",
+      "matchPackageNames": ["renovate/renovate"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
     }
   ]
 }
