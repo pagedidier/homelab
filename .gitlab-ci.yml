@@ -88,9 +88,6 @@ generate_inventory_platform:
     paths:
       - terraform/platform/inventory.yaml
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      changes:
-        - terraform/infra/**
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       changes:
         - terraform/infra/**
