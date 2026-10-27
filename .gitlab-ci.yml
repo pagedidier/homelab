@@ -121,7 +121,7 @@ plan_infra:
     - *get_vault_secrets
     - *terraform_setup_infra
   script:
-    - terraform plan -detailed-exitcode -out=tfplan
+    - terraform plan -out=tfplan
   artifacts:
     paths:
       - terraform/infra/tfplan
@@ -184,7 +184,7 @@ plan_platform:
     - *terraform_setup_plateform
     - just generate_inventory_platform
   script:
-    - terraform plan -detailed-exitcode -out=tfplan
+    - terraform plan -out=tfplan
   artifacts:
     paths:
       - terraform/platform/tfplan
