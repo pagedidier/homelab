@@ -4,6 +4,7 @@ resource "proxmox_virtual_environment_download_file" "ubuntu_cloud_image" {
   node_name    = module.proxmox11.proxmox_data.node_name
   url          = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
   file_name    = "noble-server-cloudimg-amd64.qcow2"
+  overwrite=false
 }
 resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
   content_type = "import"
