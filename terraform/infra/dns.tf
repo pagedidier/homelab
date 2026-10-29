@@ -52,6 +52,6 @@ resource "infomaniak_record" "nlb_fip_public" {
   source    = "nlb.fip.public"
   type      = "A"
   ttl       = 300
-  target    = "192.168.1.246" # DMZ by the router same as nlb.ff
+  target    = "192.168.1.246"
 }
 
