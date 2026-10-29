@@ -11,7 +11,7 @@ resource "infomaniak_record" "nbl_ff" {
   source    = "nlb.ff"
   type      = "A"
   ttl       = 300
-  target    = "144.2.106.91"
+  target    = "144.2.106.92"
 }
 
 resource "infomaniak_record" "home_vpn" {
