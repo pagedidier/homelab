@@ -237,7 +237,7 @@ renovate:
   stage: renovate
   resource_group: renovate
   image:
-    name: renovate/renovate:44.193.1
+    name: renovate/renovate:44.198.0
     entrypoint: [""]
     pull_policy: if-not-present
   variables:
