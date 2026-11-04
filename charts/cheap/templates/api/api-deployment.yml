@@ -31,7 +31,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
           imagePullPolicy: Always
-          image: "registry.gitlab.com/two-p/{{ .Chart.Name }}/api:{{ .Values.version }}"
+          image: "registry.gitlab.com/two-p/applications/{{ .Chart.Name }}/api:{{ .Values.version }}"
           command:
             [ "/bin/sh", "-c" ]
           args:

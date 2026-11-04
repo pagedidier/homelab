@@ -30,7 +30,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}-api-{{ .Values.environment }}
           imagePullPolicy: Always
-          image: registry.gitlab.com/two-p/autodel/api:{{ .Values.version }}
+          image: registry.gitlab.com/two-p/applications/autodel/api:{{ .Values.version }}
           command:
               ["/bin/sh", "-c"]
           args:
