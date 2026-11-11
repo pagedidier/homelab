@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: kubernetes-dashboard
-  name: kubernetes-dashboard-ingress
+  namespace: headlamp
+  name: headlamp-ingress
   annotations:
     kubernetes.io/ingress.ingressClassName: "traefik"
 spec:
@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: kubernetes-dashboard-kong-proxy
+                name: headlamp
                 port:
-                  number: 443
+                  number: 80
