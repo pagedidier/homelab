@@ -151,7 +151,7 @@ resource "gitlab_project_deploy_token" "k3s_deploy_token" {
   scopes = ["read_registry"]
 }
 
-resource "kubernetes_secret_v1" "example" {
+resource "kubernetes_secret_v1" "regcred" {
   metadata {
     name      = "regcred-${var.project_name}"
     namespace = kubernetes_namespace_v1.project_name.metadata[0].name
