@@ -138,3 +138,23 @@ resource "infomaniak_record" "truenas" {
   ttl       = 300
   target    = module.truenas.server.ip
 }
+
+module "nas02" {
+  source      = "./modules/bare_metal"
+  hostname    = "nas02"
+  ip          = "192.168.0.23"
+  username    = "admin"
+  port        = 22
+  domain_name = infomaniak_zone.twop.fqdn
+
+  tags = ["baremetal", "nas"]
+
+}
+
+resource "infomaniak_record" "nas02" {
+  zone_fqdn = infomaniak_zone.twop.fqdn
+  source    = module.nas02.server.name
+  type      = "A"
+  ttl       = 300
+  target    = module.nas02.server.ip
+}

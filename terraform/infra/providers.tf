@@ -17,6 +17,14 @@ terraform {
       source  = "hashicorp/time"
       version = "0.14.2"
     }
+    gitlab = {
+      source  = "gitlabhq/gitlab"
+      version = "19.5.0"
+    }
+    vault = {
+      source  = "hashicorp/vault"
+      version = "5.13.0"
+    }
   }
 }
 
@@ -34,4 +42,13 @@ provider "proxmox" {
     agent    = true
     username = var.pvc["pvc01"].proxmox_ssh_user
   }
+}
+
+provider "gitlab" {
+  token = var.gitlab_pat
+}
+
+provider "vault" {
+  address = var.vault_addr
+  token   = var.vault_token
 }

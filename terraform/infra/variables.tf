@@ -22,3 +22,7 @@ variable "pvc" {
     proxmox_ssh_user = string
   }))
 }
+
+variable "vault_token" {}
+variable "vault_addr" {}
+variable "gitlab_pat" {}
