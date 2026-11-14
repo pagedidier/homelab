@@ -75,11 +75,6 @@ module "uptimekuma-argocd" {
   application_name = "uptimekuma"
 }
 
-module "plex-argocd" {
-  source = "./modules/argocd/application-manifests"
-
-  application_name = "plex"
-}
 
 module "audiobookshelf-argocd" {
   source = "./modules/argocd/application-manifests"

@@ -47,7 +47,6 @@ module "dns_twop_blackbox_exporter" {
     "audio.twop.ch",
     "k3s.prod.twop.ch",
     "nxtcld.twop.ch",
-    "plex.twop.ch",
     "pvc01.twop.ch",
     "uptimekuma.twop.ch",
     "vault.twop.ch",
