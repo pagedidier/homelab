@@ -1,0 +1,7 @@
+---
+- hosts: nas02
+  become: yes
+  roles:
+    - role: node_exporter
+      tags:
+        - monitoring
