@@ -98,9 +98,9 @@ resource "uptimekuma_monitor_http" "audiobookshelf" {
   active      = true
 }
 
-resource "uptimekuma_monitor_http" "plex" {
-  name        = "Plex"
-  url         = "https://plex.${var.domain_name}/web/"
+resource "uptimekuma_monitor_http" "jellyfin" {
+  name        = "Jellyfin"
+  url         = "https://jellyfin.${var.domain_name}/web/"
   interval    = 60
   timeout     = 30
   max_retries = 3

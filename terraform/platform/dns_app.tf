@@ -150,9 +150,9 @@ resource "infomaniak_record" "audiobookshelf" {
   target    = "proxy01.private.twop.ch"
 }
 
-resource "infomaniak_record" "plex" {
+resource "infomaniak_record" "jellyfin" {
   zone_fqdn = infomaniak_zone.twop.fqdn
-  source    = "plex"
+  source    = "jellyfin"
   type      = "CNAME"
   ttl       = "300"
   target    = "proxy01.private.twop.ch"

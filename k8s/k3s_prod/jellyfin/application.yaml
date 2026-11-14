@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jellyfin
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://jellyfin.github.io/jellyfin-helm
+    chart: jellyfin
+    targetRevision: 3.7.0
+    helm:
+      valuesObject:
+        replicaCount: 1
+
+        image:
+          pullPolicy: IfNotPresent
+
+        # Same uid/gid as plex (PUID/PGID 1000) so NFS permissions match
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+
+        jellyfin:
+          env:
+            - name: TZ
+              value: Europe/Zurich
+            - name: JELLYFIN_PublishedServerUrl
+              value: https://jellyfin.twop.ch
+
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: web-private
+          hosts:
+            - host: jellyfin.twop.ch
+              paths:
+                - path: /
+                  pathType: Prefix
+
+        persistence:
+          config:
+            enabled: true
+            type: nfs
+            nfsServer: 192.168.0.92
+            nfsPath: /mnt/main/k3s_prod/jellyfin/config
+            readOnly: false
+          media:
+            enabled: true
+            type: nfs
+            nfsServer: 192.168.0.29
+            nfsPath: /volume1/dpage
+            readOnly: true
+          cache:
+            # emptyDir: transcoding cache does not need to persist
+            enabled: false
+
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            memory: 4Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jellyfin
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
